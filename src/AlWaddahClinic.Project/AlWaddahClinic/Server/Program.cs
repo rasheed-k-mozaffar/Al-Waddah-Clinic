@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.ResponseCompression;
+using AlWaddahClinic.Server.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContextAndIdentity(builder.Configuration);
+builder.Services.AddJwtBearerAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
