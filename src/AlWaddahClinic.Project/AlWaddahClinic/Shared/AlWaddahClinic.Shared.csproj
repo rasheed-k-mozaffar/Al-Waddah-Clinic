@@ -10,9 +10,11 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="ApiResponses\" />
     <None Remove="Dtos\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ApiResponses\" />
     <Folder Include="Dtos\" />
   </ItemGroup>
 </Project>
