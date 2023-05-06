@@ -23,11 +23,27 @@ namespace AlWaddahClinic.Server.Data
         {
             base.OnModelCreating(builder);
 
+			//Configuring the relationships between the data models.
+			builder.Entity<Appointment>()
+				.HasOne(p => p.Prescription)
+				.WithOne(p => p.Appointment)
+				.OnDelete(DeleteBehavior.NoAction);
+
+			builder.Entity<Patient>()
+				.HasMany(p => p.HealthRecords)
+				.WithOne(p => p.Patient)
+				.OnDelete(DeleteBehavior.NoAction);
+
+			builder.Entity<Prescription>()
+				.HasMany(p => p.Medications)
+				.WithOne(p => p.Prescription)
+				.OnDelete(DeleteBehavior.NoAction);
+
 			//Seeding the 2 only roles to the database.
 			builder.Entity<IdentityRole>().HasData
 				(
-					new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
-					new IdentityRole { Id = "2", Name = "User", NormalizedName = "USER" }
+					new IdentityRole { Id = "Admin", Name = "Admin", NormalizedName = "ADMIN" },
+					new IdentityRole { Id = "User", Name = "User", NormalizedName = "USER" }
 				);
 
 			var hasher = new PasswordHasher<AppUser>();
@@ -37,7 +53,7 @@ namespace AlWaddahClinic.Server.Data
 					//The admin user.
 					new AppUser
 					{
-						Id = "1",
+						Id = $"{_configuration["Admin:Id"]}",
 						FullName = $"{_configuration["Admin:FullName"]}",
 						UserName = $"{_configuration["Admin:UserName"]}",
 						NormalizedUserName = $"{_configuration["Admin:UserName"]!.ToUpper()}",
@@ -51,7 +67,7 @@ namespace AlWaddahClinic.Server.Data
 
 			builder.Entity<IdentityUserRole<string>>().HasData
 				(
-					new IdentityUserRole<string> { UserId = "1", RoleId = "1" }
+					new IdentityUserRole<string> { UserId = $"{_configuration["Admin:Id"]}", RoleId = "Admin" }
 				);
         }
     }

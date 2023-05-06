@@ -1,13 +1,18 @@
 ﻿using System;
 namespace AlWaddahClinic.Server.Models
 {
-	public class Medication
+	public class Medication : Base
 	{
 		public int Id { get; set; }
+		public int? PrescriptionId { get; set; }
+		public int? HealthRecordId { get; set; }
 		public string CommercialName { get; set; }
 		public string DailyDose { get; set; }
 		public DateTime FinishAt { get; set; }
+		public Prescription? Prescription { get; set; }
+		public HealthRecord? HealthRecord { get; set; }
+
 	}
 }
 
-	
+		
