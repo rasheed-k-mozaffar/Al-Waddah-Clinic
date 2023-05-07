@@ -30,7 +30,7 @@ namespace AlWaddahClinic.Server.Repositories
                 if(result)
                 {
                     //Password is correct
-                    string token = GenerateJwtTokenForUser(user);
+                    string token = await GenerateJwtTokenForUserAsync(user);
 
                     return new ApiAuthResponse
                     {
@@ -49,6 +49,12 @@ namespace AlWaddahClinic.Server.Repositories
                 }
             }
 
+            return new ApiAuthResponse
+            {
+                Message = "Email doesn't exist",
+                HasSucceeded = false
+            };
+
         }
 
         public Task<ApiAuthResponse> RegisterUserAsync(RegisterUserDto model)   
@@ -56,7 +62,7 @@ namespace AlWaddahClinic.Server.Repositories
             throw new NotImplementedException();
         }
 
-        private async Task<string> GenerateJwtTokenForUser(AppUser user)
+        private async Task<string> GenerateJwtTokenForUserAsync(AppUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]!));
             var sigingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
