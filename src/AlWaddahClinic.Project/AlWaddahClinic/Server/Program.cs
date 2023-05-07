@@ -9,6 +9,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContextAndIdentity(builder.Configuration);
 builder.Services.AddJwtBearerAuthentication(builder.Configuration);
 
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -10,6 +10,7 @@ namespace AlWaddahClinic.Server.Models
 		public string? EmaillAddress { get; set; }
 		public string? Address { get; set; }
 		public List<HealthRecord>? HealthRecords { get; set; }
+		public List<Appointment>? Appointments { get; set; }
 	}
 }
 

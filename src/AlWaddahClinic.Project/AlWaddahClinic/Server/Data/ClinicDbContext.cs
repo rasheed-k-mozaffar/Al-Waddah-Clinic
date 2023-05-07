@@ -29,6 +29,11 @@ namespace AlWaddahClinic.Server.Data
 				.WithOne(p => p.Appointment)
 				.OnDelete(DeleteBehavior.NoAction);
 
+			builder.Entity<Appointment>()
+				.HasOne(p => p.Patient)
+				.WithMany(p => p.Appointments)
+				.OnDelete(DeleteBehavior.NoAction);
+
 			builder.Entity<Patient>()
 				.HasMany(p => p.HealthRecords)
 				.WithOne(p => p.Patient)
@@ -54,8 +59,9 @@ namespace AlWaddahClinic.Server.Data
 					new AppUser
 					{
 						Id = $"{_configuration["Admin:Id"]}",
-						FullName = $"{_configuration["Admin:FullName"]}",
-						UserName = $"{_configuration["Admin:UserName"]}",
+						FirstName = $"{_configuration["Admin:FirstName"]}",
+						LastName = $"{_configuration["Admin:LastName"]}",
+                        UserName = $"{_configuration["Admin:UserName"]}",
 						NormalizedUserName = $"{_configuration["Admin:UserName"]!.ToUpper()}",
 						Email = $"{_configuration["Admin:UserName"]}",
 						NormalizedEmail = $"{_configuration["Admin:UserName"]!.ToUpper()}",
