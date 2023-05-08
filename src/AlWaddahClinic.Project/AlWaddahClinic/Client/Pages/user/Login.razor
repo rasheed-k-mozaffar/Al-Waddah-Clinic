@@ -1,0 +1,31 @@
+@page "/user/login"
+@layout EmptyLayout
+
+<MudGrid
+    style="width: 100vw; height: 100vh; background-image: url('https://hdqwalls.com/wallpapers/starry-night-sky-evening-blue-landscape-4k-ff.jpg'); background-repeat: no-repeat; background-size: cover;">
+    <MudItem Class="d-flex justify-center align-center mud-width-full">
+        <MudCard style="width: 50%; padding: 2.5rem;">
+            <MudText Typo="Typo.h4" Class="mb-5"><b>Login to your account</b></MudText>
+
+
+            <EditForm Model="model">
+                <DataAnnotationsValidator />
+                <ValidationSummary style="color: red;" />
+                <MudTextField T="string" Label="Email Address" InputType="InputType.Email" @bind-Value="model.Email"
+                    Class="mb-3 mt-2" />
+
+                <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="model.Password"
+                    Class="mb-5" />
+
+                <MudButton Class="mt-3" Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
+                    ButtonType="ButtonType.Submit">Login
+                </MudButton>
+            </EditForm>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private LoginUserDto model = new();
+    private bool _isBusy = false;
+}
