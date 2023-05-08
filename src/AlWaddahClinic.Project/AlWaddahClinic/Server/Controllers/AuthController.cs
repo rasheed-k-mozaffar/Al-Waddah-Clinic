@@ -20,8 +20,8 @@ namespace AlWaddahClinic.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser(LoginUserDto model)
         {
-            
-            if(ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
                 //The model passes the validations
                 var result = await _authRepository.LoginUserAsync(model);
@@ -29,12 +29,12 @@ namespace AlWaddahClinic.Server.Controllers
                 if (result.HasSucceeded)
                 {
                     //Valid login credentials
-                    return Ok(new { Token = result.Message }); // Return 200 and the access token.
+                    return Ok(new ApiResponse<LoginResult> { Message = "Access token retrieved successfully", Value = new LoginResult { Token = result.Message }, IsSuccess = true }); // Return 200 and the access token.
                 }
                 else
                 {
                     //Invalid login credentials
-                    return BadRequest(new ApiErrorResponse { Message = "Invalid credentials"});
+                    return BadRequest(new ApiErrorResponse { Message = "Invalid credentials" });
                 }
             }
             else

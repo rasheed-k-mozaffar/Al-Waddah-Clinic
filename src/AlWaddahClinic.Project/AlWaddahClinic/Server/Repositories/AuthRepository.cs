@@ -7,8 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AlWaddahClinic.Server.Repositories
 {
-	public class AuthRepository : IAuthRepository
-	{
+    public class AuthRepository : IAuthRepository
+    {
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
 
@@ -18,21 +18,21 @@ namespace AlWaddahClinic.Server.Repositories
             _userManager = userManager;
         }
 
-        public async Task<ApiAuthResponse> LoginUserAsync(LoginUserDto model)
+        public async Task<UserManagerResponse> LoginUserAsync(LoginUserDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if(user != null)
+            if (user != null)
             {
                 //Check if the user's password is correct and matches the given email.
                 var result = await _userManager.CheckPasswordAsync(user, model.Password);
 
-                if(result)
+                if (result)
                 {
                     //Password is correct
                     string token = await GenerateJwtTokenForUserAsync(user);
 
-                    return new ApiAuthResponse
+                    return new UserManagerResponse
                     {
                         Message = token,
                         HasSucceeded = true
@@ -41,7 +41,7 @@ namespace AlWaddahClinic.Server.Repositories
                 else
                 {
                     //Password is incorrect
-                    return new ApiAuthResponse
+                    return new UserManagerResponse
                     {
                         Message = "Invalid email or password",
                         HasSucceeded = false
@@ -49,7 +49,7 @@ namespace AlWaddahClinic.Server.Repositories
                 }
             }
 
-            return new ApiAuthResponse
+            return new UserManagerResponse
             {
                 Message = "Email doesn't exist",
                 HasSucceeded = false
@@ -57,7 +57,7 @@ namespace AlWaddahClinic.Server.Repositories
 
         }
 
-        public Task<ApiAuthResponse> RegisterUserAsync(RegisterUserDto model)   
+        public Task<UserManagerResponse> RegisterUserAsync(RegisterUserDto model)
         {
             throw new NotImplementedException();
         }
@@ -78,7 +78,7 @@ namespace AlWaddahClinic.Server.Repositories
             //Check if the user logging in is an admin user
             var result = await _userManager.IsInRoleAsync(user, "Admin");
 
-            if(result)
+            if (result)
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
             }
