@@ -2,8 +2,9 @@
 
 <main>
     <MudLayout>
-        <MudAppBar Elevation="1" Color="Color.Dark">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudAppBar Elevation="1" Color="Color.Primary">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+                OnClick="@((e) => DrawerToggle())" />
             <MudSpacer />
             <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
         </MudAppBar>
@@ -12,11 +13,10 @@
                 <MudText Typo="Typo.h5" Class="mt-1"><b>Al Waddah Clinic</b></MudText>
             </MudDrawerHeader>
             <MudNavMenu>
-                <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-                <MudNavLink Href="/servers" Match="NavLinkMatch.Prefix">Servers</MudNavLink>
-                <MudNavGroup Title="Settings" Expanded="false">
-                    <MudNavLink Href="/users" Match="NavLinkMatch.Prefix">Users</MudNavLink>
-                    <MudNavLink Href="/security" Match="NavLinkMatch.Prefix">Security</MudNavLink>
+                <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard 🏡</MudNavLink>
+                <MudNavGroup Title="Records" Expanded="false">
+                    <MudNavLink Href="/users" Match="NavLinkMatch.Prefix">Health Records 📑</MudNavLink>
+                    <MudNavLink Href="/servers" Match="NavLinkMatch.Prefix">Patients 🩺</MudNavLink>
                 </MudNavGroup>
                 <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
             </MudNavMenu>

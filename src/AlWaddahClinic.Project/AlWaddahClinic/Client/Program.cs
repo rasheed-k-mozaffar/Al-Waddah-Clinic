@@ -12,6 +12,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddTransient<AuthorizationMessageHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddHttpClient("AlWaddahClinic.ServerAPI", client =>
 {
     client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);

@@ -29,7 +29,7 @@ namespace AlWaddahClinic.Server.Controllers
                 if (result.HasSucceeded)
                 {
                     //Valid login credentials
-                    return Ok(new ApiResponse<LoginResult> { Message = "Access token retrieved successfully", Value = new LoginResult { Token = result.Message }, IsSuccess = true }); // Return 200 and the access token.
+                    return Ok(new ApiResponse<LoginResult> { Message = "Access token retrieved successfully", Value = new LoginResult { Token = result.Message, HasSucceeded = true }, IsSuccess = true }); // Return 200 and the access token.
                 }
                 else
                 {
