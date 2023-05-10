@@ -10,6 +10,7 @@ builder.Services.AddDbContextAndIdentity(builder.Configuration);
 builder.Services.AddJwtBearerAuthentication(builder.Configuration);
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IPatientsRepository, PatientsRepository>();
 
 var app = builder.Build();
 
@@ -28,10 +29,11 @@ app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();

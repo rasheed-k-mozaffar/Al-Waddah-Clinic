@@ -40,8 +40,8 @@ namespace AlWaddahClinic.Server.Extensions
 
 				options.TokenValidationParameters = new TokenValidationParameters()
 				{
-					ValidateIssuer = true,
-					ValidateAudience = true,
+					ValidateIssuer = false,
+					ValidateAudience = false,
 					ValidateIssuerSigningKey = true,
 					IssuerSigningKey = new SymmetricSecurityKey(key),
 					ValidateLifetime = true

@@ -19,6 +19,12 @@ namespace AlWaddahClinic.Server.Data
 			_configuration = configuration;
 		}
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+			optionsBuilder.UseLazyLoadingProxies();
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
