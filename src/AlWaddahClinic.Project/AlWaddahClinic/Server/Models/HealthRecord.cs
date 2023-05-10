@@ -6,8 +6,8 @@ namespace AlWaddahClinic.Server.Models
 		public int Id { get; set; }
 		public int PatientId { get; set; }
 		public string Description { get; set; }
-		public Patient Patient { get; set; }
-		public List<Medication>? Medications { get; set; }
+		public virtual Patient Patient { get; set; }
+		public virtual List<Medication>? Medications { get; set; }
 	}
 }
 

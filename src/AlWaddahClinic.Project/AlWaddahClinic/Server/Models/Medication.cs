@@ -9,8 +9,8 @@ namespace AlWaddahClinic.Server.Models
 		public string CommercialName { get; set; }
 		public string DailyDose { get; set; }
 		public DateTime FinishAt { get; set; }
-		public Prescription? Prescription { get; set; }
-		public HealthRecord? HealthRecord { get; set; }
+		public virtual Prescription? Prescription { get; set; }
+		public virtual HealthRecord? HealthRecord { get; set; }
 
 	}
 }

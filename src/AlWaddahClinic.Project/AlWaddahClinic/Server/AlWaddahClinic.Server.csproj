@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +47,7 @@
     <None Remove="Repositories\" />
     <None Remove="Repositories\Interfaces\" />
     <None Remove="System.IdentityModel.Tokens.Jwt" />
+    <None Remove="Microsoft.EntityFrameworkCore.Proxies" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
