@@ -5,3 +5,4 @@ global using AlWaddahClinic.Shared.ApiResponses;
 global using AlWaddahClinic.Shared.Dtos;
 global using Microsoft.EntityFrameworkCore;
 global using AlWaddahClinic.Server.Exceptions;
+global using AlWaddahClinic.Shared.Enums;

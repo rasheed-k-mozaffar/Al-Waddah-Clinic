@@ -9,9 +9,10 @@ namespace AlWaddahClinic.Server.Models
 		public string? PhoneNumber { get; set; }
 		public string? EmaillAddress { get; set; }
 		public string? Address { get; set; }
+		public GenderEnum Gender { get; set; }
 		public virtual List<HealthRecord>? HealthRecords { get; set; }
 		public virtual List<Appointment>? Appointments { get; set; }
 	}
 }
 
-			
+				

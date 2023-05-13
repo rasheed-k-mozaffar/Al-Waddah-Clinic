@@ -13,9 +13,11 @@
   <ItemGroup>
     <None Remove="ApiResponses\" />
     <None Remove="Dtos\" />
+    <None Remove="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ApiResponses\" />
     <Folder Include="Dtos\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 </Project>

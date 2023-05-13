@@ -10,7 +10,9 @@ namespace AlWaddahClinic.Server.Extensions
 			{
 				PatientId = patient.Id,
 				FullName = patient.FullName,
-				EmailAddress = patient.EmaillAddress
+				EmailAddress = patient.EmaillAddress,
+				PhoneNumber = patient.PhoneNumber,
+				Gender = patient.Gender
 			};
 		}
 
@@ -25,7 +27,8 @@ namespace AlWaddahClinic.Server.Extensions
 				Address = patient.Address,
 				PhoneNumber = patient.PhoneNumber,
 				HealthRecords = patient.HealthRecords.Select(h => h.ToHealthRecordDto()).ToList(),
-				Appointments = patient.Appointments.Select(a => a.ToAppointmentDto()).ToList()
+				Appointments = patient.Appointments.Select(a => a.ToAppointmentDto()).ToList(),
+				Gender = patient.Gender
 			};
 		}
 
@@ -89,6 +92,7 @@ namespace AlWaddahClinic.Server.Extensions
 				PhoneNumber = patientDto.PhoneNumber,
 				Address = patientDto.Address,
 				DateOfBirth = patientDto.DateOfBirth,
+				Gender = patientDto.Gender,
 				Appointments = new List<Appointment>(),
 				HealthRecords = new List<HealthRecord>()
 			};
