@@ -31,8 +31,12 @@
     <None Remove="Shared\" />
     <None Remove="MudBlazor" />
     <None Remove="Blazored.LocalStorage" />
+    <None Remove="Components\" />
+    <None Remove="Pages\Patients\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shared\" />
+    <Folder Include="Components\" />
+    <Folder Include="Pages\Patients\" />
   </ItemGroup>
 </Project>

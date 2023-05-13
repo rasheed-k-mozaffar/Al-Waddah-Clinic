@@ -1,0 +1,17 @@
+﻿<MudCard Outlined="true" Style="width: 100%; height: fit-content">
+    <MudCardContent>
+        <MudText Typo="Typo.h5" Class="mb-3"><b>@Patient.FullName</b></MudText>
+        <MudText Typo="Typo.body1"><b style="@($"color: {Color.Primary}")">Email:</b> @Patient.EmailAddress</MudText>
+        <MudText Typo="Typo.body1"><b style="@($"color: {Color.Primary}")">Phone:</b> @Patient.PhoneNumber</MudText>
+    </MudCardContent>
+    <MudCardActions Class="mb-3">
+        <MudButton Variant="Variant.Filled" Style=@($"color: white;background: {Colors.Purple.Darken4}") Class="mr-2">Learn More</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Update</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [Parameter]
+    public PatientSummaryDto Patient { get; set; } = null!;
+}
+
