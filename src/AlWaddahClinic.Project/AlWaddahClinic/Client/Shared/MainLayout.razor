@@ -14,9 +14,9 @@
             </MudDrawerHeader>
             <MudNavMenu>
                 <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard 🏡</MudNavLink>
-                <MudNavGroup Title="Records" Expanded="false">
-                    <MudNavLink Href="/users" Match="NavLinkMatch.Prefix">Health Records 📑</MudNavLink>
-                    <MudNavLink Href="/servers" Match="NavLinkMatch.Prefix">Patients 🩺</MudNavLink>
+                <MudNavGroup Title="Records" Expanded="true">
+                    <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix">Patients 🩺</MudNavLink>
+                    <MudNavLink Href="/patients/healthrecords" Match="NavLinkMatch.Prefix">Health Records 📑</MudNavLink>
                 </MudNavGroup>
                 <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
             </MudNavMenu>

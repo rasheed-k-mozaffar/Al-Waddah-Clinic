@@ -1,0 +1,69 @@
+﻿@page "/patients/add"
+
+<MudContainer style="margin-top: 5rem;">
+    <MudCard Style="padding: 2rem; border: 1px solid black">
+        <MudItem>
+            <MudText Typo="Typo.h4"><b><i class="bi bi-person-fill-add"></i> Add a new patient</b></MudText>
+        </MudItem>
+
+        <MudDivider />
+
+        <MudItem>
+            <EditForm Model="model" OnValidSubmit="AddPatient">
+                <DataAnnotationsValidator />
+                <ValidationSummary style="color: red;" />
+
+                <MudGrid>
+
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        <MudTextField T="string" Label="Full Name" Required="true"
+                            RequiredError="Full name is required" />
+                    </MudItem>
+
+                    <MudItem Class="mb-3" xs="12" md="6" lg="6">
+                        <MudTextField T="string" Label="Phone Number (optional)" />
+                    </MudItem>
+
+                    <MudItem Class="mb-3" xs="12" md="6" lg="6">
+                        <MudDatePicker Label="Date Of Birth (optional)" Editable="true"
+                            Mask='@( new DateMask("dd/MM/yyyy"))' @bind-Date="@model.DateOfBirth"
+                            DateFormat="dd/MM/yyyy" />
+                    </MudItem>
+
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        <MudTextField T="string" Label="Email Address (optional)" @bind-value="model.EmailAddress" />
+                    </MudItem>
+
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        <MudTextField T="string" Label="Address (optional)" @bind-value="model.Address" />
+                    </MudItem>
+
+                    <MudItem Class="mb-3">
+                        <MudRadioGroup T="int" @bind-value="model.Gender">
+                            <MudRadio Option="0" Color="Color.Info">Male</MudRadio>
+                            <MudRadio Option="1" Color="Color.Secondary"> Female</MudRadio>
+                        </MudRadioGroup>
+                    </MudItem>
+
+                    <MudDivider />
+
+                    <MudItem Class="mb-3">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Add
+                            Patient
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+            </EditForm>
+        </MudItem>
+    </MudCard>
+</MudContainer>
+
+
+@code {
+    private PatientDto model = new();
+
+    private void AddPatient()
+    {
+
+    }
+}
