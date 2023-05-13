@@ -13,6 +13,7 @@ builder.Services.AddTransient<AuthorizationMessageHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPatientsService, PatientsService>();
 
 builder.Services.AddHttpClient("AlWaddahClinic.ServerAPI", client =>
 {

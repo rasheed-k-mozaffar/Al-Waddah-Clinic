@@ -94,8 +94,18 @@ namespace AlWaddahClinic.Server.Controllers
 
         // DELETE 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeletePatient(int id)
         {
+            try
+            {
+                await _patientsRepository.RemovePatient(id);
+
+                return Ok(new ApiResponse { Message = "Patient removed successfully", IsSuccess = true });
+            }
+            catch(NotFoundException ex)
+            {
+                return BadRequest(new ApiErrorResponse { Message = ex.Message });
+            }
         }
 
         private void AssignAdminstrativeProperties<T>(T obj) where T : Base
