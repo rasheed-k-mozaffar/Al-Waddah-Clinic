@@ -3,8 +3,8 @@ using System.Net.Http.Json;
 
 namespace AlWaddahClinic.Client.Services
 {
-	public class PatientsService : IPatientsService
-	{
+    public class PatientsService : IPatientsService
+    {
         private readonly HttpClient _httpClient;
 
         public PatientsService(HttpClient httpClient)
@@ -12,16 +12,23 @@ namespace AlWaddahClinic.Client.Services
             _httpClient = httpClient;
         }
 
-        public Task<ApiResponse> AddPatient(PatientCreateDto model)
+        public async Task<ApiResponse> AddPatient(PatientCreateDto model)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync("/api/patients", model);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new DomainException("Something has gone wrong while adding the patient");
+            }
+
+            return await response.Content.ReadFromJsonAsync<ApiResponse>();
         }
 
         public async Task<ApiResponse<IEnumerable<PatientSummaryDto>>> GetAllPatients()
         {
             var response = await _httpClient.GetAsync("/api/patients");
 
-            if(!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 throw new DataRetrievalException("Something has gone wrong while accessing the data");
             }

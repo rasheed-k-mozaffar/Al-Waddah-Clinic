@@ -10,7 +10,7 @@ namespace AlWaddahClinic.Server.Extensions
 			{
 				PatientId = patient.Id,
 				FullName = patient.FullName,
-				EmailAddress = patient.EmaillAddress,
+				EmailAddress = patient.EmailAddress,
 				PhoneNumber = patient.PhoneNumber,
 				Gender = patient.Gender
 			};
@@ -22,7 +22,7 @@ namespace AlWaddahClinic.Server.Extensions
 			{
 				Id = patient.Id,
 				FullName = patient.FullName,
-				EmaillAddress = patient.EmaillAddress,
+				EmailAddress = patient.EmailAddress,
 				DateOfBirth = patient.DateOfBirth,
 				Address = patient.Address,
 				PhoneNumber = patient.PhoneNumber,
@@ -88,7 +88,7 @@ namespace AlWaddahClinic.Server.Extensions
 			return new Patient
 			{
 				FullName = patientDto.FullName,
-				EmaillAddress = patientDto.EmailAddress,
+				EmailAddress = patientDto.EmailAddress,
 				PhoneNumber = patientDto.PhoneNumber,
 				Address = patientDto.Address,
 				DateOfBirth = patientDto.DateOfBirth,

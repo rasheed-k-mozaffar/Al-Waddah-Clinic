@@ -1,5 +1,17 @@
 ﻿@page "/patients/add"
 
+@{
+    if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled">@_errorMessage</MudAlert>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Success" Variant="Variant.Filled">@_errorMessage</MudAlert>
+    }
+
+}
+
 <MudContainer style="margin-top: 5rem;">
     <MudCard Style="padding: 2rem; border: 1px solid black">
         <MudItem>
@@ -16,12 +28,12 @@
                 <MudGrid>
 
                     <MudItem Class="mb-3" xs="12" md="12" lg="12">
-                        <MudTextField T="string" Label="Full Name" Required="true"
-                            RequiredError="Full name is required" />
+                        <MudTextField T="string" Label="Full Name" Required="true" RequiredError="Full name is required"
+                            @bind-Value="model.FullName" />
                     </MudItem>
 
                     <MudItem Class="mb-3" xs="12" md="6" lg="6">
-                        <MudTextField T="string" Label="Phone Number (optional)" />
+                        <MudTextField T="string" Label="Phone Number (optional)" @bind-Value="model.PhoneNumber" />
                     </MudItem>
 
                     <MudItem Class="mb-3" xs="12" md="6" lg="6">
@@ -48,7 +60,9 @@
                     <MudDivider />
 
                     <MudItem Class="mb-3">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Add
+                        <MudButton Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
+                            ButtonType="ButtonType.Submit">
+                            Add
                             Patient
                         </MudButton>
                     </MudItem>
@@ -57,13 +71,3 @@
         </MudItem>
     </MudCard>
 </MudContainer>
-
-
-@code {
-    private PatientDto model = new();
-
-    private void AddPatient()
-    {
-
-    }
-}
