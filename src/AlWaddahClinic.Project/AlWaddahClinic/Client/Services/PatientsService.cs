@@ -37,9 +37,17 @@ namespace AlWaddahClinic.Client.Services
             return patients;
         }
 
-        public Task<ApiResponse<PatientDto>> GetPatientById(int id)
+        public async Task<ApiResponse<PatientDto>> GetPatientById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/patients/{id}");
+
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new NotFoundException($"No patient was found with the ID: {id}");
+            }
+
+            var patient = await response.Content.ReadFromJsonAsync<ApiResponse<PatientDto>>();
+            return patient;
         }
 
         public Task RemovePatient(int id)
