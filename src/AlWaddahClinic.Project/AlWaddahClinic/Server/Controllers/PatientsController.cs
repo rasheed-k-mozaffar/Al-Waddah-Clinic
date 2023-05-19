@@ -11,10 +11,8 @@ using System.Security.Claims;
 
 namespace AlWaddahClinic.Server.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     [Authorize(Roles = "Admin")]
-    public class PatientsController : Controller
+    public class PatientsController : BaseController
     {
         private readonly IPatientsRepository _patientsRepository;
         private readonly ILogger<PatientsController> _logger;
@@ -33,12 +31,12 @@ namespace AlWaddahClinic.Server.Controllers
 
             var patientsAsDtos = patients.Select(p => p.ToPatientSummaryDto());
 
-            return Ok(new ApiResponse<IEnumerable<PatientSummaryDto>>       // return Ok(patientsAsDtos);
+            return Ok(new ApiResponse<IEnumerable<PatientSummaryDto>>
             {
                 Message = "Patients retrieved successfully",
                 Value = patientsAsDtos,
                 IsSuccess = true
-            }); 
+            });
         }
 
         // GET 
@@ -58,7 +56,7 @@ namespace AlWaddahClinic.Server.Controllers
                     IsSuccess = true
                 });
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 return BadRequest(new ApiErrorResponse { Message = ex.Message });
             }
@@ -66,11 +64,11 @@ namespace AlWaddahClinic.Server.Controllers
 
         // POST 
         [HttpPost]
-        public async Task<IActionResult> AddPatient([FromBody]PatientCreateDto model)
+        public async Task<IActionResult> AddPatient([FromBody] PatientCreateDto model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var patient = model.ToPatient();
+                var patient = model.ToPatientCreate();
 
                 AssignAdminstrativeProperties<Patient>(patient);
 
@@ -88,8 +86,10 @@ namespace AlWaddahClinic.Server.Controllers
 
         // PUT 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> Put(int id, [FromBody] string value)
         {
+            //TODO: Implement this endpoitn.
+            throw new NotImplementedException();
         }
 
         // DELETE 
@@ -99,19 +99,13 @@ namespace AlWaddahClinic.Server.Controllers
             try
             {
                 await _patientsRepository.RemovePatient(id);
-
+                _logger.LogInformation($"The patient with the ID: {id} was removed by the user with the ID: {HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value}");
                 return Ok(new ApiResponse { Message = "Patient removed successfully", IsSuccess = true });
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 return BadRequest(new ApiErrorResponse { Message = ex.Message });
             }
-        }
-
-        private void AssignAdminstrativeProperties<T>(T obj) where T : Base
-        {
-            obj.CreatedByUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            obj.CreatedOn = DateTime.Now;
         }
     }
 }

@@ -12,12 +12,6 @@ namespace AlWaddahClinic.Server.Repositories
             _context = context;
         }
 
-        public async Task AddPatientAsync(Patient model)
-        {
-            await _context.Patients.AddAsync(model);
-
-            _context.SaveChanges();
-        }
 
         public async Task<IEnumerable<Patient>> GetAllPatientsAsync()
         {
@@ -30,12 +24,19 @@ namespace AlWaddahClinic.Server.Repositories
         {
             var patient = await _context.Patients.FindAsync(id);
 
-            if(patient == null)
+            if (patient == null)
             {
                 throw new NotFoundException("Patient was not found");
             }
 
             return patient;
+        }
+
+        public async Task AddPatientAsync(Patient model)
+        {
+            await _context.Patients.AddAsync(model);
+
+            _context.SaveChanges();
         }
 
         public async Task RemovePatient(int id)
