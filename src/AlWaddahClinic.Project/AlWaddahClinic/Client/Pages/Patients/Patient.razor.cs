@@ -1,5 +1,7 @@
 ﻿using System;
+using AlWaddahClinic.Client.Components;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace AlWaddahClinic.Client.Pages.Patients
 {
@@ -11,6 +13,10 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		[Inject]
 		public IPatientsService PatientsService { get; set; } = null!;
 
+		[Inject]
+		public IDialogService DialogService { get; set; } = null!;
+
+		//Route parameter
 		[Parameter]
 		public int Id { get; set; }
 
@@ -42,6 +48,30 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		private void GoToRecord(int id)
 		{
 			throw new NotImplementedException();
+		}
+		//TODO: Create the open dialog functionality
+		private void OpenRemoveDialog()
+		{
+			var parameters = new DialogParameters();
+			parameters.Add("Header", "Confirm Removal");
+			parameters.Add("Content", "Do you really want to remove this patient? Please note that once the process has completed, you cannot invert it");
+			parameters.Add("ButtonText", "Remove");
+			parameters.Add("OkClicked", RemovePatientAsync());
+
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+			DialogService.Show<Dialog>("Delete", parameters, options);
+        }
+
+		private void GoToAddHealthRecord()
+		{
+			NavigationManager.NavigateTo($"/patients/records/add/{patient.Id}");
+		}
+
+		private async Task RemovePatientAsync()
+		{
+			await PatientsService.RemovePatient(Id);
+			NavigationManager.NavigateTo("/patients/all");
 		}
     }
 }

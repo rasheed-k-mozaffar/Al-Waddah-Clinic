@@ -9,11 +9,19 @@
     }
     else
     {
-        <MudContainer>
+        <MudContainer Class="mt-5">
             <MudCard Style="padding: 2rem;">
                 <MudCardContent>
                     <MudText Typo="Typo.h3"><b>@patient.FullName's Details</b></MudText>
                     <MudText Typo="Typo.h5"><b>Gender:</b> @patient.Gender.ToString()</MudText>
+                    @if (patient.DateOfBirth.HasValue)
+                    {
+                        <MudText Typo="Typo.h5"><b>Date Of Birth:</b> @(patient.DateOfBirth.Value.ToString("dd-MM-yyyy"))</MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h5"><b>Date Of Birth:</b> Not Available</MudText>
+                    }
                 </MudCardContent>
 
                 <MudCardContent>
@@ -30,16 +38,23 @@
                                     <MudTh>Record ID</MudTh>
                                     <MudTh>Actions</MudTh>
                                 </HeaderContent>
-                                
+
                                 <RowTemplate>
-                                        <MudTd DataLabel="Record ID">@context.Id</MudTd>
-                                        <MudTd DataLabel="Record Number" Class="text-end">
-                                            <MudButton Color="Color.Info" Variant="Variant.Filled" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder2-open"></i> View Record</MudButton>
-                                        </MudTd>
+                                    <MudTd DataLabel="Record ID">@context.Id</MudTd>
+                                    <MudTd DataLabel="Record Number" Class="text-end">
+                                        <MudButton Color="Color.Info" Variant="Variant.Filled" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder2-open"></i> View Record</MudButton>
+                                    </MudTd>
                                 </RowTemplate>
                             </MudTable>
                         </MudExpansionPanel>
                     </MudExpansionPanels>
+                </MudCardContent>
+
+                <MudDivider />
+
+                <MudCardContent>
+                    <MudButton Variant="Variant.Filled" Color="Color.Info" @onclick="GoToAddHealthRecord">Add Health Record</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="OpenRemoveDialog">Remove Patient</MudButton>
                 </MudCardContent>
             </MudCard>
         </MudContainer>

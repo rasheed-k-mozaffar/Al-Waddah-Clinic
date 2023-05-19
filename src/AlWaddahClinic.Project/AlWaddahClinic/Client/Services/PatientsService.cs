@@ -50,9 +50,9 @@ namespace AlWaddahClinic.Client.Services
             return patient;
         }
 
-        public Task RemovePatient(int id)
+        public async Task RemovePatient(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/api/patients/{id}");
         }
 
         public Task UpdatePatient(int id)

@@ -1,0 +1,27 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h5"><b>@Header</b></MudText>
+        @Content
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="@Color" OnClick="Submit">@ButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string Header { get; set; }
+    [Parameter] public string Content { get; set; }
+    [Parameter] public string ButtonText { get; set; }
+    [Parameter] public Color Color { get; set; }
+    [Parameter] public EventCallback OkClicked { get; set; }
+
+    private async Task Submit()
+    {
+        await OkClicked.InvokeAsync();
+    }
+    private void Cancel() => MudDialog.Cancel();
+}
+
+
+
