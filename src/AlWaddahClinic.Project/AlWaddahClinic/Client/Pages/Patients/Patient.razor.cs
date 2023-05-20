@@ -52,7 +52,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		{
 			throw new NotImplementedException();
 		}
-		//TODO: Create the open dialog functionality
+		
 		private async void OpenRemoveDialog()
 		{
 			var parameters = new DialogParameters();
@@ -60,7 +60,6 @@ namespace AlWaddahClinic.Client.Pages.Patients
 			parameters.Add("Content", "Do you really want to remove this patient? Please note that once the process has completed, you cannot invert it");
 			parameters.Add("ButtonText", "Remove");
 			parameters.Add("Color", Color.Error);
-			//parameters.Add("OkClicked", RemovePatientAsync());
 
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
