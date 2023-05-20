@@ -33,10 +33,12 @@
     <None Remove="Blazored.LocalStorage" />
     <None Remove="Components\" />
     <None Remove="Pages\Patients\" />
+    <None Remove="Pages\Patients\Records\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shared\" />
     <Folder Include="Components\" />
     <Folder Include="Pages\Patients\" />
+    <Folder Include="Pages\Patients\Records\" />
   </ItemGroup>
 </Project>

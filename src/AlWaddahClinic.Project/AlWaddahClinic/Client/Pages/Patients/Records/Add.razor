@@ -1,0 +1,36 @@
+﻿@page "/patients/records/add/{patientId:int}"
+
+@{
+    if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled">@_errorMessage</MudAlert>
+    }
+}
+
+<MudContainer style="margin-top: 5rem;">
+    <MudCard Style="padding: 2rem; border: 1px solid black">
+        <MudItem>
+            <MudText Typo="Typo.h6"><b><i class="bi bi-person-fill-add"></i> Add a new health record for @patient.FullName </b></MudText>
+        </MudItem>
+
+        <MudDivider />
+
+        <MudItem>
+            <EditForm Model="model" OnValidSubmit="AddRecord">
+                <DataAnnotationsValidator />
+                <ValidationSummary style="color: red;" />
+
+                <MudGrid>
+
+                    <MudItem Class="mb-3 mt-5" xs="12" md="12" lg="12">
+                        <MudTextField T="string" Variant="Variant.Outlined" Counter="0" Immediate="true" Label="Description" Multiline="true"
+                              Required="true" RequiredError="Description is required" @bind-Value="model.Description" Lines="10"
+                                     HelperText="Describe the patient and list some relevant information" HelperTextOnFocus="true"/>
+                    </MudItem>
+
+                    <MudDivider />
+                </MudGrid>
+            </EditForm>
+        </MudItem>
+    </MudCard>
+</MudContainer>
