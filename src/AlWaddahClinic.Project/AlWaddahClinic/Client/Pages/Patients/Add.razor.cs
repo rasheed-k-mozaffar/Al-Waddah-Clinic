@@ -23,7 +23,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
             try
             {
                 var result = await PatientsService.AddPatient(model);
-
+                Console.WriteLine($"Name: {model.FullName} || Gender Number: {model.Gender} || Gender: {model.Gender.ToString()}");
                 if (result.IsSuccess)
                 {
                     await Task.Delay(1000);

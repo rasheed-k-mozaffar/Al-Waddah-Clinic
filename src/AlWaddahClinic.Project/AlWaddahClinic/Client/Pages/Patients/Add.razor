@@ -46,9 +46,9 @@
                     </MudItem>
 
                     <MudItem Class="mb-3">
-                        <MudRadioGroup T="int" @bind-value="model.Gender">
-                            <MudRadio Option="0" Color="Color.Info">Male</MudRadio>
-                            <MudRadio Option="1" Color="Color.Secondary"> Female</MudRadio>
+                        <MudRadioGroup @bind-SelectedOption="model.Gender">
+                            <MudRadio Option="GenderEnum.Male" Color="Color.Info">Male</MudRadio>
+                            <MudRadio Option="GenderEnum.Female" Color="Color.Secondary"> Female</MudRadio>
                         </MudRadioGroup>
                     </MudItem>
 
