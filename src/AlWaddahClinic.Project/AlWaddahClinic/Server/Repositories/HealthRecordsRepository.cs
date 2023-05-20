@@ -45,8 +45,13 @@ namespace AlWaddahClinic.Server.Repositories
                 throw new NotFoundException("Patient was not found");
             }
 
-
             await _context.HealthRecords.AddAsync(model);
+
+            if(model.Notes != null)
+            {
+                await _context.Notes.AddRangeAsync(model.Notes);
+            }
+
             await _context.SaveChangesAsync();
         }
 

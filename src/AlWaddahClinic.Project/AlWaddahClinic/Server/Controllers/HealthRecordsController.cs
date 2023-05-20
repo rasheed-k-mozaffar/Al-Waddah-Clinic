@@ -64,13 +64,13 @@ namespace AlWaddahClinic.Server.Controllers
 
         // POST
         [HttpPost("{patientId}")]
-        public async Task<IActionResult> CreateRecord(int patientId, HealthRecordDto model)
+        public async Task<IActionResult> CreateRecord(int patientId, HealthRecordCreateDto model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var healthRecord = model.ToHealthRecord();
+                    var healthRecord = model.ToHealthRecordCreate();
 
                     //Assign the properties from the base class.
                     AssignAdminstrativeProperties<HealthRecord>(healthRecord);
