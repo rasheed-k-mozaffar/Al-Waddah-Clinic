@@ -6,6 +6,6 @@ namespace AlWaddahClinic.Shared.Dtos
         public int Id { get; set; }
         public string Description { get; set; }
         public PatientDto Patient { get; set; }
-        public List<MedicationDto>? Medications { get; set; }
+        public List<NoteDto>? Notes { get; set; }
     }
 }
