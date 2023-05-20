@@ -5,12 +5,10 @@ namespace AlWaddahClinic.Server.Models
 	{
 		public int Id { get; set; }
 		public int? PrescriptionId { get; set; }
-		public int? HealthRecordId { get; set; }
 		public string CommercialName { get; set; }
 		public string DailyDose { get; set; }
 		public DateTime FinishAt { get; set; }
 		public virtual Prescription? Prescription { get; set; }
-		public virtual HealthRecord? HealthRecord { get; set; }
 
 	}
 }

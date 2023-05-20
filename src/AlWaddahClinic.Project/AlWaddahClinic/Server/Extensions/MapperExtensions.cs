@@ -39,7 +39,7 @@ namespace AlWaddahClinic.Server.Extensions
                 Id = healthRecord.Id,
                 Description = healthRecord.Description,
                 Patient = healthRecord.Patient.ToPatientDto(),
-                Medications = healthRecord.Medications?.Select(m => m.ToMedicationDto()).ToList()
+                Notes = healthRecord.Notes?.Select(n => n.ToNoteDto()).ToList()
             };
         }
 
@@ -51,7 +51,6 @@ namespace AlWaddahClinic.Server.Extensions
                 CommercialName = medication.CommercialName,
                 DailyDose = medication.DailyDose,
                 FinishAt = medication.FinishAt,
-                HealthRecord = medication.HealthRecord?.ToHealthRecordDto(),
                 Prescription = medication.Prescription.ToPrescriptionDto()
             };
         }
@@ -77,6 +76,16 @@ namespace AlWaddahClinic.Server.Extensions
                 StartAt = appointment.StartAt,
                 FinishAt = appointment.FinishAt,
                 Prescription = appointment.Prescription?.ToPrescriptionDto()
+            };
+        }
+
+        public static NoteDto ToNoteDto(this Note note)
+        {
+            return new NoteDto
+            {
+                Id = note.Id,
+                Title = note.Title,
+                HealthRecord = note.HealthRecord.ToHealthRecordDto()
             };
         }
     }
@@ -114,6 +123,15 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
+        public static HealthRecord ToHealthRecordCreate(this HealthRecordCreateDto healthRecordDto)
+        {
+            return new HealthRecord
+            {
+                Description = healthRecordDto.Description,
+                Notes = healthRecordDto.Notes?.Select(n => n.ToNoteCreate()).ToList()
+            };
+        }
+
         public static HealthRecord ToHealthRecord(this HealthRecordDto healthRecordDto)
         {
             return new HealthRecord
@@ -122,7 +140,7 @@ namespace AlWaddahClinic.Server.Extensions
                 PatientId = healthRecordDto.Patient.Id,
                 Description = healthRecordDto.Description,
                 Patient = healthRecordDto.Patient.ToPatient(),
-                Medications = healthRecordDto.Medications.Select(m => m.ToMedication()).ToList()
+                Notes = healthRecordDto.Notes?.Select(n => n.ToNote()).ToList()
             };
 
         }
@@ -136,7 +154,6 @@ namespace AlWaddahClinic.Server.Extensions
                 DailyDose = medicationDto.DailyDose,
                 FinishAt = medicationDto.FinishAt,
                 Prescription = medicationDto.Prescription.ToPrescription(),
-                HealthRecord = medicationDto.HealthRecord.ToHealthRecord()
             };
         }
 
@@ -162,6 +179,24 @@ namespace AlWaddahClinic.Server.Extensions
                 StartAt = appointmentDto.StartAt,
                 FinishAt = appointmentDto.FinishAt,
                 Prescription = appointmentDto.Prescription.ToPrescription()
+            };
+        }
+
+        public static Note ToNoteCreate(this NoteCreateDto noteCreateDto)
+        {
+            return new Note
+            {
+                Title = noteCreateDto.Title
+            };
+        }
+
+        public static Note ToNote(this NoteDto noteDto)
+        {
+            return new Note
+            {
+                Id = noteDto.Id,
+                Title = noteDto.Title,
+                HealthRecord = noteDto.HealthRecord.ToHealthRecord()
             };
         }
 
