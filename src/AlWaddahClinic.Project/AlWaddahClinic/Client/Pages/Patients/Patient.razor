@@ -12,43 +12,46 @@
         <MudContainer Class="mt-5">
             <MudCard Style="padding: 2rem;">
                 <MudCardContent>
-                    <MudText Typo="Typo.h3"><b>@patient.FullName's Details</b></MudText>
-                    <MudText Typo="Typo.h5"><b>Gender:</b> @patient.Gender.ToString()</MudText>
+                    <MudText Typo="Typo.h4"><b>@patient.FullName's Details</b></MudText>
+                    <MudText Typo="Typo.h6"><b>Gender:</b> @patient.Gender.ToString()</MudText>
                     @if (patient.DateOfBirth.HasValue)
                     {
-                        <MudText Typo="Typo.h5"><b>Date Of Birth:</b> @(patient.DateOfBirth.Value.ToString("dd-MM-yyyy"))</MudText>
+                        <MudText Typo="Typo.h6"><b>Date Of Birth:</b> @(patient.DateOfBirth.Value.ToString("dd/MM/yyyy"))</MudText>
                     }
                     else
                     {
-                        <MudText Typo="Typo.h5"><b>Date Of Birth:</b> Not Available</MudText>
+                        <MudText Typo="Typo.h6"><b>Date Of Birth:</b> Not Available</MudText>
                     }
                 </MudCardContent>
 
                 <MudCardContent>
-                    <MudText Typo="Typo.h6"><i class="bi bi-envelope-at"></i> <b>Email:</b> @(patient.EmailAddress ?? "Not Available")</MudText>
-                    <MudText Typo="Typo.h6"><i class="bi bi-telephone-fill"></i> <b>Phone:</b> @(patient.PhoneNumber ?? "Not Available")</MudText>
-                    <MudText Typo="Typo.h6"><i class="bi bi-house-door"></i> <b>Address:</b> @(patient.Address ?? "Not Available")</MudText>
+                    <MudText Typo="Typo.body1"><i class="bi bi-envelope-at"></i> <b>Email:</b> @(patient.EmailAddress ?? "Not Available")</MudText>
+                    <MudText Typo="Typo.body1"><i class="bi bi-telephone-fill"></i> <b>Phone:</b> @(patient.PhoneNumber ?? "Not Available")</MudText>
+                    <MudText Typo="Typo.body1"><i class="bi bi-house-door"></i> <b>Address:</b> @(patient.Address ?? "Not Available")</MudText>
                 </MudCardContent>
 
-                <MudCardContent>
-                    <MudExpansionPanels MultiExpansion="true">
-                        <MudExpansionPanel Text="Health Records">
-                            <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Breakpoint="Breakpoint.Sm">
-                                <HeaderContent>
-                                    <MudTh>Record ID</MudTh>
-                                    <MudTh>Actions</MudTh>
-                                </HeaderContent>
+                @if (patient.HealthRecords != null)
+                {
+                    <MudCardContent>
+                        <MudExpansionPanels MultiExpansion="true">
+                            <MudExpansionPanel Text="@_recordsTableHeader">
+                                <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Breakpoint="Breakpoint.Sm">
+                                    <HeaderContent>
+                                        <MudTh>Record ID</MudTh>
+                                        <MudTh>Actions</MudTh>
+                                    </HeaderContent>
 
-                                <RowTemplate>
-                                    <MudTd DataLabel="Record ID">@context.Id</MudTd>
-                                    <MudTd DataLabel="Record Number" Class="text-end">
-                                        <MudButton Color="Color.Info" Variant="Variant.Filled" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder2-open"></i> View Record</MudButton>
-                                    </MudTd>
-                                </RowTemplate>
-                            </MudTable>
-                        </MudExpansionPanel>
-                    </MudExpansionPanels>
-                </MudCardContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Record ID">@context.Id</MudTd>
+                                        <MudTd DataLabel="Record Number" Class="text-end">
+                                            <MudButton Color="Color.Info" Variant="Variant.Filled" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder2-open"></i> View Record</MudButton>
+                                        </MudTd>
+                                    </RowTemplate>
+                                </MudTable>
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
+                    </MudCardContent>
+                }
 
                 <MudDivider />
 

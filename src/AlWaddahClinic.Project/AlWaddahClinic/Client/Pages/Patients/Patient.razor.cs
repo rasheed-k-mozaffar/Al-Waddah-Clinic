@@ -20,6 +20,8 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		[Parameter]
 		public int Id { get; set; }
 
+		private string _recordsTableHeader = string.Empty;
+
 		ApiResponse<PatientDto> result = new();
 		
 		PatientDto patient = new();
@@ -36,6 +38,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
 				if(result.IsSuccess)
 				{
 					patient = result.Value;
+					_recordsTableHeader = $"Health Records ({patient.HealthRecords.Count})";
                 }
 			}
 			catch(NotFoundException ex)
@@ -50,17 +53,24 @@ namespace AlWaddahClinic.Client.Pages.Patients
 			throw new NotImplementedException();
 		}
 		//TODO: Create the open dialog functionality
-		private void OpenRemoveDialog()
+		private async void OpenRemoveDialog()
 		{
 			var parameters = new DialogParameters();
 			parameters.Add("Header", "Confirm Removal");
 			parameters.Add("Content", "Do you really want to remove this patient? Please note that once the process has completed, you cannot invert it");
 			parameters.Add("ButtonText", "Remove");
-			parameters.Add("OkClicked", RemovePatientAsync());
+			parameters.Add("Color", Color.Error);
+			//parameters.Add("OkClicked", RemovePatientAsync());
 
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-			DialogService.Show<Dialog>("Delete", parameters, options);
+			var dialog = DialogService.Show<Dialog>("Delete", parameters, options);
+			var result = await dialog.Result;
+
+			if(!result.Canceled)
+			{
+				await RemovePatientAsync();
+			}
         }
 
 		private void GoToAddHealthRecord()
