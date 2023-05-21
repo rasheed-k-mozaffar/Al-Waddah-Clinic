@@ -15,9 +15,11 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 
 		private ApiResponse<PatientDto> result = new();
 		private PatientDto patient = new();
-		private HealthRecordDto model = new();
+		private HealthRecordCreateDto model = new();
+		private List<NoteCreateDto>? notes = new();
 
 		private string _errorMessage = string.Empty;
+		private string _noteTitle = string.Empty;
 
         protected override async Task OnInitializedAsync()
         {
@@ -29,6 +31,21 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
         private async Task AddRecord()
 		{
 			throw new NotImplementedException();
+		}
+
+		private void AddNote()
+		{
+			if(!string.IsNullOrEmpty(_noteTitle))
+			{
+				notes.Add(new NoteCreateDto { Title = _noteTitle });
+			}
+
+			_noteTitle = string.Empty;
+		}
+
+		private void GoBack()
+		{
+			NavigationManager.NavigateTo($"/patients/patient/{PatientId}");
 		}
 	}
 }

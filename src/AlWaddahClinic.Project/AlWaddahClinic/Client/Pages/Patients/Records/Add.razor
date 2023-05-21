@@ -8,9 +8,9 @@
 }
 
 <MudContainer style="margin-top: 5rem;">
-    <MudCard Style="padding: 2rem; border: 1px solid black">
+    <MudCard Style="padding: 2rem; box-shadow: 5px 5px 25px lightgray;">
         <MudItem>
-            <MudText Typo="Typo.h6"><b><i class="bi bi-person-fill-add"></i> Add a new health record for @patient.FullName </b></MudText>
+            <MudText Typo="Typo.h6"><b><i class="bi bi-envelope-paper-fill"></i> Add a new health record for @patient.FullName </b></MudText>
         </MudItem>
 
         <MudDivider />
@@ -24,11 +24,47 @@
 
                     <MudItem Class="mb-3 mt-5" xs="12" md="12" lg="12">
                         <MudTextField T="string" Variant="Variant.Outlined" Counter="0" Immediate="true" Label="Description" Multiline="true"
-                              Required="true" RequiredError="Description is required" @bind-Value="model.Description" Lines="10"
-                                     HelperText="Describe the patient and list some relevant information" HelperTextOnFocus="true"/>
+                                      Required="true" RequiredError="Description is required" @bind-Value="model.Description" Lines="10"
+                                      HelperText="Describe the patient and list some relevant information" HelperTextOnFocus="true" />
                     </MudItem>
 
-                    <MudDivider />
+                    <MudItem xs="12" md="12" lg="12">
+                        <MudCard Style="border: 1px solid lightgray">
+                            <MudCardContent>
+                                <MudGrid>
+                                    <MudItem xs="12" md="12" lg="12">
+                                        <MudTextField T="string" @bind-Value="@_noteTitle" Label="Note field (optional)" />
+                                    </MudItem>
+
+                                    @if (notes != null)
+                                    {
+                                        @foreach (var note in notes)
+                                        {
+                                            <MudItem xs="12">
+                                                <MudText Typo="Typo.body1" Style="color: teal;">📌 @note.Title</MudText>
+                                            </MudItem>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <MudItem>
+                                            <MudText Typo="Typo.body1" Color="Color.Tertiary"></MudText>
+                                        </MudItem>
+                                    }
+
+                                    <MudItem xs="12" md="12" lg="12">
+                                        <MudButton Style="width: 100%;" Variant="Variant.Filled" Color="Color.Success" @onclick="AddNote"><i class="bi bi-file-earmark-plus-fill"></i><b> Add Note</b></MudButton>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudButton Style="width: 100%;" Variant="Variant.Filled" Color="Color.Tertiary" Class="mb-3">Add Health Record</MudButton>
+                        <MudDivider />
+                        <MudButton Style="width: 100%;" Variant="Variant.Outlined" Color="Color.Info" Class="mb-3" @onclick="GoBack">Go Back</MudButton>
+                    </MudItem>
                 </MudGrid>
             </EditForm>
         </MudItem>
