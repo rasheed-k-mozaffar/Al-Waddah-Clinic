@@ -5,7 +5,7 @@ namespace AlWaddahClinic.Client.Services.Interfaces
 	{
 		Task<ApiResponse<IEnumerable<HealthRecordDto>>> GetRecordsForPatientAsync(int patientId);
 		Task<ApiResponse<HealthRecordDto>> GetHealthRecordByIdAsync(int patientId, int recordId);
-		Task<ApiResponse> AddRecordAsync(int patientId, HealthRecordDto model);
+		Task AddRecordAsync(int patientId, HealthRecordCreateDto model);
 		Task<ApiResponse> RemoveRecordAsync(int patientId, int recordId);
 
 		//TODO: Add other signatures if necessary

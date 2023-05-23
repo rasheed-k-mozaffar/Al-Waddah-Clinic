@@ -10,7 +10,7 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 
 		[Inject]
 		public IPatientsService PatientsService { get; set; } = null!;
-
+		[Inject] IHealthRecordsService HealthRecordsService { get; set; } = default!; 
 		[Parameter] public int PatientId { get; set; }
 
 		private ApiResponse<PatientDto> result = new();
@@ -30,7 +30,17 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 		//TODO: Implement this method
         private async Task AddRecord()
 		{
-			throw new NotImplementedException();
+			try
+			{
+				model.Notes = notes;
+				await HealthRecordsService.AddRecordAsync(PatientId, model);
+				NavigationManager.NavigateTo($"/patients/{PatientId}");
+			}
+			catch (Exception ex)
+			{
+				// Handle the error 
+			}
+			
 		}
 
 		private void AddNote()

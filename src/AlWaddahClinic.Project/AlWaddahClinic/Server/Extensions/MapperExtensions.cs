@@ -37,9 +37,7 @@ namespace AlWaddahClinic.Server.Extensions
             return new HealthRecordDto
             {
                 Id = healthRecord.Id,
-                Description = healthRecord.Description,
-                Patient = healthRecord.Patient.ToPatientDto(),
-                Notes = healthRecord.Notes?.Select(n => n.ToNoteDto()).ToList()
+                Description = healthRecord.Description
             };
         }
 
