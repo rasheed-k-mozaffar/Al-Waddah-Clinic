@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace AlWaddahClinic.Client.Pages.Patients
 {
-    public partial class Add : ComponentBase
+    public partial class AddNewPatient : ComponentBase
     {
         [Inject]
         public NavigationManager NavigationManager { get; set; } = null!;
