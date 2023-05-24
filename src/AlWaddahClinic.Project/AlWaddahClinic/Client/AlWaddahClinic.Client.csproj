@@ -34,11 +34,13 @@
     <None Remove="Components\" />
     <None Remove="Pages\Patients\" />
     <None Remove="Pages\Patients\Records\" />
+    <None Remove="Pages\User\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shared\" />
     <Folder Include="Components\" />
     <Folder Include="Pages\Patients\" />
     <Folder Include="Pages\Patients\Records\" />
+    <Folder Include="Pages\User\" />
   </ItemGroup>
 </Project>

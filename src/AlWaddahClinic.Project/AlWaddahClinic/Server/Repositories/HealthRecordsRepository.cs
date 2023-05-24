@@ -45,7 +45,7 @@ namespace AlWaddahClinic.Server.Repositories
                 throw new NotFoundException("Patient was not found");
             }
             // Why you are not getting this error just because of this, how the hell the database will know the patient id if you are never setting it
-            model.Patient = patient; 
+            model.Patient = patient;
             await _context.HealthRecords.AddAsync(model);
 
             await _context.SaveChangesAsync();
@@ -55,9 +55,17 @@ namespace AlWaddahClinic.Server.Repositories
         {
             var healthRecord = await _context.HealthRecords.FindAsync(recordId);
 
+            var relatedNotes = await _context.Notes.Where(n => n.HealthRecordId == recordId).ToListAsync();
+
             if (healthRecord == null)
             {
                 throw new NotFoundException("Health record was not found");
+            }
+
+
+            if (relatedNotes != null)
+            {
+                _context.Notes.RemoveRange(relatedNotes);
             }
 
             _context.HealthRecords.Remove(healthRecord);

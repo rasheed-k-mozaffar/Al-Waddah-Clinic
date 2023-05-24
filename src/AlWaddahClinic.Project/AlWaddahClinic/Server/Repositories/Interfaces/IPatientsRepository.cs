@@ -6,7 +6,7 @@ namespace AlWaddahClinic.Server.Repositories.Interfaces
         Task<Patient> GetPatientByIdAsync(int id);
         Task RemovePatient(int id);
         Task AddPatientAsync(Patient model);
-
-        //TODO: Complete the signatures. 
+        
+         
     }
 }

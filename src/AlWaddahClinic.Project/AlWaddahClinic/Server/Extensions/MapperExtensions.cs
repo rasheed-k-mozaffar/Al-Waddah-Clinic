@@ -1,4 +1,6 @@
 ﻿using System;
+using AlWaddahClinic.Shared.Dtos;
+
 namespace AlWaddahClinic.Server.Extensions
 {
 
@@ -102,6 +104,19 @@ namespace AlWaddahClinic.Server.Extensions
                 Gender = patientDto.Gender,
                 Appointments = new List<Appointment>(),
                 HealthRecords = new List<HealthRecord>()
+            };
+        }
+
+        public static Patient ToPatientUpdate(this PatientUpdateDto patientUpdateDto)
+        {
+            return new Patient
+            {
+                FullName = patientUpdateDto.FullName,
+                EmailAddress = patientUpdateDto.EmailAddress,
+                PhoneNumber = patientUpdateDto.PhoneNumber,
+                Address = patientUpdateDto.Address,
+                DateOfBirth = patientUpdateDto.DateOfBirth,
+                Gender = patientUpdateDto.Gender
             };
         }
 

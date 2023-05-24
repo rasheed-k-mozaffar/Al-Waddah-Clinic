@@ -1,0 +1,37 @@
+@page "/records/{patientId:int}/{recordId:int}"
+
+@{
+    if (record == null)
+    {
+        <MudGrid Class="d-flex justify-center align-items-center">
+            <Loader />
+        </MudGrid>
+    }
+    else
+    {
+        <MudContainer Class="mt-5">
+            <MudCard Style="padding: 2rem;">
+                <MudCardContent>
+
+                </MudCardContent>
+
+                <MudCardContent>
+                    <MudText Typo="Typo.body1"><i class="bi bi-envelope-at"></i> <b>Description:</b><br />
+                        @record.Description</MudText>
+                </MudCardContent>
+
+
+                <MudDivider />
+
+                <MudCardContent>
+                    <MudButton Variant="Variant.Filled" Color="Color.Info"
+                    @onclick='( () => NavigationManager.NavigateTo($"/patients/{patientId}") )'>Go Back</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="OpenRemoveDialog">Remove Record
+                    </MudButton>
+                </MudCardContent>
+            </MudCard>
+        </MudContainer>
+    }
+}
+
+

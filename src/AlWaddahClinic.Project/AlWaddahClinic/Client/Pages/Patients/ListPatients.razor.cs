@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace AlWaddahClinic.Client.Pages.Patients
 {
-    public partial class All : ComponentBase
+    public partial class ListPatients : ComponentBase
     {
         [Inject]
         public NavigationManager NavigationManager { get; set; } = null!;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http.Json;
 
-namespace AlWaddahClinic.Client.Services.Interfaces
+namespace AlWaddahClinic.Client.Services
 {
 	public class HealthRecordsService : IHealthRecordsService
 	{
@@ -43,7 +43,7 @@ namespace AlWaddahClinic.Client.Services.Interfaces
 
 			if (!response.IsSuccessStatusCode)
 			{
-				throw new DomainException("Something went wrong while attempting to retrieve the record");
+				throw new DomainException("Something went wrong while creating the new health record");
 			}
 		}
 

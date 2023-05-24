@@ -1,4 +1,5 @@
-﻿using AlWaddahClinic.Server.Extensions;
+﻿using System.Security.Claims;
+using AlWaddahClinic.Server.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace AlWaddahClinic.Server.Controllers
     public class HealthRecordsController : BaseController
     {
         private readonly IHealthRecordsRepository _healthRecordsRepository;
+        private readonly IPatientsRepository _patientsRepository;
         private readonly ILogger<HealthRecordsController> _logger;
 
         public HealthRecordsController(IHealthRecordsRepository healthRecordsRepository, ILogger<HealthRecordsController> logger)
@@ -108,7 +110,24 @@ namespace AlWaddahClinic.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _healthRecordsRepository.RemoveHealthRecord(id);
+                _logger.LogInformation($"Health record with ID: {id} was removed by user with ID: {HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)}");
+                return Ok(new ApiResponse
+                {
+                    Message = "Health record was removed successfully",
+                    IsSuccess = true
+                });
+            }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(new ApiResponse
+                {
+                    Message = ex.Message,
+                    IsSuccess = false
+                });
+            }
         }
     }
 }
