@@ -8,7 +8,7 @@
     </MudCardContent>
     <MudCardActions Class="mb-3">
         <MudButton Variant="Variant.Filled" Style=@($"color: white;background: {Colors.Purple.Darken4}") Class="mr-2" @onclick='( () => NavigationManager.NavigateTo($"/patients/{Patient.PatientId}") )'>Learn More</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary">Update</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick=' ( () => NavigationManager.NavigateTo($"/patients/update/{Patient.PatientId}") )'>Update</MudButton>
     </MudCardActions>
 </MudCard>
 
