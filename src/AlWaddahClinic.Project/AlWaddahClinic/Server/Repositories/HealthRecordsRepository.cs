@@ -44,13 +44,9 @@ namespace AlWaddahClinic.Server.Repositories
             {
                 throw new NotFoundException("Patient was not found");
             }
-
+            // Why you are not getting this error just because of this, how the hell the database will know the patient id if you are never setting it
+            model.Patient = patient; 
             await _context.HealthRecords.AddAsync(model);
-
-            if(model.Notes != null)
-            {
-                await _context.Notes.AddRangeAsync(model.Notes);
-            }
 
             await _context.SaveChangesAsync();
         }

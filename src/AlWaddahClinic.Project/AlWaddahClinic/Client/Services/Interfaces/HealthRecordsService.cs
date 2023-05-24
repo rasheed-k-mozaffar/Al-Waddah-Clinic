@@ -37,10 +37,15 @@ namespace AlWaddahClinic.Client.Services.Interfaces
         }
 
 
-        public Task<ApiResponse> AddRecordAsync(int patientId, HealthRecordDto model)
+        public async Task AddRecordAsync(int patientId, HealthRecordCreateDto model)
         {
-            throw new NotImplementedException();
-        }
+			var response = await _httpClient.PostAsJsonAsync($"/api/healthrecords/{patientId}", model);
+
+			if (!response.IsSuccessStatusCode)
+			{
+				throw new DomainException("Something went wrong while attempting to retrieve the record");
+			}
+		}
 
         public Task<ApiResponse> RemoveRecordAsync(int patientId, int recordId)
         {

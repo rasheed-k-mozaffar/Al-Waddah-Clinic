@@ -1,35 +1,89 @@
+@namespace AlWaddahClinic.Client.Pages.User
 @page "/user/login"
+@using Blazored.LocalStorage;
 @layout EmptyLayout
 
 @{
-    if (!string.IsNullOrEmpty(_errorMessage))
-    {
-        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" style="padding: 1rem;">@_errorMessage!</MudAlert>   
-    }
+	if (!string.IsNullOrEmpty(_errorMessage))
+	{
+		<MudAlert Severity="Severity.Error" Variant="Variant.Filled" style="padding: 1rem;">@_errorMessage!</MudAlert>
+	}
 }
 
-<MudGrid
-    style="width: 100vw; height: 100vh; background-color: #334F69;">
-    <MudItem Class="d-flex justify-center align-center mud-width-full">
-        <MudCard style="width: 75%; padding: 2.5rem;">
-            <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Large" Color="Color.Dark" />
-            <MudText Typo="Typo.h4" Class="mb-5"><b>Login to your account</b></MudText>
-            <MudDivider/>
+<MudGrid style="width: 100vw; height: 100vh; background-color: #334F69;">
+	<MudItem Class="d-flex justify-center align-center mud-width-full">
+		<MudCard style="width: 75%; padding: 2.5rem;">
+			<MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Large" Color="Color.Dark" />
+			<MudText Typo="Typo.h4" Class="mb-5"><b>Login to your account</b></MudText>
+			<MudDivider />
 
 
-            <EditForm Model="model" OnValidSubmit="LoginUser">
-                <DataAnnotationsValidator />
-                <ValidationSummary style="color: red;" />
-                <MudTextField T="string" Label="Email Address" InputType="InputType.Email" @bind-Value="model.Email"
-                    Class="mb-3 mt-2" />
+			<EditForm Model="model" OnValidSubmit="LoginUser">
+				<DataAnnotationsValidator />
+				<ValidationSummary style="color: red;" />
+				<MudTextField T="string" Label="Email Address" InputType="InputType.Email" @bind-Value="model.Email"
+							  Class="mb-3 mt-2" />
 
-                <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="model.Password"
-                    Class="mb-5" />
+				<MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="model.Password"
+							  Class="mb-5" />
 
-                <MudButton Class="mt-3" Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
-                    ButtonType="ButtonType.Submit">Login
-                </MudButton>
-            </EditForm>
-        </MudCard>
-    </MudItem>
+				<MudButton Class="mt-3" Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
+						   ButtonType="ButtonType.Submit">
+					Login
+				</MudButton>
+			</EditForm>
+		</MudCard>
+	</MudItem>
 </MudGrid>
+
+
+
+@code
+{
+	[Inject]
+	public NavigationManager NavigationManager { get; set; } = null!;
+	[Inject]
+	public IAuthService AuthService { get; set; } = null!;
+	[Inject]
+	public ILocalStorageService LocalStorage { get; set; } = null!;
+	[Inject]
+	public AuthenticationStateProvider AuthState { get; set; } = null!;
+
+	private LoginUserDto model = new();
+
+	private bool _isBusy = false;
+	private string _errorMessage = string.Empty;
+
+	private async Task LoginUser()
+	{
+		_isBusy = true;
+
+		//Add the login logic
+		try
+		{
+			var result = await AuthService.LoginUserAsync(model);
+			Console.WriteLine("Hello There!");
+			Console.WriteLine("--------------");
+
+			Console.WriteLine(result.Token);
+			Console.WriteLine(result.HasSucceeded);
+			var token = result.Token;
+
+			//Set the JWT value to the access_token key in the local storage.
+			await LocalStorage.SetItemAsStringAsync("access_token", token);
+
+			await AuthState.GetAuthenticationStateAsync();
+
+			NavigationManager.NavigateTo("/");
+		}
+		catch (AuthenticationFailedException ex)
+		{
+			_errorMessage = ex.Message;
+		}
+
+		//Reset the private fields
+		_isBusy = false;
+		_errorMessage = string.Empty;
+	}
+
+}
