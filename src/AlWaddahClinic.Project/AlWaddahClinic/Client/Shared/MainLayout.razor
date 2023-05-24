@@ -18,7 +18,16 @@
                     <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix">Patients 🩺</MudNavLink>
                     <MudNavLink Href="/patients/healthrecords" Match="NavLinkMatch.Prefix">Health Records 📑</MudNavLink>
                 </MudNavGroup>
-                <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <MudNavLink Href="/user/login" Match="NavLinkMatch.Prefix">Login</MudNavLink>
+                        <MudNavLink Href="user/register" Match="NavLinkMatch.Prefix">Register</MudNavLink>
+                    </NotAuthorized>
+
+                    <Authorized>
+                        <MudNavLink Href="/user/logout" Match="NavLinkMatch.Prefix">Log Out</MudNavLink>
+                    </Authorized>
+                </AuthorizeView>
             </MudNavMenu>
         </MudDrawer>
         <MudMainContent>
