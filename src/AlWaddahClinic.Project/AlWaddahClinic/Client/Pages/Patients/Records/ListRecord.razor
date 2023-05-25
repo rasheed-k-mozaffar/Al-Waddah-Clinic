@@ -1,7 +1,14 @@
-@page "/records/{patientId:int}/{recordId:int}"
+@page "/patients/records/{id:int}"
 
 @{
-    if (record == null)
+    if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" style="padding: 1rem;">@_errorMessage!</MudAlert>
+    }
+}
+
+@{
+    if (_isBusy == true)
     {
         <MudGrid Class="d-flex justify-center align-items-center">
             <Loader />
@@ -12,21 +19,50 @@
         <MudContainer Class="mt-5">
             <MudCard Style="padding: 2rem;">
                 <MudCardContent>
-
+                    <MudText Typo="Typo.h3" Color="Color.Error"><b><i class="bi bi-journal-medical"></i> Health Record</b></MudText>
+                    <MudText Typo="Typo.h6"><b>Created On: @record.CreatedOn.ToLongDateString()</b></MudText>
+                    <MudText Typo="Typo.h6" Color="Color.Info" @onclick="GoBack" Style="text-decoration: underline; cursor: pointer;">@record.Patient.FullName</MudText>
+                    <MudDivider />
                 </MudCardContent>
 
                 <MudCardContent>
-                    <MudText Typo="Typo.body1"><i class="bi bi-envelope-at"></i> <b>Description:</b><br />
-                        @record.Description</MudText>
+                    <MudText Typo="Typo.h6">
+                        <b>Description:</b>
+                    </MudText>
+
+                    <MudText Typo="Typo.body1">@record.Description</MudText>
                 </MudCardContent>
 
+                @if (record.Notes == null)
+                {
+                    <Loader />
+                }
+                else
+                {
+                    if (record.Notes.Count == 0)
+                    {
+                        <MudCardContent>
+                            <MudText Typo="Typo.body1" Color="Color.Error">This record doesn't include any notes!</MudText>
+                        </MudCardContent>
+                    }
+                    else
+                    {
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6"><b>Notes & Information</b></MudText>
+                            @foreach (var note in record.Notes)
+                            {
+                                <MudText Typo="Typo.body2"><i class="bi bi-pin-angle-fill"></i> @note.Title</MudText>
+                            }
+                        </MudCardContent>
+                    }
 
-                <MudDivider />
+                }
+
 
                 <MudCardContent>
-                    <MudButton Variant="Variant.Filled" Color="Color.Info"
-                    @onclick='( () => NavigationManager.NavigateTo($"/patients/{patientId}") )'>Go Back</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="OpenRemoveDialog">Remove Record
+                    <MudButton Variant="Variant.Outlined" Color="Color.Info" @onclick="GoBack">Go Back</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="OpenRemoveDialog">
+                        Remove Record
                     </MudButton>
                 </MudCardContent>
             </MudCard>
