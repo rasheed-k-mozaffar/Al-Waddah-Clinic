@@ -47,10 +47,9 @@ namespace AlWaddahClinic.Client.Pages.Patients
 			}
         }
 
-		//TODO: Implement this method
-		private void GoToRecord(int id)
+		private void GoToRecord(int recordId)
 		{
-			throw new NotImplementedException();
+			NavigationManager.NavigateTo($"/patients/records/{recordId}");
 		}
 		
 		private async void OpenRemoveDialog()

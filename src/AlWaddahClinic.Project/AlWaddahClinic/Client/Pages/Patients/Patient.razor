@@ -42,7 +42,7 @@
                                     </HeaderContent>
 
                                     <RowTemplate>
-                                        <MudTd DataLabel="Record ID">@context.Id</MudTd>
+                                        <MudTd DataLabel="Created On">@context.CreatedOn.ToShortDateString()</MudTd>
                                         <MudTd DataLabel="Record Number" Class="text-end">
                                             <MudButton Color="Color.Info" Variant="Variant.Filled" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder2-open"></i> View Record</MudButton>
                                         </MudTd>
