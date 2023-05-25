@@ -7,5 +7,6 @@ namespace AlWaddahClinic.Shared.Dtos
         public string Description { get; set; }
         public PatientDto Patient { get; set; }
         public List<NoteDto>? Notes { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

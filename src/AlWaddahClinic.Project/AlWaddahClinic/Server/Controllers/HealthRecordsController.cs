@@ -26,9 +26,9 @@ namespace AlWaddahClinic.Server.Controllers
             {
                 var recordsForPatient = await _healthRecordsRepository.GetHealthRecordsForPatientAsync(patientId);
 
-                var recordsAsDtos = recordsForPatient.Select(hr => hr.ToHealthRecordDto());
+                var recordsAsDtos = recordsForPatient.Select(hr => hr.ToHealthRecordSummaryDto());
 
-                return Ok(new ApiResponse<IEnumerable<HealthRecordDto>>
+                return Ok(new ApiResponse<IEnumerable<HealthRecordSummaryDto>>
                 {
                     Message = "Records retrieved successfully",
                     Value = recordsAsDtos,
@@ -42,12 +42,12 @@ namespace AlWaddahClinic.Server.Controllers
         }
 
         // GET
-        [HttpGet("/{patientId}/{recordId}")]
-        public async Task<IActionResult> GetRecordById(int patientId, int recordId)
+        [HttpGet("record/{id}")]
+        public async Task<IActionResult> GetRecordById(int id)
         {
             try
             {
-                var recordForPatient = await _healthRecordsRepository.GetHealthRecordByIdAsync(patientId, recordId);
+                var recordForPatient = await _healthRecordsRepository.GetHealthRecordByIdAsync(id);
 
                 var recordAsDto = recordForPatient.ToHealthRecordDto();
 

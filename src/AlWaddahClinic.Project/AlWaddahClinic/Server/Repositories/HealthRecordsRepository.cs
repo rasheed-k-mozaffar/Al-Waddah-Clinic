@@ -24,9 +24,9 @@ namespace AlWaddahClinic.Server.Repositories
             return healthRecords;
         }
 
-        public async Task<HealthRecord> GetHealthRecordByIdAsync(int patientId, int recordId)
+        public async Task<HealthRecord> GetHealthRecordByIdAsync(int recordId)
         {
-            var healthRecord = await _context.HealthRecords.FirstOrDefaultAsync(hr => hr.PatientId == patientId);
+            var healthRecord = await _context.HealthRecords.FindAsync(recordId);
 
             if (healthRecord == null)
             {

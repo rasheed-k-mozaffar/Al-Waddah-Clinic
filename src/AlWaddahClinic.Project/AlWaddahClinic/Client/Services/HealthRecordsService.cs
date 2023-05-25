@@ -12,7 +12,7 @@ namespace AlWaddahClinic.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ApiResponse<IEnumerable<HealthRecordDto>>> GetRecordsForPatientAsync(int patientId)
+        public async Task<ApiResponse<IEnumerable<HealthRecordSummaryDto>>> GetRecordsForPatientAsync(int patientId)
         {
             var response = await _httpClient.GetAsync($"/api/healthrecords/{patientId}");
 
@@ -21,19 +21,21 @@ namespace AlWaddahClinic.Client.Services
                 throw new DomainException("Something went wrong while attempting to retrieve the records");
             }
 
-            return await response.Content.ReadFromJsonAsync<ApiResponse<IEnumerable<HealthRecordDto>>>();
+            var records = await response.Content.ReadFromJsonAsync<ApiResponse<IEnumerable<HealthRecordSummaryDto>>>();
+            return records;
         }
 
-        public async Task<ApiResponse<HealthRecordDto>> GetHealthRecordByIdAsync(int patientId, int recordId)
+        public async Task<ApiResponse<HealthRecordDto>> GetHealthRecordByIdAsync(int recordId)
         {
-            var response = await _httpClient.GetAsync($"/api/healthrecords/{patientId}/{recordId}");
+            var response = await _httpClient.GetAsync($"/api/healthrecords/record/{recordId}");
 
             if(!response.IsSuccessStatusCode)
             {
                 throw new DomainException("Something went wrong while attempting to retrieve the record");
             }
 
-            return await response.Content.ReadFromJsonAsync<ApiResponse<HealthRecordDto>>();
+            var record = await response.Content.ReadFromJsonAsync<ApiResponse<HealthRecordDto>>();
+            return record;
         }
 
 
@@ -47,9 +49,14 @@ namespace AlWaddahClinic.Client.Services
 			}
 		}
 
-        public Task<ApiResponse> RemoveRecordAsync(int patientId, int recordId)
+        public async Task RemoveRecordAsync(int recordId)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/api/healthrecords/{recordId}");
+
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new DomainException("Something went wrong while deleting the health record");
+            }
         }
     }
 }

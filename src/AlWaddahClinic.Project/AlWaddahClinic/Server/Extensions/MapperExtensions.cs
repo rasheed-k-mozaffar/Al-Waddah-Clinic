@@ -28,9 +28,18 @@ namespace AlWaddahClinic.Server.Extensions
                 DateOfBirth = patient.DateOfBirth,
                 Address = patient.Address,
                 PhoneNumber = patient.PhoneNumber,
-                HealthRecords = patient.HealthRecords.Select(h => h.ToHealthRecordDto()).ToList(),
+                HealthRecords = patient.HealthRecords.Select(h => h.ToHealthRecordSummaryDto()).ToList(),
                 Appointments = patient.Appointments.Select(a => a.ToAppointmentDto()).ToList(),
                 Gender = patient.Gender
+            };
+        }
+
+        public static HealthRecordSummaryDto ToHealthRecordSummaryDto(this HealthRecord healthRecord)
+        {
+            return new HealthRecordSummaryDto
+            {
+                Id = healthRecord.Id,
+                CreatedOn = (DateTime)healthRecord.CreatedOn
             };
         }
 
@@ -39,7 +48,10 @@ namespace AlWaddahClinic.Server.Extensions
             return new HealthRecordDto
             {
                 Id = healthRecord.Id,
-                Description = healthRecord.Description
+                Description = healthRecord.Description,
+                CreatedOn = (DateTime)healthRecord.CreatedOn,
+                Notes = healthRecord.Notes.Select(n => n.ToNoteDto()).ToList(),
+                Patient = healthRecord.Patient.ToPatientDto()
             };
         }
 
@@ -84,8 +96,7 @@ namespace AlWaddahClinic.Server.Extensions
             return new NoteDto
             {
                 Id = note.Id,
-                Title = note.Title,
-                HealthRecord = note.HealthRecord.ToHealthRecordDto()
+                Title = note.Title
             };
         }
     }
