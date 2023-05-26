@@ -55,9 +55,14 @@ namespace AlWaddahClinic.Client.Services
             var response = await _httpClient.DeleteAsync($"/api/patients/{id}");
         }
 
-        public Task UpdatePatient(int id)
+        public async Task UpdatePatient(int id, PatientUpdateDto model)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PutAsJsonAsync($"/api/patients/{id}", model);
+
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new DomainException("Something went wrong while attempting to update the patient's details");
+            }
         }
     }
 }

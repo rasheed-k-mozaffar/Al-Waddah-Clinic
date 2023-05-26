@@ -8,7 +8,7 @@ namespace AlWaddahClinic.Client.Services.Interfaces
 		Task<ApiResponse> AddPatient(PatientCreateDto model);
 
 		Task RemovePatient(int id);
-		Task UpdatePatient(int id);
+		Task UpdatePatient(int id, PatientUpdateDto model);
 	}
 }
 

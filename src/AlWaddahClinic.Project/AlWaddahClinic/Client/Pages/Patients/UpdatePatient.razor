@@ -1,1 +1,81 @@
 ﻿@page "/patients/update/{patientId:int}"
+
+@if (_isBusy == true)
+{
+    <MudGrid Class="d-flex justify-center" Style="height: 100vh; align-items: center;">
+        <MudItem>
+            <Loader />
+        </MudItem>
+    </MudGrid>
+}
+else
+{
+
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled">@_errorMessage</MudAlert>
+    }
+
+    <MudContainer style="margin-top: 5rem;">
+        <MudCard Style="padding: 2rem; border: 1px solid black">
+            <MudItem>
+                <MudText Typo="Typo.h4"><b><i class="bi bi-pen-fill"></i> Update details for @model.FullName</b></MudText>
+            </MudItem>
+
+            <MudDivider />
+
+            <MudItem Class="mt-5">
+                <EditForm Model="model" OnValidSubmit="UpdateAsync">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary style="color: red;" />
+
+                    <MudGrid>
+
+                        <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                            <MudTextField T="string" Label="Full Name" Required="true" RequiredError="Full name is required"
+                                          @bind-Value="model.FullName" />
+                        </MudItem>
+
+                        <MudItem Class="mb-3" xs="12" md="6" lg="6">
+                            <MudTextField T="string" Label="Phone Number (optional)" @bind-Value="model.PhoneNumber" />
+                        </MudItem>
+
+                        <MudItem Class="mb-3" xs="12" md="6" lg="6">
+                            <MudDatePicker Label="Date Of Birth (optional)" Editable="true"
+                                           Mask='@( new DateMask("dd/MM/yyyy"))' @bind-Date="@model.DateOfBirth"
+                                           DateFormat="dd/MM/yyyy" />
+                        </MudItem>
+
+                        <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                            <MudTextField T="string" Label="Email Address (optional)" @bind-Value="model.EmailAddress" />
+                        </MudItem>
+
+                        <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                            <MudTextField T="string" Label="Address (optional)" @bind-Value="model.Address" />
+                        </MudItem>
+
+                        <MudItem Class="mb-3">
+                            <MudRadioGroup @bind-SelectedOption="model.Gender">
+                                <MudRadio Option="GenderEnum.Male" Color="Color.Info">Male</MudRadio>
+                                <MudRadio Option="GenderEnum.Female" Color="Color.Secondary"> Female</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+
+                        <MudDivider />
+
+                        <MudItem Class="mb-3">
+                            <MudButton Disabled="@_isMakingRequest" Variant="Variant.Filled" Color="Color.Primary"
+                                       ButtonType="ButtonType.Submit">
+                                Update
+                            </MudButton>
+
+                            <MudButton Disabled="@_isMakingRequest" Variant="Variant.Outlined" Color="Color.Info"
+                                       @onclick="GoBack">Go Back</MudButton>
+                        </MudItem>
+                    </MudGrid>
+                </EditForm>
+            </MudItem>
+        </MudCard>
+    </MudContainer>
+
+}

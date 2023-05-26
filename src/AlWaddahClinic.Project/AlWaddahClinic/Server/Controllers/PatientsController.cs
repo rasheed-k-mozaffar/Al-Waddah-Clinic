@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using AlWaddahClinic.Server.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using AlWaddahClinic.Server.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,7 +18,8 @@ namespace AlWaddahClinic.Server.Controllers
         private readonly IPatientsRepository _patientsRepository;
         private readonly ILogger<PatientsController> _logger;
 
-        public PatientsController(IPatientsRepository patientsRepository, ILogger<PatientsController> logger)
+        public PatientsController
+            (IPatientsRepository patientsRepository, ILogger<PatientsController> logger, ClinicDbContext context) : base(context)
         {
             _patientsRepository = patientsRepository;
             _logger = logger;
@@ -28,7 +30,6 @@ namespace AlWaddahClinic.Server.Controllers
         public async Task<IActionResult> GetAll()
         {
             var patients = await _patientsRepository.GetAllPatientsAsync();
-
             var patientsAsDtos = patients.Select(p => p.ToPatientSummaryDto());
 
             return Ok(new ApiResponse<IEnumerable<PatientSummaryDto>>
@@ -86,10 +87,42 @@ namespace AlWaddahClinic.Server.Controllers
 
         // PUT 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] PatientUpdateDto model)
         {
             //TODO: Implement this endpoitn.
-            throw new NotImplementedException();
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    var patientToUpdate = await _patientsRepository.GetPatientByIdAsync(id);
+
+                    patientToUpdate.FullName = model.FullName;
+                    patientToUpdate.EmailAddress = model.EmailAddress;
+                    patientToUpdate.Address = model.Address;
+                    patientToUpdate.PhoneNumber = model.PhoneNumber;
+                    patientToUpdate.DateOfBirth = model.DateOfBirth;
+                    patientToUpdate.Gender = model.Gender;
+                    patientToUpdate.ModifiedByUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                    patientToUpdate.ModifiedOn = DateTime.Now;
+
+                    await _context.SaveChangesAsync();
+
+                    return NoContent(); //Return 204 STATUS CODE
+                }
+                catch(NotFoundException ex)
+                {
+                    return BadRequest(new ApiResponse
+                    {
+                        Message = ex.Message,
+                        IsSuccess = false
+                    });
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+            
         }
 
         // DELETE 
