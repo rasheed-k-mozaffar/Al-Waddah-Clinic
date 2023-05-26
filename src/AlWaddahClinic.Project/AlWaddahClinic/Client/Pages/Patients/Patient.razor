@@ -1,10 +1,12 @@
 ﻿@page "/patients/{id:int}"
 
 @{
-    if (patient == null)
+    if (_isBusy == true)
     {
-        <MudGrid Class="d-flex justify-center align-items-center">
-            <Loader />
+        <MudGrid Class="d-flex justify-center" Style="height: 100vh; align-items: center;">
+            <MudItem>
+                <Loader />
+            </MudItem>
         </MudGrid>
     }
     else
@@ -37,14 +39,15 @@
                             <MudExpansionPanel Text="@_recordsTableHeader">
                                 <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Breakpoint="Breakpoint.Sm">
                                     <HeaderContent>
-                                        <MudTh>Record ID</MudTh>
+                                        <MudTh>Created on</MudTh>
                                         <MudTh>Actions</MudTh>
                                     </HeaderContent>
 
                                     <RowTemplate>
                                         <MudTd DataLabel="Created On">@context.CreatedOn.ToShortDateString()</MudTd>
                                         <MudTd DataLabel="Record Number" Class="text-end">
-                                            <MudButton Color="Color.Info" Variant="Variant.Filled" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder2-open"></i> View Record</MudButton>
+                                            <MudButton Color="Color.Info" Variant="Variant.Text" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder-fill"></i> &nbsp; View</MudButton>
+                                            <MudButton Color="Color.Secondary" Variant="Variant.Text" @onclick=' (() => GoToUpdateRecord(context.Id)) '><i class="bi bi-pen-fill"></i> &nbsp; Update</MudButton>
                                         </MudTd>
                                     </RowTemplate>
                                 </MudTable>

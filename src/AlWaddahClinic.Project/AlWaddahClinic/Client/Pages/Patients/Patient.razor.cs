@@ -20,13 +20,13 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		[Parameter]
 		public int Id { get; set; }
 
-		private string _recordsTableHeader = string.Empty;
 
 		ApiResponse<PatientDto> result = new();
-		
 		PatientDto patient = new();
 
+		private string _recordsTableHeader = string.Empty;
 		private string _errorMessage = string.Empty;
+		private bool _isBusy = true;
 
         protected override async Task OnInitializedAsync()
         {
@@ -38,6 +38,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
 				if(result.IsSuccess)
 				{
 					patient = result.Value;
+					_isBusy = false;
 					_recordsTableHeader = $"Health Records ({patient.HealthRecords.Count})";
                 }
 			}
@@ -74,6 +75,12 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		private void GoToAddHealthRecord()
 		{
 			NavigationManager.NavigateTo($"/patients/records/add/{patient.Id}");
+		}
+
+		private void GoToUpdateRecord(int recordId)
+		{
+			//TODO: Implement this
+			throw new NotImplementedException();
 		}
 
 		private async Task RemovePatientAsync()
