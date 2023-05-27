@@ -7,8 +7,7 @@ namespace AlWaddahClinic.Client.Services.Interfaces
 		Task<ApiResponse<HealthRecordDto>> GetHealthRecordByIdAsync(int recordId);
 		Task AddRecordAsync(int patientId, HealthRecordCreateDto model);
 		Task RemoveRecordAsync(int recordId);
-
-		//TODO: Add other signatures if necessary
+		Task UpdateRecordAsync(int recordId, HealthRecordUpdateDto model);
 	}
 }
 

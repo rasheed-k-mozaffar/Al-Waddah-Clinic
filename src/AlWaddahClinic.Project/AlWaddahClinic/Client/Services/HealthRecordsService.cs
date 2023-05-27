@@ -58,6 +58,16 @@ namespace AlWaddahClinic.Client.Services
                 throw new DomainException("Something went wrong while deleting the health record");
             }
         }
+
+        public async Task UpdateRecordAsync(int recordId, HealthRecordUpdateDto model)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"/api/healthrecords/{recordId}", model);
+
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new DomainException("Something went wrong while updating the healh record");
+            }
+        }
     }
 }
 
