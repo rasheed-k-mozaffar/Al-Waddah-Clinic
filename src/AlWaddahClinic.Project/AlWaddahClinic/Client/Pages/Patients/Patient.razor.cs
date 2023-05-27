@@ -79,8 +79,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
 		private void GoToUpdateRecord(int recordId)
 		{
-			//TODO: Implement this
-			throw new NotImplementedException();
+			NavigationManager.NavigateTo($"/patients/records/update/{recordId}");
 		}
 
 		private async Task RemovePatientAsync()
