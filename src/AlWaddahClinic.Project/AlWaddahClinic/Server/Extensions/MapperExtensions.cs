@@ -214,6 +214,14 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
+        public static Note ToNoteUpdate(this NoteUpdateDto noteUpdateDto)
+        {
+            return new Note
+            {
+                Title = noteUpdateDto.Title
+            };
+        }
+
         public static Note ToNote(this NoteDto noteDto)
         {
             return new Note

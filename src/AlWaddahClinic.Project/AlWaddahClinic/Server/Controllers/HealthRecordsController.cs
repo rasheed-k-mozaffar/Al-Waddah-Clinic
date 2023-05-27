@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using AlWaddahClinic.Server.Data;
 using AlWaddahClinic.Server.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,8 @@ namespace AlWaddahClinic.Server.Controllers
         private readonly IPatientsRepository _patientsRepository;
         private readonly ILogger<HealthRecordsController> _logger;
 
-        public HealthRecordsController(IHealthRecordsRepository healthRecordsRepository, ILogger<HealthRecordsController> logger)
+        public HealthRecordsController
+            (IHealthRecordsRepository healthRecordsRepository, ILogger<HealthRecordsController> logger, ClinicDbContext context) : base(context)
         {
             _healthRecordsRepository = healthRecordsRepository;
             _logger = logger;
@@ -101,9 +103,44 @@ namespace AlWaddahClinic.Server.Controllers
 
         // PUT
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRecord(int id)
+        public async Task<IActionResult> UpdateRecord(int id, [FromBody] HealthRecordUpdateDto model)
         {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var recordToUpdate = await _healthRecordsRepository.GetHealthRecordByIdAsync(id);
+
+                    recordToUpdate.Description = model.Description;
+
+                    if (recordToUpdate.Notes != null)
+                    {
+                        _context.Notes.RemoveRange(recordToUpdate.Notes);
+                        recordToUpdate.Notes = model.Notes.Select(n => n.ToNoteUpdate()).ToList();
+                    }
+                    else
+                    {
+                        recordToUpdate.Notes = model.Notes.Select(n => n.ToNoteUpdate()).ToList();
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    return NoContent();
+                }
+                catch (NotFoundException ex)
+                {
+                    return BadRequest(new ApiResponse
+                    {
+                        Message = ex.Message,
+                        IsSuccess = false
+                    });
+
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         // DELETE 
