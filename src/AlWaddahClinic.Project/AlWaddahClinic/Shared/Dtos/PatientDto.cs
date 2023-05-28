@@ -12,7 +12,7 @@ namespace AlWaddahClinic.Shared.Dtos
         public string? EmailAddress { get; set; }
         public string? Address { get; set; }
         public List<HealthRecordSummaryDto>? HealthRecords { get; set; }
-        public List<AppointmentDto>? Appointments { get; set; }
+        public List<AppointmentSummaryDto>? Appointments { get; set; }
         public GenderEnum Gender { get; set; }
     }
 }
