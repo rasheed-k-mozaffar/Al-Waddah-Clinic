@@ -29,7 +29,7 @@ namespace AlWaddahClinic.Server.Extensions
                 Address = patient.Address,
                 PhoneNumber = patient.PhoneNumber,
                 HealthRecords = patient.HealthRecords.Select(h => h.ToHealthRecordSummaryDto()).ToList(),
-                Appointments = patient.Appointments.Select(a => a.ToAppointmentDto()).ToList(),
+                Appointments = patient.Appointments.Select(a => a.ToAppointmentSummaryDto()).ToList(),
                 Gender = patient.Gender
             };
         }
@@ -88,6 +88,15 @@ namespace AlWaddahClinic.Server.Extensions
                 StartAt = appointment.StartAt,
                 FinishAt = appointment.FinishAt,
                 Prescription = appointment.Prescription?.ToPrescriptionDto()
+            };
+        }
+
+        public static AppointmentSummaryDto ToAppointmentSummaryDto(this Appointment appointment)
+        {
+            return new AppointmentSummaryDto
+            {
+                Id = appointment.Id,
+                StartAt = appointment.StartAt
             };
         }
 
@@ -203,6 +212,24 @@ namespace AlWaddahClinic.Server.Extensions
                 StartAt = appointmentDto.StartAt,
                 FinishAt = appointmentDto.FinishAt,
                 Prescription = appointmentDto.Prescription.ToPrescription()
+            };
+        }
+
+        public static Appointment ToAppointmentCreate(this AppointmentCreateDto appointmentCreateDto)
+        {
+            return new Appointment
+            {
+                StartAt = appointmentCreateDto.StartAt,
+                FinishAt = appointmentCreateDto.FinishAt
+            };
+        }
+
+        public static Appointment ToAppointmentUpdate(this AppointmentCreateDto appointmentUpdateDto)
+        {
+            return new Appointment
+            {
+                StartAt = appointmentUpdateDto.StartAt,
+                FinishAt = appointmentUpdateDto.FinishAt
             };
         }
 
