@@ -12,6 +12,7 @@ builder.Services.AddJwtBearerAuthentication(builder.Configuration);
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IPatientsRepository, PatientsRepository>();
 builder.Services.AddScoped<IHealthRecordsRepository, HealthRecordsRepository>();
+builder.Services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
 
 var app = builder.Build();
 
