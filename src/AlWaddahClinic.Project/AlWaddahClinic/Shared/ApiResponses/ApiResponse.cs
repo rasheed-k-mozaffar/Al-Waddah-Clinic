@@ -1,3 +1,5 @@
+using AlWaddahClinic.Shared.Dtos;
+
 namespace AlWaddahClinic.Shared.ApiResponses
 {
     public class ApiResponse

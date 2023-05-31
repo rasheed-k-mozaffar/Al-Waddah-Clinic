@@ -107,7 +107,7 @@ namespace AlWaddahClinic.Server.Controllers
                     {
                         return BadRequest(new ApiResponse
                         {
-                            Message = "You cannot make an appointment in the past",
+                            Message = "You cannot schedule an appointment in the past",
                             IsSuccess = false
                         });
                     }
@@ -153,10 +153,26 @@ namespace AlWaddahClinic.Server.Controllers
             {
                 try
                 {
+                    if(model.StartAt == null)
+                    {
+                        return BadRequest(new ApiErrorResponse
+                        {
+                            Message = "You cannot make an appointment without setting a date"
+                        });
+                    }
+                    if(model.StartAt < DateTime.Now)
+                    {
+                        return BadRequest(new ApiErrorResponse
+                        {
+                            Message = "You cannot schedule an appointment in the past"
+                        });
+                    }
+
+
                     var appointmentToUpdate = await _appointmentsRepository.GetAppointmentByIdAsync(id);
 
                     appointmentToUpdate.StartAt = model.StartAt;
-                    appointmentToUpdate.FinishAt = model.FinishAt;
+                    appointmentToUpdate.FinishAt = model.StartAt.Value.AddMinutes(30);
                     appointmentToUpdate.ModifiedByUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
                     appointmentToUpdate.ModifiedOn = DateTime.Now;
 

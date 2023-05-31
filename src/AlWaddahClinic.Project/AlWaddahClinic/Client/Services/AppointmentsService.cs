@@ -13,7 +13,7 @@ namespace AlWaddahClinic.Client.Services
         }
 
 
-        public async Task<IEnumerable<AppointmentSummaryDto>> GetAllAppointmentsAsync()
+        public async Task<ApiResponse<IEnumerable<AppointmentSummaryDto>>> GetAllAppointmentsAsync()
         {
             var response = await _httpClient.GetAsync("/api/appointments");
 
@@ -23,10 +23,10 @@ namespace AlWaddahClinic.Client.Services
                 throw new DomainException(error.Message);
             }
 
-            return await response.Content.ReadFromJsonAsync<IEnumerable<AppointmentSummaryDto>>();
+            return await response.Content.ReadFromJsonAsync<ApiResponse<IEnumerable<AppointmentSummaryDto>>>();
         }
 
-        public async Task<AppointmentDto> GetAppointmentByIdAsync(int appointmentId)
+        public async Task<ApiResponse<AppointmentDto>> GetAppointmentByIdAsync(int appointmentId)
         {
             var response = await _httpClient.GetAsync($"/api/appointments/{appointmentId}");
 
@@ -36,7 +36,7 @@ namespace AlWaddahClinic.Client.Services
                 throw new DomainException(error.Message);
             }
 
-            return await response.Content.ReadFromJsonAsync<AppointmentDto>();
+            return await response.Content.ReadFromJsonAsync<ApiResponse<AppointmentDto>>();
         }
 
         public async Task AddAppointmentAsync(int patientId, AppointmentCreateDto model)
