@@ -111,10 +111,9 @@ namespace AlWaddahClinic.Server.Controllers
                 }
                 catch(NotFoundException ex)
                 {
-                    return BadRequest(new ApiResponse
+                    return BadRequest(new ApiErrorResponse
                     {
                         Message = ex.Message,
-                        IsSuccess = false
                     });
                 }
             }

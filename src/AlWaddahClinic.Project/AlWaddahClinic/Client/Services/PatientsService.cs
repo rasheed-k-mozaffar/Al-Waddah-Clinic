@@ -18,7 +18,8 @@ namespace AlWaddahClinic.Client.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new DomainException("Something has gone wrong while adding the patient");
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
             }
 
             return await response.Content.ReadFromJsonAsync<ApiResponse>();
@@ -30,7 +31,8 @@ namespace AlWaddahClinic.Client.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new DataRetrievalException("Something has gone wrong while accessing the data");
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
             }
 
             var patients = await response.Content.ReadFromJsonAsync<ApiResponse<IEnumerable<PatientSummaryDto>>>();
@@ -43,7 +45,8 @@ namespace AlWaddahClinic.Client.Services
 
             if(!response.IsSuccessStatusCode)
             {
-                throw new NotFoundException($"No patient was found with the ID: {id}");
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
             }
 
             var patient = await response.Content.ReadFromJsonAsync<ApiResponse<PatientDto>>();
@@ -61,7 +64,8 @@ namespace AlWaddahClinic.Client.Services
 
             if(!response.IsSuccessStatusCode)
             {
-                throw new DomainException("Something went wrong while attempting to update the patient's details");
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
             }
         }
     }

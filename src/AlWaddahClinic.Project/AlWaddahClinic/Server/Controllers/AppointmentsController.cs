@@ -38,9 +38,9 @@ namespace AlWaddahClinic.Server.Controllers
             {
                 var appointments = await _appointmentsRepository.GetAppointmentsAsync();
 
-                var appointmentsAsDtos = appointments.Select(a => a.ToAppointmentDto()).ToList();
+                var appointmentsAsDtos = appointments.Select(a => a.ToAppointmentSummaryDto()).ToList();
 
-                return Ok(new ApiResponse<IEnumerable<AppointmentDto>>
+                return Ok(new ApiResponse<IEnumerable<AppointmentSummaryDto>>
                 {
                     Message = "Appointments retrieved successfully",
                     Value = appointmentsAsDtos,
@@ -94,7 +94,29 @@ namespace AlWaddahClinic.Server.Controllers
             {
                 try
                 {
-                    var appointmentToCreate = model.ToAppointmentCreate();
+                    //Handle the nullability of the Start At DateTime property.
+                    if(model.StartAt == null)
+                    {
+                        return BadRequest(new ApiResponse
+                        {
+                            Message = "You cannot make an appointment without setting a date",
+                            IsSuccess = false
+                        });
+                    }
+                    if(model.StartAt < DateTime.Now)
+                    {
+                        return BadRequest(new ApiResponse
+                        {
+                            Message = "You cannot make an appointment in the past",
+                            IsSuccess = false
+                        });
+                    }
+
+                    var appointmentToCreate = new Appointment
+                    {
+                        StartAt = model.StartAt,
+                        FinishAt = model.StartAt.Value.AddMinutes(30)
+                    };
 
                     AssignAdminstrativeProperties(appointmentToCreate);
 

@@ -18,7 +18,8 @@ namespace AlWaddahClinic.Client.Services
 
             if(!response.IsSuccessStatusCode)
             {
-                throw new DomainException("Something went wrong while attempting to retrieve the records");
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
             }
 
             var records = await response.Content.ReadFromJsonAsync<ApiResponse<IEnumerable<HealthRecordSummaryDto>>>();
@@ -31,7 +32,8 @@ namespace AlWaddahClinic.Client.Services
 
             if(!response.IsSuccessStatusCode)
             {
-                throw new DomainException("Something went wrong while attempting to retrieve the record");
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
             }
 
             var record = await response.Content.ReadFromJsonAsync<ApiResponse<HealthRecordDto>>();
@@ -45,8 +47,9 @@ namespace AlWaddahClinic.Client.Services
 
 			if (!response.IsSuccessStatusCode)
 			{
-				throw new DomainException("Something went wrong while creating the new health record");
-			}
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
+            }
 		}
 
         public async Task RemoveRecordAsync(int recordId)
@@ -55,7 +58,8 @@ namespace AlWaddahClinic.Client.Services
 
             if(!response.IsSuccessStatusCode)
             {
-                throw new DomainException("Something went wrong while deleting the health record");
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
             }
         }
 
@@ -65,7 +69,8 @@ namespace AlWaddahClinic.Client.Services
 
             if(!response.IsSuccessStatusCode)
             {
-                throw new DomainException("Something went wrong while updating the healh record");
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
             }
         }
     }
