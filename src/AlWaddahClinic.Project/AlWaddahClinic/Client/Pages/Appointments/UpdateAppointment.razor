@@ -1,4 +1,4 @@
-﻿@page "/appointments/make/{patientId:int}"
+﻿@page "/appointments/reschedule/{patientName}/{appointmentId:int}"
 @attribute [Authorize(Roles = "Admin")]
 
 @if (_isBusy == true)
@@ -21,15 +21,17 @@ else
     <MudContainer style="margin-top: 5rem;">
         <MudCard Style="padding: 2rem; border: 1px solid black">
             <MudItem Class="mb-5">
-                <MudText Typo="Typo.h4"><b><i class="bi bi-calendar-week-fill"></i>&nbsp; Make an appointment for:</b> @result.Value.FullName</MudText>
+                <MudText Typo="Typo.h4"><b><i class="bi bi-calendar-week-fill"></i>&nbsp; Reschedule an appointment for:</b> @PatientName</MudText>
             </MudItem>
 
             <MudDivider />
 
             <MudItem Class="mt-5">
-                <EditForm Model="model" OnValidSubmit="MakeAsync">
+                <EditForm Model="model" OnValidSubmit="UpdateAsync">
                     <DataAnnotationsValidator />
                     <ValidationSummary style="color: red;" />
+
+                    <MudText Typo="Typo.h6"><b>Old date:</b> <code style="color: red;">@oldAppointment.StartAt.Value</code></MudText>
 
                     <MudGrid>
                         <MudItem Class="mb-3" xs="12" md="6" lg="6">
@@ -47,7 +49,7 @@ else
                         <MudItem Class="mb-3">
                             <MudButton Disabled="@_isMakingRequest" Style="margin: .25rem" Variant="Variant.Filled" Color="Color.Warning"
                                        ButtonType="ButtonType.Submit">
-                                Make Appointment
+                                Reschedule
                             </MudButton>
                             <MudButton Disabled="@_isMakingRequest" Style="margin: .25rem" Variant="Variant.Outlined" Color="Color.Info" @onclick="GoBack">
                                 Go Back

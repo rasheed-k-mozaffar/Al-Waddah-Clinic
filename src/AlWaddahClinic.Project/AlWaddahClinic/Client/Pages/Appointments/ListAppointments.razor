@@ -1,0 +1,43 @@
+﻿@page "/appointments"
+@attribute [Authorize(Roles = "Admin")]
+
+@if (_isBusy == true)
+{
+    <MudGrid Class="d-flex justify-center" Style="height: 100vh; align-items: center;">
+        <MudItem>
+            <Loader />
+        </MudItem>
+    </MudGrid>
+}
+else
+{
+    <MudContainer Class="mt-5">
+        <MudItem Class="d-flex justify-space-between mb-5">
+            <MudText Typo="Typo.h4">Upcoming appointments</MudText>
+
+            <MudButton Variant="Variant.Outlined" Color="Color.Warning" @onclick="GoToPastAppointments">Past Appointments</MudButton>
+        </MudItem>
+        <MudSimpleTable Style="overflow-x: auto;">
+            <thead>
+                <tr>
+                    <th>Patient's Name</th>
+                    <th>Appointment Day</th>
+                    <th style="text-align: end;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var appointment in appointments.Where(a => a.StartAt > DateTime.Now.AddDays(-1)).OrderBy(a => a.StartAt - DateTime.Now))
+                {
+                    <tr>
+                        <td>@appointment.PatientName</td>
+                        <td>@appointment.StartAt</td>
+                        <td style="text-align: end;">
+                            <MudButton Variant="Variant.Text" Color="Color.Error" @onclick='(async () => await OpenRemoveDialog(appointment.Id))'><i class="bi bi-trash-fill"></i> &nbsp;Remove </MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick='(() => GoToUpdateAppointment(appointment.PatientName , appointment.Id))'><i class="bi bi-calendar-week-fill"></i> &nbsp;Reschedule </MudButton>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudContainer>
+}
