@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-    <PackageReference Include="MudBlazor" Version="6.2.3" />
+    <PackageReference Include="MudBlazor" Version="6.3.1" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0" />
   </ItemGroup>
@@ -35,6 +35,7 @@
     <None Remove="Pages\Patients\" />
     <None Remove="Pages\Patients\Records\" />
     <None Remove="Pages\User\" />
+    <None Remove="Pages\Appointments\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shared\" />
@@ -42,5 +43,6 @@
     <Folder Include="Pages\Patients\" />
     <Folder Include="Pages\Patients\Records\" />
     <Folder Include="Pages\User\" />
+    <Folder Include="Pages\Appointments\" />
   </ItemGroup>
 </Project>
