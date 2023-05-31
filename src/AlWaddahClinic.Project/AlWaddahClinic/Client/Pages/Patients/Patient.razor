@@ -59,8 +59,9 @@
                 <MudDivider />
 
                 <MudCardContent>
-                    <MudButton Variant="Variant.Filled" Color="Color.Info" @onclick="GoToAddHealthRecord">Add Health Record</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="OpenRemoveDialog">Remove Patient</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Info" @onclick="GoToAddHealthRecord"><i class="bi bi-file-earmark-text-fill"></i>&nbsp; Add Health Record</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="OpenRemoveDialog"><i class="bi bi-person-dash"></i>&nbsp; Remove Patient</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="GoToMakeAppointment"><i class="bi bi-calendar-week-fill"></i>&nbsp; Make Appointment</MudButton>
                 </MudCardContent>
             </MudCard>
         </MudContainer>

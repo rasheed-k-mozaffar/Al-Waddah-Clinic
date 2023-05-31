@@ -52,6 +52,11 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		{
 			NavigationManager.NavigateTo($"/patients/records/{recordId}");
 		}
+
+		private void GoToMakeAppointment()
+		{
+			NavigationManager.NavigateTo($"/appointments/make/{patient.Id}");
+		}
 		
 		private async void OpenRemoveDialog()
 		{
