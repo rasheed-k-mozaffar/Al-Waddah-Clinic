@@ -4,7 +4,7 @@
     <MudLayout>
         <MudAppBar Elevation="1" Color="Color.Primary">
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
-                OnClick="@((e) => DrawerToggle())" />
+                           OnClick="@((e) => DrawerToggle())" />
             <MudSpacer />
             <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
         </MudAppBar>
@@ -17,15 +17,17 @@
                 <MudNavGroup Title="Records" Expanded="true">
                     <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix">Patients 🩺</MudNavLink>
                     <MudNavLink Href="/patients/healthrecords" Match="NavLinkMatch.Prefix">Health Records 📑</MudNavLink>
+                    <MudNavLink Href="/appointments" Match="NavLinkMatch.Prefix">Appointments 🗓️</MudNavLink>
                 </MudNavGroup>
                 <AuthorizeView>
                     <NotAuthorized>
                         <MudNavLink Href="/user/login" Match="NavLinkMatch.Prefix">Login</MudNavLink>
-                        <MudNavLink Href="user/register" Match="NavLinkMatch.Prefix">Register</MudNavLink>
                     </NotAuthorized>
 
                     <Authorized>
-                        <MudNavLink Href="/user/logout" Match="NavLinkMatch.Prefix">Log Out</MudNavLink>
+                        <MudContainer>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" @onclick="OpenLogoutDialog">Log Out</MudButton>
+                        </MudContainer>
                     </Authorized>
                 </AuthorizeView>
             </MudNavMenu>
@@ -43,14 +45,48 @@
     {
         _drawerOpen = !_drawerOpen;
     }
+
+
+    //Handle the log out
+    [Inject] public IDialogService DialogService { get; set; } = default!;
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] public ILocalStorageService LocalStorage { get; set; } = default!;
+
+    private async Task OpenLogoutDialog()
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("Header", "Confirm Logout");
+        parameters.Add("Content", "Do you really want to log out of your account? If so, please click ok to confirm");
+        parameters.Add("ButtonText", "Ok");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, CloseOnEscapeKey = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<Dialog>("Logout", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await LogoutAsync();
+        }
+    }
+
+    private async Task LogoutAsync()
+    {
+        if (await LocalStorage.ContainKeyAsync("access_token"))
+        {
+            await LocalStorage.RemoveItemAsync("access_token");
+            NavigationManager.NavigateTo("/");
+        }
+    }
 }
 
 <MudThemeProvider />
 <MudDialogProvider FullWidth="true"
-    MaxWidth="MaxWidth.ExtraSmall"
-    CloseButton="true"
-    DisableBackdropClick="true"
-    NoHeader="true"
-    Position="DialogPosition.Center"
-    CloseOnEscapeKey="true"/>
+                   MaxWidth="MaxWidth.ExtraSmall"
+                   CloseButton="true"
+                   DisableBackdropClick="true"
+                   NoHeader="true"
+                   Position="DialogPosition.Center"
+                   CloseOnEscapeKey="true" />
 <MudSnackbarProvider />

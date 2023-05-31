@@ -1,4 +1,30 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager
+<AuthorizeView>
+    <Authorized>
+        <MudGrid Class="d-flex align-center justify-center mud-width-full" style="height:100vh; width:100vw; background-image: url('https://th.bing.com/th/id/R.9c4bd3d23ff6e1dae23af5359fb5afaa?rik=Si1KMVJLqOQRdQ&pid=ImgRaw&r=0'); background-repeat: no-repeat; background-size: cover;">
+            <MudItem xs="10" md="8" lg="8">
+                <MudCard style="width: 100%; padding: 2.5rem;">
+                    <MudCardContent>
+                        <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Primary"><b>Hello Doctor!</b></MudText>
+                        <MudText Align="Align.Center" Typo="Typo.body1">
+                            To perform actions, you can follow the links down below
+                        </MudText>
+                        <MudItem Class="d-flex justify-center mt-5">
+                            <MudButton Style="margin: .25rem;" Variant="Variant.Text" Color="Color.Dark" @onclick='(() => NavigationManager.NavigateTo("/patients/all"))'>View Patients</MudButton>
+                            <MudButton Style="margin: .25rem;" Variant="Variant.Text" Color="Color.Primary" @onclick='(() => NavigationManager.NavigateTo("/appointments"))'>Appointments</MudButton>
+                            <MudButton Style="margin: .25rem;" Variant="Variant.Text" Color="Color.Secondary" @onclick='(() => NavigationManager.NavigateTo("/patients/add"))'>Add Patient</MudButton>
+                        </MudItem>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </Authorized>
 
-<h1>Hello, world!</h1>
+    <NotAuthorized>
+        @{
+            NavigationManager.NavigateTo("/user/login");
+        }
+    </NotAuthorized>
+</AuthorizeView>
 
