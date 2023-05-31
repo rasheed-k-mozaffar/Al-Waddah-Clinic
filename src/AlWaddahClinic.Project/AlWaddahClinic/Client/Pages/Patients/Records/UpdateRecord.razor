@@ -1,4 +1,5 @@
 ﻿@page "/patients/records/update/{id:int}"
+@attribute [Authorize(Roles = "Admin")]
 
 @if (_isBusy == true)
 {

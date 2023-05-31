@@ -1,4 +1,5 @@
 ﻿@page "/patients/add"
+@attribute [Authorize(Roles = "Admin")]
 
 @{
     if (!string.IsNullOrEmpty(_errorMessage))
@@ -24,7 +25,7 @@
 
                     <MudItem Class="mb-3" xs="12" md="12" lg="12">
                         <MudTextField T="string" Label="Full Name" Required="true" RequiredError="Full name is required"
-                            @bind-Value="model.FullName" />
+                                      @bind-Value="model.FullName" />
                     </MudItem>
 
                     <MudItem Class="mb-3" xs="12" md="6" lg="6">
@@ -33,8 +34,8 @@
 
                     <MudItem Class="mb-3" xs="12" md="6" lg="6">
                         <MudDatePicker Label="Date Of Birth (optional)" Editable="true"
-                            Mask='@( new DateMask("dd/MM/yyyy"))' @bind-Date="@model.DateOfBirth"
-                            DateFormat="dd/MM/yyyy" />
+                                       Mask='@( new DateMask("dd/MM/yyyy"))' @bind-Date="@model.DateOfBirth"
+                                       DateFormat="dd/MM/yyyy" />
                     </MudItem>
 
                     <MudItem Class="mb-3" xs="12" md="12" lg="12">
@@ -56,7 +57,7 @@
 
                     <MudItem Class="mb-3">
                         <MudButton Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
-                            ButtonType="ButtonType.Submit">
+                                   ButtonType="ButtonType.Submit">
                             Add
                             Patient
                         </MudButton>

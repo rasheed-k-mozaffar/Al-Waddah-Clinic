@@ -1,4 +1,5 @@
 ﻿@page "/patients/records/add/{patientId:int}"
+@attribute [Authorize(Roles = "Admin")]
 
 @{
     if (!string.IsNullOrEmpty(_errorMessage))
