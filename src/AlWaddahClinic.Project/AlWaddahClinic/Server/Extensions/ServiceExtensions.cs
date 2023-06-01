@@ -3,6 +3,7 @@ using System.Text;
 using AlWaddahClinic.Server.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AlWaddahClinic.Server.Extensions
@@ -16,9 +17,12 @@ namespace AlWaddahClinic.Server.Extensions
 		/// <param name="configuration"></param>
 		public static void AddDbContextAndIdentity(this IServiceCollection services, IConfiguration configuration)
 		{
+			var sqlConnectionString = new SqlConnectionStringBuilder();
+			sqlConnectionString.ConnectionString = configuration.GetConnectionString("AppConnection");
+			sqlConnectionString.Password = configuration["DatabaseDetails:Password"];
 			services.AddDbContext<ClinicDbContext>(options =>
 			{
-				options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+				options.UseSqlServer(sqlConnectionString.ConnectionString);
 			});
 
 			//Using the app user class to extend on the identity user.
