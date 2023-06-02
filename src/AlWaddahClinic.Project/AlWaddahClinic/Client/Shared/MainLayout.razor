@@ -73,11 +73,10 @@
 
     private async Task LogoutAsync()
     {
-        if (await LocalStorage.ContainKeyAsync("access_token"))
-        {
-            await LocalStorage.RemoveItemAsync("access_token");
-            NavigationManager.NavigateTo("/");
-        }
+        await LocalStorage.RemoveItemAsync("access_token");
+
+        NavigationManager.NavigateTo("/user/login");
+
     }
 }
 
