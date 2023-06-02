@@ -1,6 +1,12 @@
 ﻿@page "/user/login"
 @layout EmptyLayout
 
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <MudAlert Severity="Severity.Error" Variant="Variant.Filled">@_errorMessage !</MudAlert>
+}
+
 <MudGrid style="width: 100vw; height: 100vh; background-image: url('https://hdqwalls.com/wallpapers/starry-night-sky-evening-blue-landscape-4k-ff.jpg'); background-repeat: no-repeat; background-size: cover;">
     <MudItem Class="d-flex justify-center align-center mud-width-full">
         <MudCard style="width: 50%; padding: 2.5rem;">
@@ -25,9 +31,3 @@
     </MudItem>
 </MudGrid>
 
-@{
-    if (!string.IsNullOrEmpty(_errorMessage))
-    {
-        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" style="padding: 1rem;">@_errorMessage!</MudAlert>
-    }
-}

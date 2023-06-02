@@ -25,15 +25,10 @@ namespace AlWaddahClinic.Client.Pages.User
         {
             _isBusy = true;
 
-            //Add the login logic
             try
             {
                 var result = await AuthService.LoginUserAsync(model);
-                Console.WriteLine("Hello There!");
-                Console.WriteLine("--------------");
 
-                Console.WriteLine(result.Token);
-                Console.WriteLine(result.HasSucceeded);
                 var token = result.Token;
 
                 //Set the JWT value to the access_token key in the local storage.
@@ -48,9 +43,8 @@ namespace AlWaddahClinic.Client.Pages.User
                 _errorMessage = ex.Message;
             }
 
-            //Reset the private fields
+            //Reset the private field
             _isBusy = false;
-            _errorMessage = string.Empty;
         }
     }
 }
