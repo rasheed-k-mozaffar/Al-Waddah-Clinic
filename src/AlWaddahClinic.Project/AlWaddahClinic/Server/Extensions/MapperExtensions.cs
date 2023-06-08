@@ -86,6 +86,7 @@ namespace AlWaddahClinic.Server.Extensions
                 Patient = appointment.Patient.ToPatientDto(),
                 StartAt = appointment.StartAt,
                 FinishAt = appointment.FinishAt,
+                Status = appointment.Status
             };
         }
 
@@ -95,7 +96,8 @@ namespace AlWaddahClinic.Server.Extensions
             {
                 Id = appointment.Id,
                 PatientName = appointment.Patient.FullName,
-                StartAt = appointment.StartAt
+                StartAt = appointment.StartAt,
+                Status = appointment.Status
             };
         }
 
