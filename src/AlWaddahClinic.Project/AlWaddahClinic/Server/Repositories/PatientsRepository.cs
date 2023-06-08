@@ -75,6 +75,20 @@ namespace AlWaddahClinic.Server.Repositories
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Patient>> SearchAsync(string searchText)
+        {
+            var patientsSearch = from patient in _context.Patients
+                                 where patient.FullName.Contains(searchText)
+                                 select patient;
+
+            if(patientsSearch == null)
+            {
+                throw new NotFoundException("No patient was found with the given name");
+            }
+
+            return patientsSearch;
+        }
     }
 }
 

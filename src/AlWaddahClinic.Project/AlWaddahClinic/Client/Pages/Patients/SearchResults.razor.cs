@@ -1,24 +1,22 @@
 ﻿using System;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 
 namespace AlWaddahClinic.Client.Pages.Patients
 {
-    public partial class ListPatients : ComponentBase
-    {
+	public partial class SearchResults : ComponentBase
+	{
         [Inject]
         public NavigationManager NavigationManager { get; set; } = null!;
 
         [Inject]
         public IPatientsService PatientsService { get; set; } = null!;
 
-        [Inject]
-        public IDialogService DialogService { get; set; } = default!;
-
         ApiResponse<IEnumerable<PatientSummaryDto>> patients = new();
 
-        private string _searchText = string.Empty;
+        [Parameter] public string SearchText { get; set; }
 
+        private bool _isBusy = true;
+        private string _errorMessage = string.Empty;
 
         private void GoToAddPatient()
         {
@@ -27,14 +25,14 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
         protected override async Task OnInitializedAsync()
         {
-            patients = await PatientsService.GetAllPatients();
-        }
-
-        private void GoToSearchResults()
-        {
-            if(!string.IsNullOrEmpty(_searchText))
+            try
             {
-                NavigationManager.NavigateTo($"/patients/search/{_searchText}");
+                patients = await PatientsService.SearchForPatients(SearchText);
+                _isBusy = false;
+            }
+            catch(NotFoundException ex)
+            {
+                _errorMessage = ex.Message;
             }
         }
     }

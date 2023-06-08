@@ -63,6 +63,30 @@ namespace AlWaddahClinic.Server.Controllers
             }
         }
 
+        [HttpGet("find")]
+        public async Task<IActionResult> SearchPatients(string searchText)
+        {
+            try
+            {
+                var patients = await _patientsRepository.SearchAsync(searchText);
+                var patientsAsDtos = patients.Select(p => p.ToPatientSummaryDto());
+
+                return Ok(new ApiResponse<IEnumerable<PatientSummaryDto>>
+                {
+                    Message = "Patients retrieved successfully",
+                    Value = patientsAsDtos,
+                    IsSuccess = true
+                });
+            }
+            catch(NotFoundException ex)
+            {
+                return BadRequest(new ApiErrorResponse
+                {
+                    Message = ex.Message
+                });
+            }
+        }
+
         // POST 
         [HttpPost]
         public async Task<IActionResult> AddPatient([FromBody] PatientCreateDto model)

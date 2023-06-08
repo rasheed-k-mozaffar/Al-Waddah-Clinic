@@ -58,6 +58,20 @@ namespace AlWaddahClinic.Client.Services
             var response = await _httpClient.DeleteAsync($"/api/patients/{id}");
         }
 
+        public async Task<ApiResponse<IEnumerable<PatientSummaryDto>>> SearchForPatients(string searchText)
+        {
+            var response = await _httpClient.GetAsync($"/api/patients/find?searchText={searchText}");
+
+            if(!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new NotFoundException(error.Message);
+            }
+
+            var patientsFound = await response.Content.ReadFromJsonAsync<ApiResponse<IEnumerable<PatientSummaryDto>>>();
+            return patientsFound;
+        }
+
         public async Task UpdatePatient(int id, PatientUpdateDto model)
         {
             var response = await _httpClient.PutAsJsonAsync($"/api/patients/{id}", model);

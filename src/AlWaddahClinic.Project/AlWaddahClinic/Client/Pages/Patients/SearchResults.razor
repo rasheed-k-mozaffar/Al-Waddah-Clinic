@@ -1,0 +1,46 @@
+﻿@page "/patients/search/{searchText}"
+@attribute [Authorize(Roles = "Admin")]
+
+
+@if (_isBusy == true)
+{
+    <MudGrid Class="d-flex justify-center" Style="height: 100vh; align-items: center;">
+        <MudItem>
+            <Loader />
+        </MudItem>
+    </MudGrid>
+}
+else
+{
+    <MudContainer Class="mt-5">
+        <MudItem Class="mb-5">
+            <MudText Typo="Typo.h4" Color="Color.Dark"><b>Search results for: </b>@SearchText</MudText>
+        </MudItem>
+
+        <MudItem Class="d-flex justify-center align-center">
+            @{
+                if (patients.Value == null)
+                {
+                    <MudItem Class="mt-5">
+                        <Loader />
+                    </MudItem>
+                }
+                else
+                {
+                    <MudGrid Justify="Justify.FlexStart" Spacing="2">
+                        @foreach (var patient in patients.Value.OrderBy(p => p.FullName))
+                        {
+                            <MudItem xs="12" md="6" lg="4">
+                                <PatientSummaryCard Patient="patient" />
+                            </MudItem>
+                        }
+                    </MudGrid>
+                }
+            }
+        </MudItem>
+
+    </MudContainer>
+}
+
+
+
