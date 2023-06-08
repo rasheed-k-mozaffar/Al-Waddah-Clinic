@@ -402,3 +402,5 @@ FodyWeavers.xsd
 src/AlWaddahClinic.Project/AlWaddahClinic/Server/appsettings.Development.json
 
 src/AlWaddahClinic.Project/AlWaddahClinic/.vscode/settings.json
+
+src/AlWaddahClinic.Project/AlWaddahClinic/Server/appsettings.json
