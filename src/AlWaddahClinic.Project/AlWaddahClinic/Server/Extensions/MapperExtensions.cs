@@ -95,6 +95,7 @@ namespace AlWaddahClinic.Server.Extensions
             return new AppointmentSummaryDto
             {
                 Id = appointment.Id,
+                PatientId = appointment.PatientId,
                 PatientName = appointment.Patient.FullName,
                 StartAt = appointment.StartAt,
                 Status = appointment.Status

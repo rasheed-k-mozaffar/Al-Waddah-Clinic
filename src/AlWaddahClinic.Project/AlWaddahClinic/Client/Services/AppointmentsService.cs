@@ -70,6 +70,17 @@ namespace AlWaddahClinic.Client.Services
                 throw new DomainException(error.Message);
             }
         }
+
+        public async Task CompleteAppointmentAsync(int appointmentId, AppointmentStatusCheckDto model)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"/api/appointments/completeappointment/{appointmentId}", model);
+
+            if(!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
+            }
+        }
     }
 }
 

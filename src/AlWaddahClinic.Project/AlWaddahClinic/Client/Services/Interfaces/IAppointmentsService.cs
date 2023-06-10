@@ -8,6 +8,7 @@ namespace AlWaddahClinic.Client.Services.Interfaces
 		Task AddAppointmentAsync(int patientId, AppointmentCreateDto model);
 		Task RemoveAppointmentAsync(int appointmentId);
 		Task UpdateAppointmentAsync(int appointmentId, AppointmentUpdateDto model);
+		Task CompleteAppointmentAsync(int appointmentId, AppointmentStatusCheckDto model);
 	}
 }
 

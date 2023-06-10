@@ -17,16 +17,18 @@ namespace AlWaddahClinic.Server.Controllers
     public class AppointmentsController : BaseController
     {
         private readonly IAppointmentsRepository _appointmentsRepository;
+        private readonly IHealthRecordsRepository _healthRecordsRepository;
         private readonly ILogger<AppointmentsController> _logger;
         public AppointmentsController
             (
                 ClinicDbContext context,
                 IAppointmentsRepository appointmentsRepository,
-                ILogger<AppointmentsController> logger
-            ) : base(context)
+                ILogger<AppointmentsController> logger,
+                IHealthRecordsRepository healthRecordsRepository) : base(context)
         {
             _appointmentsRepository = appointmentsRepository;
             _logger = logger;
+            _healthRecordsRepository = healthRecordsRepository;
         }
 
 
@@ -219,6 +221,50 @@ namespace AlWaddahClinic.Server.Controllers
                 });
             }
         }
+
+        //POST
+        [HttpPost("completeappointment/{appointmentId}")]
+        public async Task<IActionResult> CompleteAppointment(int appointmentId, AppointmentStatusCheckDto model)
+        {
+            try
+            {
+                var appointmentToChange = await _appointmentsRepository.GetAppointmentByIdAsync(appointmentId);
+
+                appointmentToChange.Status = model.Status;
+
+                if(model.HealthRecordCreate != null)
+                {
+                    var recordToAdd = model.HealthRecordCreate.ToHealthRecordCreate();
+                    try
+                    {
+                        await _healthRecordsRepository.AddHealthRecordAsync(model.PatientId, recordToAdd);
+                    }
+                    catch(NotFoundException ex)
+                    {
+                        return BadRequest(new ApiErrorResponse
+                        {
+                            Message = ex.Message
+                        });
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new ApiResponse
+                {
+                    Message = "Appointment status has been changed",
+                    IsSuccess = true
+                });
+            }
+            catch(NotFoundException ex)
+            {
+                return BadRequest(new ApiErrorResponse
+                {
+                    Message = ex.Message
+                });
+            }
+        }
+
     }
 }
 
