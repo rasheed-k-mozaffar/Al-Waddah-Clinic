@@ -1,0 +1,101 @@
+﻿<MudDialog Style="padding: 1rem;">
+    <DialogContent>
+        @if (_isMakingRequest)
+        {
+            <MudGrid Class="d-flex justify-center" Style="height: 100%; align-items: center;">
+                <MudItem>
+                    <Loader />
+                </MudItem>
+            </MudGrid>
+        }
+        else
+        {
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error" Variant="Variant.Filled">@_errorMessage</MudAlert>
+            }
+            <MudItem Class="d-flex justify-space-between mb-5">
+                <MudItem>
+                    <MudText Typo="Typo.h4"><b>Appointment Check</b></MudText>
+                </MudItem>
+
+                <MudItem>
+                    <MudButton Variant="Variant.Text" Color="Color.Dark" OnClick="Cancel"><MudIcon Icon="@Icons.Material.Filled.Cancel" /></MudButton>
+                </MudItem>
+            </MudItem>
+
+
+
+            <MudItem>
+                <EditForm Model="model">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary style="color: red;" />
+
+                    <MudSelect @bind-Value="model.Status" Variant="Variant.Outlined" Label="Appointment Status">
+                        <MudSelectItem Value="@AppointmentStatusEnum.Missed"><MudText Color="Color.Error">Missed &nbsp; <i class="bi bi-x-circle-fill"></i></MudText></MudSelectItem>
+                        <MudSelectItem Value="@AppointmentStatusEnum.Rescheduled"><MudText Color="Color.Warning">Rescheduled &nbsp; <i class="bi bi-calendar-event"></i></MudText></MudSelectItem>
+                        <MudSelectItem Value="@AppointmentStatusEnum.Completed"><MudText Color="Color.Success">Completed &nbsp; <i class="bi bi-check-circle-fill"></i></MudText></MudSelectItem>
+                    </MudSelect>
+
+                    <MudExpansionPanels Class="mt-5">
+                        <MudExpansionPanel Text="Add Health Record (Optional)">
+
+                            <MudGrid>
+                                <MudItem Class="mb-3 mt-5" xs="12" md="12" lg="12">
+                                    <MudTextField T="string" Variant="Variant.Outlined" Counter="0" Immediate="true" Label="Description" Multiline="true"
+                                                  Required="true" RequiredError="Description is required" @bind-Value="recordModel.Description" Lines="5"
+                                                  HelperText="Describe the patient and list some relevant information" HelperTextOnFocus="true" />
+                                </MudItem>
+
+
+                                <MudItem xs="12" md="12" lg="12">
+                                    <MudCard Style="border: 1px solid lightgray">
+                                        <MudCardContent>
+                                            <MudGrid>
+                                                <MudItem xs="12" md="12" lg="12">
+                                                    <MudTextField T="string" @bind-Value="@_noteTitle" Label="Note field (optional)" />
+                                                </MudItem>
+
+                                                @if (notes != null)
+                                                {
+                                                    @foreach (var note in notes)
+                                                    {
+                                                        <MudItem xs="12">
+                                                            <MudText Typo="Typo.body1">📌 @note.Title</MudText>
+                                                        </MudItem>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <MudItem>
+                                                        <MudText Typo="Typo.body1" Color="Color.Tertiary"></MudText>
+                                                    </MudItem>
+                                                }
+
+                                                <MudItem xs="12" md="12" lg="12">
+                                                    <MudButton Style="width: 100%;" Variant="Variant.Filled" Color="Color.Success" @onclick="AddNote"><i class="bi bi-file-earmark-plus-fill"></i><b> Add Note</b></MudButton>
+                                                </MudItem>
+                                            </MudGrid>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+                            </MudGrid>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </EditForm>
+            </MudItem>
+        }
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private HealthRecordCreateDto recordModel = new();
+    private AppointmentStatusCheckDto model = new();
+
+}

@@ -12,7 +12,7 @@
 else
 {
     <MudContainer Class="mt-5">
-        <MudText Typo="Typo.h3" Class="mb-3"><b>Appointments</b></MudText>
+        <MudText Typo="Typo.h4" Class="mb-3"><b>Appointments</b></MudText>
         <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" Color="Color.Dark" PanelClass="pa-6">
             <MudTabPanel Text="Upcoming">
                 <MudContainer Class="mt-5">
@@ -25,7 +25,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var appointment in appointments.Where(a => a.StartAt > DateTime.Now.AddDays(-1)).OrderBy(a => a.StartAt - DateTime.Now))
+                            @foreach (var appointment in appointments.Where(a => a.StartAt > DateTime.Now.AddHours(-1)).OrderBy(a => a.StartAt - DateTime.Now))
                             {
                                 <tr>
                                     <td>@appointment.PatientName</td>
@@ -60,7 +60,7 @@ else
                                     @if (appointment.Status == null)
                                     {
                                         <td style="text-align: end;">
-                                            <MudButton Color="Color.Warning" Variant="Variant.Filled">Action Required</MudButton>
+                                            <MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick='(() => OpenActionDialog(appointment.PatientId, appointment.Id))'>Action Required</MudButton>
                                         </td>
                                     }
                                 </tr>

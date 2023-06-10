@@ -27,7 +27,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             try
             {
                 appointments = (await AppointmentsService.GetAllAppointmentsAsync()).Value.ToList();
-                _actionsRequired = appointments.Where(a => a.StartAt < DateTime.Now.AddHours(-1)).Select(a => !a.Status.HasValue).Count();
+                _actionsRequired = appointments.Where(a => a.StartAt < DateTime.Now.AddMinutes(-1)).Select(a => a.Status == null).Count();
                 _isBusy = false;
             }
             catch (DomainException ex)
@@ -52,6 +52,23 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             if (!result.Canceled)
             {
                 await RemoveAsync(id);
+            }
+        }
+
+        private async Task OpenActionDialog(int patientId, int appointmentId)
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("PatientId", patientId);
+            parameters.Add("AppointmentId", appointmentId);
+
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Large };
+
+            var dialog = DialogService.Show<AppointmentStatusDialog>("Appointment Check",parameters, options);
+            var result = dialog.Result;
+
+            if(!result.IsCanceled)
+            {
+                StateHasChanged();
             }
         }
 
