@@ -9,10 +9,12 @@ namespace AlWaddahClinic.Client.Components
         [Inject]
         public IAppointmentsService AppointmentsService { get; set; } = default!;
 
-        [Parameter] public int PatientId { get; set; }
-        [Parameter] public int AppointmentId { get; set; }
+        [Parameter] public Guid PatientId { get; set; }
+        [Parameter] public Guid AppointmentId { get; set; }
 
         private List<NoteCreateDto>? notes = new();
+        private HealthRecordCreateDto recordModel = new();
+        private AppointmentStatusCheckDto model = new();
 
         private string _noteTitle = string.Empty;
         private string _errorMessage = string.Empty;
