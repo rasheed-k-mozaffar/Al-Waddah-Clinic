@@ -13,7 +13,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
 
         [Inject]
         public IAppointmentsService AppointmentsService { get; set; } = default!;
-        [Parameter] public int PatientId { get; set; }
+        [Parameter] public Guid PatientId { get; set; }
 
         private ApiResponse<PatientDto> result = new();
         private AppointmentCreateDto model = new();

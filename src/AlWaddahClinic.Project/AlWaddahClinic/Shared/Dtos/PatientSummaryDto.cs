@@ -5,7 +5,7 @@ namespace AlWaddahClinic.Shared.Dtos
 {
 	public class PatientSummaryDto
 	{
-		public int PatientId { get; set; }
+		public Guid PatientId { get; set; }
 		public string FullName { get; set; }
 		public string? EmailAddress { get; set; }
 		public string? PhoneNumber { get; set; }

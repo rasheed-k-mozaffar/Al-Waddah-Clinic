@@ -36,7 +36,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             }
         }
 
-        private async Task OpenRemoveDialog(int id)
+        private async Task OpenRemoveDialog(Guid id)
         {
             var parameters = new DialogParameters();
             parameters.Add("Header", "Confirm Removal");
@@ -55,7 +55,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             }
         }
 
-        private async Task OpenActionDialog(int patientId, int appointmentId)
+        private async Task OpenActionDialog(Guid patientId, Guid appointmentId)
         {
             var parameters = new DialogParameters();
             parameters.Add("PatientId", patientId);
@@ -72,7 +72,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             }
         }
 
-        private void GoToUpdateAppointment(string patientName, int appointmentId)
+        private void GoToUpdateAppointment(string patientName, Guid appointmentId)
         {
             NavigationManager.NavigateTo($"/appointments/reschedule/{patientName}/{appointmentId}");
         }
@@ -82,7 +82,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             NavigationManager.NavigateTo("/appointments/past");
         }
 
-        private async Task RemoveAsync(int id)
+        private async Task RemoveAsync(Guid id)
         {
             try
             {

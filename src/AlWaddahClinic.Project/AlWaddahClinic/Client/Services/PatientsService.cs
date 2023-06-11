@@ -39,7 +39,7 @@ namespace AlWaddahClinic.Client.Services
             return patients;
         }
 
-        public async Task<ApiResponse<PatientDto>> GetPatientById(int id)
+        public async Task<ApiResponse<PatientDto>> GetPatientById(Guid id)
         {
             var response = await _httpClient.GetAsync($"/api/patients/{id}");
 
@@ -53,7 +53,7 @@ namespace AlWaddahClinic.Client.Services
             return patient;
         }
 
-        public async Task RemovePatient(int id)
+        public async Task RemovePatient(Guid id)
         {
             var response = await _httpClient.DeleteAsync($"/api/patients/{id}");
         }
@@ -72,7 +72,7 @@ namespace AlWaddahClinic.Client.Services
             return patientsFound;
         }
 
-        public async Task UpdatePatient(int id, PatientUpdateDto model)
+        public async Task UpdatePatient(Guid id, PatientUpdateDto model)
         {
             var response = await _httpClient.PutAsJsonAsync($"/api/patients/{id}", model);
 

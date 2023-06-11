@@ -42,7 +42,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         // GET 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         // PUT 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] PatientUpdateDto model)
+        public async Task<IActionResult> Put(Guid id, [FromBody] PatientUpdateDto model)
         {
             //TODO: Implement this endpoitn.
             if(ModelState.IsValid)
@@ -150,7 +150,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         // DELETE 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePatient(int id)
+        public async Task<IActionResult> DeletePatient(Guid id)
         {
             try
             {

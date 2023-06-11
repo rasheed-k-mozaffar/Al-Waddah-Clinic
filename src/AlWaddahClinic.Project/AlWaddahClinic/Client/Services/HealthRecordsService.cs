@@ -12,7 +12,7 @@ namespace AlWaddahClinic.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ApiResponse<IEnumerable<HealthRecordSummaryDto>>> GetRecordsForPatientAsync(int patientId)
+        public async Task<ApiResponse<IEnumerable<HealthRecordSummaryDto>>> GetRecordsForPatientAsync(Guid patientId)
         {
             var response = await _httpClient.GetAsync($"/api/healthrecords/{patientId}");
 
@@ -26,7 +26,7 @@ namespace AlWaddahClinic.Client.Services
             return records;
         }
 
-        public async Task<ApiResponse<HealthRecordDto>> GetHealthRecordByIdAsync(int recordId)
+        public async Task<ApiResponse<HealthRecordDto>> GetHealthRecordByIdAsync(Guid recordId)
         {
             var response = await _httpClient.GetAsync($"/api/healthrecords/record/{recordId}");
 
@@ -41,7 +41,7 @@ namespace AlWaddahClinic.Client.Services
         }
 
 
-        public async Task AddRecordAsync(int patientId, HealthRecordCreateDto model)
+        public async Task AddRecordAsync(Guid patientId, HealthRecordCreateDto model)
         {
 			var response = await _httpClient.PostAsJsonAsync($"/api/healthrecords/{patientId}", model);
 
@@ -52,7 +52,7 @@ namespace AlWaddahClinic.Client.Services
             }
 		}
 
-        public async Task RemoveRecordAsync(int recordId)
+        public async Task RemoveRecordAsync(Guid recordId)
         {
             var response = await _httpClient.DeleteAsync($"/api/healthrecords/{recordId}");
 
@@ -63,7 +63,7 @@ namespace AlWaddahClinic.Client.Services
             }
         }
 
-        public async Task UpdateRecordAsync(int recordId, HealthRecordUpdateDto model)
+        public async Task UpdateRecordAsync(Guid recordId, HealthRecordUpdateDto model)
         {
             var response = await _httpClient.PutAsJsonAsync($"/api/healthrecords/{recordId}", model);
 

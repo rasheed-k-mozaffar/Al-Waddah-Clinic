@@ -12,7 +12,7 @@ namespace AlWaddahClinic.Server.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<HealthRecord>> GetHealthRecordsForPatientAsync(int patientId)
+        public async Task<IEnumerable<HealthRecord>> GetHealthRecordsForPatientAsync(Guid patientId)
         {
             var healthRecords = await _context.HealthRecords.Where(hr => hr.PatientId == patientId).ToListAsync();
 
@@ -24,7 +24,7 @@ namespace AlWaddahClinic.Server.Repositories
             return healthRecords;
         }
 
-        public async Task<HealthRecord> GetHealthRecordByIdAsync(int recordId)
+        public async Task<HealthRecord> GetHealthRecordByIdAsync(Guid recordId)
         {
             var healthRecord = await _context.HealthRecords.FindAsync(recordId);
 
@@ -36,7 +36,7 @@ namespace AlWaddahClinic.Server.Repositories
             return healthRecord;
         }
 
-        public async Task AddHealthRecordAsync(int patientId, HealthRecord model)
+        public async Task AddHealthRecordAsync(Guid patientId, HealthRecord model)
         {
             var patient = await _context.Patients.FindAsync(patientId);
 
@@ -50,7 +50,7 @@ namespace AlWaddahClinic.Server.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveHealthRecord(int recordId)
+        public async Task RemoveHealthRecord(Guid recordId)
         {
             var healthRecord = await _context.HealthRecords.FindAsync(recordId);
 

@@ -4,9 +4,9 @@ namespace AlWaddahClinic.Server.Repositories.Interfaces
 	public interface IAppointmentsRepository
 	{
 		Task<IEnumerable<Appointment>> GetAppointmentsAsync();
-		Task<Appointment> GetAppointmentByIdAsync(int appointmentId);
-		Task AddAppointmentAsync(int patientId, Appointment model);
-		Task RemoveAppointmentAsync(int appointmentId);
+		Task<Appointment> GetAppointmentByIdAsync(Guid appointmentId);
+		Task AddAppointmentAsync(Guid patientId, Appointment model);
+		Task RemoveAppointmentAsync(Guid appointmentId);
 	}
 }
 

@@ -24,7 +24,7 @@ namespace AlWaddahClinic.Server.Repositories
             return appointmets;
         }
 
-        public async Task<Appointment> GetAppointmentByIdAsync(int appointmentId)
+        public async Task<Appointment> GetAppointmentByIdAsync(Guid appointmentId)
         {
             var appointment = await _context.Appointments.FindAsync(appointmentId);
 
@@ -37,7 +37,7 @@ namespace AlWaddahClinic.Server.Repositories
         }
 
 
-        public async Task AddAppointmentAsync(int patientId, Appointment model)
+        public async Task AddAppointmentAsync(Guid patientId, Appointment model)
         {
             var patient = await _context.Patients.FindAsync(patientId);
 
@@ -53,7 +53,7 @@ namespace AlWaddahClinic.Server.Repositories
         }
 
 
-        public async Task RemoveAppointmentAsync(int appointmentId)
+        public async Task RemoveAppointmentAsync(Guid appointmentId)
         {
             var appointmentToRemove = await _context.Appointments.FindAsync(appointmentId);
 

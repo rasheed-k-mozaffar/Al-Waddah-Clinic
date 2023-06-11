@@ -48,6 +48,7 @@
     <None Remove="Repositories\Interfaces\" />
     <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="Microsoft.EntityFrameworkCore.Proxies" />
+    <None Remove="Options\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -56,5 +57,6 @@
     <Folder Include="Data\" />
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="Options\" />
   </ItemGroup>
 </Project>

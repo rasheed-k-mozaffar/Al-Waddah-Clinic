@@ -61,7 +61,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         //GET
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAppointmentById(int id)
+        public async Task<IActionResult> GetAppointmentById(Guid id)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         //POST
         [HttpPost("{patientId}")]
-        public async Task<IActionResult> CreateAppointment(int patientId,[FromBody] AppointmentCreateDto model)
+        public async Task<IActionResult> CreateAppointment(Guid patientId,[FromBody] AppointmentCreateDto model)
         {
             if (ModelState.IsValid)
             {
@@ -149,7 +149,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         //PUT
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAppointment(int id, [FromBody] AppointmentUpdateDto model)
+        public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody] AppointmentUpdateDto model)
         {
             if(ModelState.IsValid)
             {
@@ -200,7 +200,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         //DELETE
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveAppointment(int id)
+        public async Task<IActionResult> RemoveAppointment(Guid id)
         {
             try
             {
@@ -224,7 +224,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         //POST
         [HttpPost("completeappointment/{appointmentId}")]
-        public async Task<IActionResult> CompleteAppointment(int appointmentId, AppointmentStatusCheckDto model)
+        public async Task<IActionResult> CompleteAppointment(Guid appointmentId, AppointmentStatusCheckDto model)
         {
             try
             {

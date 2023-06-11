@@ -26,7 +26,7 @@ namespace AlWaddahClinic.Client.Services
             return await response.Content.ReadFromJsonAsync<ApiResponse<IEnumerable<AppointmentSummaryDto>>>();
         }
 
-        public async Task<ApiResponse<AppointmentDto>> GetAppointmentByIdAsync(int appointmentId)
+        public async Task<ApiResponse<AppointmentDto>> GetAppointmentByIdAsync(Guid appointmentId)
         {
             var response = await _httpClient.GetAsync($"/api/appointments/{appointmentId}");
 
@@ -39,7 +39,7 @@ namespace AlWaddahClinic.Client.Services
             return await response.Content.ReadFromJsonAsync<ApiResponse<AppointmentDto>>();
         }
 
-        public async Task AddAppointmentAsync(int patientId, AppointmentCreateDto model)
+        public async Task AddAppointmentAsync(Guid patientId, AppointmentCreateDto model)
         {
             var response = await _httpClient.PostAsJsonAsync($"/api/appointments/{patientId}", model);
 
@@ -49,7 +49,7 @@ namespace AlWaddahClinic.Client.Services
                 throw new DomainException(error.Message);
             }
         }
-        public async Task RemoveAppointmentAsync(int appointmentId)
+        public async Task RemoveAppointmentAsync(Guid appointmentId)
         {
             var response = await _httpClient.DeleteAsync($"/api/appointments/{appointmentId}");
 
@@ -60,7 +60,7 @@ namespace AlWaddahClinic.Client.Services
             }
         }
 
-        public async Task UpdateAppointmentAsync(int appointmentId, AppointmentUpdateDto model)
+        public async Task UpdateAppointmentAsync(Guid appointmentId, AppointmentUpdateDto model)
         {
             var response = await _httpClient.PutAsJsonAsync($"/api/appointments/{appointmentId}", model);
 
@@ -71,7 +71,7 @@ namespace AlWaddahClinic.Client.Services
             }
         }
 
-        public async Task CompleteAppointmentAsync(int appointmentId, AppointmentStatusCheckDto model)
+        public async Task CompleteAppointmentAsync(Guid appointmentId, AppointmentStatusCheckDto model)
         {
             var response = await _httpClient.PostAsJsonAsync($"/api/appointments/completeappointment/{appointmentId}", model);
 

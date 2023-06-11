@@ -16,7 +16,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
         [Inject]
 		public IAppointmentsService AppointmentsService { get; set; } = default!;
 
-		[Parameter] public int AppointmentId { get; set; }
+		[Parameter] public Guid AppointmentId { get; set; }
         [Parameter] public string PatientName { get; set; } = default!;
 
         private AppointmentDto oldAppointment = new();

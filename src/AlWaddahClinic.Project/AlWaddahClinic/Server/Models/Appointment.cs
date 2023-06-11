@@ -3,8 +3,9 @@ namespace AlWaddahClinic.Server.Models
 {
 	public class Appointment : Base
 	{
-		public int Id { get; set; }
-		public int PatientId { get; set; }
+		public Guid Id { get; set; }
+		public Guid PatientId { get; set; }
+		public Guid ClinicId { get; set; }	
 		public virtual HealthRecord? HealthRecord { get; set; }
 		public string? Description { get; set; }
 		public virtual Patient Patient { get; set; }

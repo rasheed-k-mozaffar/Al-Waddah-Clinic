@@ -17,7 +17,7 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 		public IDialogService DialogService { get; set; } = default!;
 
 		//Matching the route params
-		[Parameter] public int Id { get; set; }
+		[Parameter] public Guid Id { get; set; }
 
 		private ApiResponse<HealthRecordDto> result = new();
 		private HealthRecordDto record = new();

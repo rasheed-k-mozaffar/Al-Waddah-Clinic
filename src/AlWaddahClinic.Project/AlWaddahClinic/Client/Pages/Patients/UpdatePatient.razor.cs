@@ -11,7 +11,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		[Inject]
 		public IPatientsService PatientsService { get; set; } = default!;
 
-		[Parameter] public int PatientId { get; set; }
+		[Parameter] public Guid PatientId { get; set; }
 
 		private ApiResponse<PatientDto> result = new();
 		private PatientUpdateDto model = new();

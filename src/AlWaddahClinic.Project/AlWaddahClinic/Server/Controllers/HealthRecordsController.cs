@@ -22,7 +22,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         // GET
         [HttpGet("{patientId}")]
-        public async Task<IActionResult> GetAllForPatient(int patientId)
+        public async Task<IActionResult> GetAllForPatient(Guid patientId)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         // GET
         [HttpGet("record/{id}")]
-        public async Task<IActionResult> GetRecordById(int id)
+        public async Task<IActionResult> GetRecordById(Guid id)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         // POST
         [HttpPost("{patientId}")]
-        public async Task<IActionResult> CreateRecord(int patientId, HealthRecordCreateDto model)
+        public async Task<IActionResult> CreateRecord(Guid patientId, HealthRecordCreateDto model)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         // PUT
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRecord(int id, [FromBody] HealthRecordUpdateDto model)
+        public async Task<IActionResult> UpdateRecord(Guid id, [FromBody] HealthRecordUpdateDto model)
         {
             if (ModelState.IsValid)
             {
@@ -145,7 +145,7 @@ namespace AlWaddahClinic.Server.Controllers
 
         // DELETE 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {

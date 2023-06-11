@@ -8,6 +8,7 @@ namespace AlWaddahClinic.Server.Data
 	{
 		private readonly IConfiguration _configuration;
 
+		public DbSet<Clinic> Clinics { get; set; }
 		public DbSet<Patient> Patients { get; set; }
 		public DbSet<HealthRecord> HealthRecords { get; set; }
 		public DbSet<Medication> Medications { get; set; }
@@ -21,7 +22,7 @@ namespace AlWaddahClinic.Server.Data
 		}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        {	
             base.OnConfiguring(optionsBuilder);
 			optionsBuilder.UseLazyLoadingProxies();
         }

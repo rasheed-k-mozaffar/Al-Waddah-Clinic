@@ -20,7 +20,7 @@ namespace AlWaddahClinic.Server.Repositories
             return patients;
         }
 
-        public async Task<Patient> GetPatientByIdAsync(int id)
+        public async Task<Patient> GetPatientByIdAsync(Guid id)
         {
             var patient = await _context.Patients.FindAsync(id);
 
@@ -39,7 +39,7 @@ namespace AlWaddahClinic.Server.Repositories
             _context.SaveChanges();
         }
 
-        public async Task RemovePatient(int id)
+        public async Task RemovePatient(Guid id)
         {
             var patient = await _context.Patients.FindAsync(id);
 

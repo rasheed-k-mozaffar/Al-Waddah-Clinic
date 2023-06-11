@@ -11,7 +11,7 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
         [Inject]
         public IHealthRecordsService HealthRecordsService { get; set; } = default!;
 
-        [Parameter] public int Id { get; set; }
+        [Parameter] public Guid Id { get; set; }
 
         ApiResponse<HealthRecordDto> result = new();
         private HealthRecordUpdateDto model = new();

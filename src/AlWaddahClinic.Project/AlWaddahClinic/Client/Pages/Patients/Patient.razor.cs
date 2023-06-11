@@ -18,7 +18,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
 		//Route parameter
 		[Parameter]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 
 
 		ApiResponse<PatientDto> result = new();
@@ -48,7 +48,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
 			}
         }
 
-		private void GoToRecord(int recordId)
+		private void GoToRecord(Guid recordId)
 		{
 			NavigationManager.NavigateTo($"/patients/records/{recordId}");
 		}
@@ -82,7 +82,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
 			NavigationManager.NavigateTo($"/patients/records/add/{patient.Id}");
 		}
 
-		private void GoToUpdateRecord(int recordId)
+		private void GoToUpdateRecord(Guid recordId)
 		{
 			NavigationManager.NavigateTo($"/patients/records/update/{recordId}");
 		}
