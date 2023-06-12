@@ -1,4 +1,4 @@
-﻿@page "/appointments/make/{patientId:int}"
+﻿@page "/appointments/make/{patientId:guid}"
 @attribute [Authorize(Roles = "Admin")]
 
 @if (_isBusy == true)
