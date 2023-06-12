@@ -18,12 +18,12 @@ namespace AlWaddahClinic.Client.Pages.User
 
         private LoginUserDto model = new();
 
-        private bool _isBusy = false;
+        private bool _isMakingRequest = false;
         private string _errorMessage = string.Empty;
 
-        private async Task LoginUser()
+        private async Task LoginAsync()
         {
-            _isBusy = true;
+            _isMakingRequest = true;
 
             try
             {
@@ -44,7 +44,7 @@ namespace AlWaddahClinic.Client.Pages.User
             }
 
             //Reset the private field
-            _isBusy = false;
+            _isMakingRequest = false;
         }
     }
 }
