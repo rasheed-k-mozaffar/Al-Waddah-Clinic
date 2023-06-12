@@ -1,0 +1,112 @@
+﻿@page "/user/register"
+@layout EmptyLayout
+
+<MudGrid Justify="Justify.Center" Class="page-style">
+    <MudItem xs="12" md="10" lg="10">
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Class="mb-3">@_errorMessage !</MudAlert>
+        }
+    <MudCard style="width: 100%; padding: 2rem;">
+        <MudText Typo="Typo.h5" Class="mb-3"><b>Register your clinic</b></MudText>
+        <MudAlert Severity="Severity.Success">This information will only be used for registeration purposes</MudAlert>
+        <EditForm Model="model" OnValidSubmit="RegisterAsync">
+            <DataAnnotationsValidator />
+            <ValidationSummary style="color: red;" />
+
+            <MudGrid>
+                <MudItem xs="12" md="12" lg="12">
+                    <MudText Typo="Typo.body1"><b>What type of doctor are you?</b></MudText>
+                    <MudRadioGroup T="DoctorTypeEnum" @bind-SelectedOption="model.DoctorType" Required="true" RequiredError="Please specify the type of doctor you are">
+                        <MudRadio Color="Color.Success" Option="DoctorTypeEnum.GeneralPractitioner">General Practitioner</MudRadio>
+                        <MudRadio Color="Color.Tertiary" Option="DoctorTypeEnum.Dentist">Dentist</MudRadio>
+                    </MudRadioGroup>
+                </MudItem>
+
+                <MudItem xs="12" md="12" lg="12">
+                    <MudText Typo="Typo.h5"><b>Clinic Details</b></MudText>
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField Label="First Name" T="string" Required="true" RequiredError="Your first name is required" @bind-Value="userModel.FirstName" />
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField Label="Last Name" T="string" Required="true" RequiredError="Your last name is required" @bind-Value="userModel.LastName" />
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Text" Label="Clinic Name" T="string" Required="true" RequiredError="Clinic name is required" @bind-Value="model.Name" />
+                </MudItem>
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Text" Label="Street Address" T="string" Required="true" RequiredError="Street address is required" @bind-Value="model.StreetAddress" />
+                </MudItem>
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Text" Label="Area" T="string" Required="true" RequiredError="The area is required" @bind-Value="model.Area" />
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Text" Label="City Name" T="string" Required="true" RequiredError="The city is required" @bind-Value="model.City" />
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField Label="Country" T="string" Required="true" RequiredError="The country is required" @bind-Text="_country" ReadOnly="true" HelperText="Our service is currently available only in Syria" />
+                </MudItem>
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Text" Label="Medical Specialization" T="string" Required="true" RequiredError="Your specialization is required" @bind-Value="model.Specialization" />
+                </MudItem>
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Telephone" Label="Phone Number" T="string" Required="true" RequiredError="Your phone number is required" @bind-Value="model.Phone" />
+                </MudItem>
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Text" Label="Studied At" HelperText="Where did you go for your studies" T="string" Required="true" RequiredError="The place of your studies is required" @bind-Value="model.StudiedAt" />
+                </MudItem>
+                <MudItem xs="12" md="12" lg="12">
+                    <MudDatePicker Label="Date of Graduation" Required="true" RequiredError="The graduation date is required" Editable="true"
+                                   Mask='@( new DateMask("dd/MM/yyyy"))' @bind-Date="@graduationDate"
+                                   DateFormat="dd/MM/yyyy" />
+                </MudItem>
+                <MudItem xs="12" md="12" lg="12">
+                    <MudTextField HelperText="If you have a personal website, you can add a link to it here" Label="Website URL (Optional)" T="string" @bind-Value="model.WebsiteUrl" />
+                </MudItem>
+
+
+
+
+                <MudItem xs="12" md="12" lg="12"  Class="mt-3">
+                    <MudText Typo="Typo.h5"><b>Account Details</b></MudText>
+                </MudItem>
+
+                <MudItem xs="12" md="12" lg="12" >
+                    <MudTextField InputType="InputType.Email" Label="Email Address" T="string" Required="true" RequiredError="Your email address is required" @bind-Value="userModel.Email" />
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Password" Label="Password" T="string" Required="true" RequiredError="The password is required" @bind-Value="userModel.Password" />
+                </MudItem>
+
+                <MudItem xs="12" md="6" lg="6">
+                    <MudTextField InputType="InputType.Password" Label="Confirm Password" T="string" Required="true" RequiredError="The password cofirmation is required" @bind-Value="userModel.PasswordConfirmation" />
+                </MudItem>
+            </MudGrid>
+
+
+            <MudText Class="mt-5" Typo="Typo.body2"><b>Already registered? You can login <MudLink Color="Color.Info" Href="/user/login">here</MudLink> </b></MudText>
+
+            <MudButton Class="mt-3" Disabled="@_isMakingRequest" Variant="Variant.Filled" Color="Color.Primary"
+                       ButtonType="ButtonType.Submit">
+                Register
+            </MudButton>
+        </EditForm>
+    </MudCard>
+    </MudItem>
+</MudGrid>
+
+<style>
+    .page-style{
+        height: fit-content;
+        padding: 2rem;
+        place-items: center;
+        background-image: linear-gradient(to right, @(Colors.DeepPurple.Default), @(Colors.Purple.Default));
+    }
+</style>
