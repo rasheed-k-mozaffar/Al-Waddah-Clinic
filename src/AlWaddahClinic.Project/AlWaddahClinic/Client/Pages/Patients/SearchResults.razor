@@ -27,14 +27,23 @@ else
                 }
                 else
                 {
-                    <MudGrid Justify="Justify.FlexStart" Spacing="2">
-                        @foreach (var patient in patients.Value.OrderBy(p => p.FullName))
-                        {
-                            <MudItem xs="12" md="6" lg="4">
-                                <PatientSummaryCard Patient="patient" />
-                            </MudItem>
-                        }
-                    </MudGrid>
+                    @if (!patients.Value.Any())
+                    {
+                        <MudItem Class="d-flex justify-content-center align-center" Style="height: 100%;">
+                            <MudText Typo="Typo.h4">Nothing was found</MudText>
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudGrid Justify="Justify.FlexStart" Spacing="2">
+                            @foreach (var patient in patients.Value.OrderBy(p => p.FullName))
+                            {
+                                <MudItem xs="12" md="6" lg="4">
+                                    <PatientSummaryCard Patient="patient" />
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    }
                 }
             }
         </MudItem>
