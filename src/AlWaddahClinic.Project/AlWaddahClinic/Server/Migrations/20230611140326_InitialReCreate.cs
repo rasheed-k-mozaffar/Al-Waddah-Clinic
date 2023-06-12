@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AlWaddahClinic.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialReCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,7 @@ namespace AlWaddahClinic.Server.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClinicId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -57,20 +58,47 @@ namespace AlWaddahClinic.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Clinics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorType = table.Column<int>(type: "int", nullable: false),
+                    LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StreetAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Area = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WebsiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudiedAt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GraduatedIn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DoctorProfilePicUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clinics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Patients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClinicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmaillAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -187,16 +215,17 @@ namespace AlWaddahClinic.Server.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClinicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FinishAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -212,18 +241,24 @@ namespace AlWaddahClinic.Server.Migrations
                 name: "HealthRecords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AppointmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ClinicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HealthRecords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HealthRecords_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_HealthRecords_Patients_PatientId",
                         column: x => x.PatientId,
@@ -235,14 +270,14 @@ namespace AlWaddahClinic.Server.Migrations
                 name: "Prescriptions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AppointmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClinicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -255,29 +290,42 @@ namespace AlWaddahClinic.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    HealthRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClinicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notes_HealthRecords_HealthRecordId",
+                        column: x => x.HealthRecordId,
+                        principalTable: "HealthRecords",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Medications",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PrescriptionId = table.Column<int>(type: "int", nullable: true),
-                    HealthRecordId = table.Column<int>(type: "int", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PrescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ClinicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CommercialName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DailyDose = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FinishAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Medications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Medications_HealthRecords_HealthRecordId",
-                        column: x => x.HealthRecordId,
-                        principalTable: "HealthRecords",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Medications_Prescriptions_PrescriptionId",
                         column: x => x.PrescriptionId,
@@ -296,8 +344,8 @@ namespace AlWaddahClinic.Server.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfilePicture", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "0783b4ef-3051-4712-b7fd-f4baaa219f3f", 0, "98459703-395c-4080-9e04-d93c63ed428a", "AppUser", "admin@doctor.com", true, "Waddah", "Mozaffar", false, null, "ADMIN@DOCTOR.COM", "ADMIN@DOCTOR.COM", "AQAAAAIAAYagAAAAEBy/gdJ0kx/RhcePhkuh657vCAG6X2t9zbbN7UtQgNVm5DceikzzernUjGQ2iajQWw==", null, false, null, "", false, "admin@doctor.com" });
+                columns: new[] { "Id", "AccessFailedCount", "ClinicId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfilePicture", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "0783b4ef-3051-4712-b7fd-f4baaa219f3f", 0, new Guid("00000000-0000-0000-0000-000000000000"), "6e2b2ccf-7b45-4661-94a7-d177d72b6bf2", "AppUser", "admin@doctor.com", true, "Waddah", "Mozaffar", false, null, "ADMIN@DOCTOR.COM", "ADMIN@DOCTOR.COM", "AQAAAAIAAYagAAAAEE7QpDKXA7I3oH7C1b+BxysxnwhqcBjhCLqvumCvcN8b9Hgs9PYH3cA2r/xxKgClxw==", null, false, null, "", false, "admin@doctor.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -349,19 +397,26 @@ namespace AlWaddahClinic.Server.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_HealthRecords_AppointmentId",
+                table: "HealthRecords",
+                column: "AppointmentId",
+                unique: true,
+                filter: "[AppointmentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HealthRecords_PatientId",
                 table: "HealthRecords",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Medications_HealthRecordId",
-                table: "Medications",
-                column: "HealthRecordId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Medications_PrescriptionId",
                 table: "Medications",
                 column: "PrescriptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notes_HealthRecordId",
+                table: "Notes",
+                column: "HealthRecordId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prescriptions_AppointmentId",
@@ -389,7 +444,13 @@ namespace AlWaddahClinic.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Clinics");
+
+            migrationBuilder.DropTable(
                 name: "Medications");
+
+            migrationBuilder.DropTable(
+                name: "Notes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -398,10 +459,10 @@ namespace AlWaddahClinic.Server.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "HealthRecords");
+                name: "Prescriptions");
 
             migrationBuilder.DropTable(
-                name: "Prescriptions");
+                name: "HealthRecords");
 
             migrationBuilder.DropTable(
                 name: "Appointments");
