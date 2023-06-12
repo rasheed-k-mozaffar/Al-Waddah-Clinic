@@ -1,4 +1,5 @@
 ﻿using System;
+using AlWaddahClinic.Client.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -17,9 +18,6 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
         ApiResponse<IEnumerable<PatientSummaryDto>> patients = new();
 
-        private string _searchText = string.Empty;
-
-
         private void GoToAddPatient()
         {
             NavigationManager.NavigateTo("/patients/add");
@@ -30,12 +28,10 @@ namespace AlWaddahClinic.Client.Pages.Patients
             patients = await PatientsService.GetAllPatients();
         }
 
-        private void GoToSearchResults()
+        private void OpenSearchDialog()
         {
-            if(!string.IsNullOrEmpty(_searchText))
-            {
-                NavigationManager.NavigateTo($"/patients/search/{_searchText}");
-            }
+            var options = new DialogOptions() { ClassBackground = "dialog-background-blur", MaxWidth = MaxWidth.Medium, Position = DialogPosition.TopCenter };
+            var dialog = DialogService.Show<PatientSearchDialog>("Search", options);
         }
     }
 }

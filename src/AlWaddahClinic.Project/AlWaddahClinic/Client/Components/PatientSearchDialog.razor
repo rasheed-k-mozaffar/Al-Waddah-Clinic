@@ -1,0 +1,20 @@
+﻿<MudDialog Style="padding: 1rem;">
+    <DialogContent>
+        <MudItem Class="mb-3">
+            <MudItem>
+                <MudText Typo="Typo.h4"><b>Search</b></MudText>
+            </MudItem>
+        </MudItem>
+
+        <MudItem Class="mb-3">
+            <MudTextField T="string" Label="Search for your patients" @bind-Text="_searchText" Variant="Variant.Text"/>
+        </MudItem>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick='(() => GoToSearchResults(_searchText))' Color="Color.Info">Go</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+}
