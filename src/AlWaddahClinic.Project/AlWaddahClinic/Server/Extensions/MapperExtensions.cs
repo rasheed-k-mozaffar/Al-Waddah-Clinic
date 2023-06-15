@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using AlWaddahClinic.Shared.Dtos;
 
 namespace AlWaddahClinic.Server.Extensions
@@ -114,6 +115,31 @@ namespace AlWaddahClinic.Server.Extensions
 
     public static class ModelMappers
     {
+        public static Clinic ToClinicRegister(this RegisterClinicDto registerClinicDto)
+        {
+            string password = registerClinicDto.RegisterUser.Password;
+            return new Clinic
+            {
+                Id = Guid.NewGuid(),
+                Name = registerClinicDto.Name,
+                DoctorName = registerClinicDto.DoctorName,
+                DoctorPassword = MapperHelpers.HashPassword(password),
+                DoctorEmail = registerClinicDto.DoctorEmail,
+                Phone = registerClinicDto.Phone,
+                DoctorProfilePicUrl = registerClinicDto.DoctorProfilePicUrl,
+                LogoUrl = registerClinicDto.LogoUrl,
+                WebsiteUrl = registerClinicDto.WebsiteUrl,
+                Area = registerClinicDto.Area,
+                StreetAddress = registerClinicDto.StreetAddress,
+                City = registerClinicDto.City,
+                Country = registerClinicDto.Country,
+                StudiedAt = registerClinicDto.StudiedAt,
+                GraduatedIn = registerClinicDto.GraduatedIn,
+                Specialization = registerClinicDto.Specialization,
+                DoctorType = registerClinicDto.DoctorType,
+            };
+        }
+
         public static Patient ToPatientCreate(this PatientCreateDto patientDto)
         {
             return new Patient
@@ -251,5 +277,28 @@ namespace AlWaddahClinic.Server.Extensions
         }
 
     }
+
+    public static class MapperHelpers
+    {
+        public static string HashPassword(string password)
+        {
+            byte[] salt = new byte[16];
+
+            using(var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            byte[] hashBytes = new byte[36];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            return Convert.ToBase64String(hashBytes);
+        }
+    }
+
 }
 

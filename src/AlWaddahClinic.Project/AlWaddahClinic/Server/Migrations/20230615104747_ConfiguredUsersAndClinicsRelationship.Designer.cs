@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlWaddahClinic.Server.Migrations
 {
     [DbContext(typeof(ClinicDbContext))]
-    [Migration("20230611140326_InitialReCreate")]
-    partial class InitialReCreate
+    [Migration("20230615104747_ConfiguredUsersAndClinicsRelationship")]
+    partial class ConfiguredUsersAndClinicsRelationship
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,18 +97,20 @@ namespace AlWaddahClinic.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DoctorProfilePicUrl")
+                    b.Property<string>("DoctorPassword")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorProfilePicUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DoctorType")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("GraduatedIn")
+                    b.Property<DateTime?>("GraduatedIn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LogoUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -132,7 +134,6 @@ namespace AlWaddahClinic.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WebsiteUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -526,13 +527,6 @@ namespace AlWaddahClinic.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "0783b4ef-3051-4712-b7fd-f4baaa219f3f",
-                            RoleId = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -572,28 +566,11 @@ namespace AlWaddahClinic.Server.Migrations
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("AppUser");
+                    b.HasIndex("ClinicId")
+                        .IsUnique()
+                        .HasFilter("[ClinicId] IS NOT NULL");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "0783b4ef-3051-4712-b7fd-f4baaa219f3f",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6e2b2ccf-7b45-4661-94a7-d177d72b6bf2",
-                            Email = "admin@doctor.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@DOCTOR.COM",
-                            NormalizedUserName = "ADMIN@DOCTOR.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE7QpDKXA7I3oH7C1b+BxysxnwhqcBjhCLqvumCvcN8b9Hgs9PYH3cA2r/xxKgClxw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@doctor.com",
-                            ClinicId = new Guid("00000000-0000-0000-0000-000000000000"),
-                            FirstName = "Waddah",
-                            LastName = "Mozaffar"
-                        });
+                    b.HasDiscriminator().HasValue("AppUser");
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Appointment", b =>
@@ -708,11 +685,28 @@ namespace AlWaddahClinic.Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AlWaddahClinic.Server.Models.AppUser", b =>
+                {
+                    b.HasOne("AlWaddahClinic.Server.Models.Clinic", "Clinic")
+                        .WithOne("AppUser")
+                        .HasForeignKey("AlWaddahClinic.Server.Models.AppUser", "ClinicId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
+                });
+
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Appointment", b =>
                 {
                     b.Navigation("HealthRecord");
 
                     b.Navigation("Prescription");
+                });
+
+            modelBuilder.Entity("AlWaddahClinic.Server.Models.Clinic", b =>
+                {
+                    b.Navigation("AppUser")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.HealthRecord", b =>

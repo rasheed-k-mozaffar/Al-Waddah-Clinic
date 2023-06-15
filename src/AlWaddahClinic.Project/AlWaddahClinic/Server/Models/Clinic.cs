@@ -16,10 +16,14 @@ namespace AlWaddahClinic.Server.Models
 		public string? WebsiteUrl { get; set; }
 		public string DoctorName { get; set; }
 		public string DoctorEmail { get; set; }
+		public string DoctorPassword { get; set; }
 		public string StudiedAt { get; set; }
-		public DateTime GraduatedIn { get; set; }
+		public DateTime? GraduatedIn { get; set; }
 		public string? DoctorProfilePicUrl { get; set; }
+
+		//This property is navigational, representing the doctor who has registered the clinic.
+		public virtual AppUser AppUser { get; set; }
 	}
 }
 
-	
+		

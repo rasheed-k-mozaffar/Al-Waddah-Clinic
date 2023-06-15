@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using AlWaddahClinic.Server.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AlWaddahClinic.Server.Repositories
@@ -11,11 +12,13 @@ namespace AlWaddahClinic.Server.Repositories
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
+        private readonly Options.IdentityOptions _options;
 
-        public AuthRepository(IConfiguration configuration, UserManager<AppUser> userManager)
+        public AuthRepository(IConfiguration configuration, UserManager<AppUser> userManager, Options.IdentityOptions options)
         {
             _configuration = configuration;
             _userManager = userManager;
+            _options = options;
         }
 
         public async Task<UserManagerResponse> LoginUserAsync(LoginUserDto model)
@@ -57,9 +60,66 @@ namespace AlWaddahClinic.Server.Repositories
 
         }
 
-        public Task<UserManagerResponse> RegisterUserAsync(RegisterUserDto model)
+        public async Task<UserManagerResponse> RegisterUserAsync(RegisterUserDto model, Guid clinicId)
         {
-            throw new NotImplementedException();
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+
+            if (existingUser != null)
+            {
+                throw new UserCreationFailed("A user already exists with the same email address");
+            }
+
+            AppUser user = new AppUser
+            {
+                UserName = model.Email,
+                ClinicId = clinicId,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                NormalizedEmail = model.Email.ToUpper(),
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "User");
+                return new UserManagerResponse
+                {
+                    Message = "User created successfully",
+                    HasSucceeded = true
+                };
+            }
+            else
+            {
+                throw new UserCreationFailed("Something has gone wrong while registering the user");
+            }
+        }
+
+        public async Task<UserManagerResponse> AuthorizeUserAsync()
+        {
+            AppUser? user = await _userManager.FindByIdAsync(_options.UserId);
+
+            var result = CheckIfEmailIsVerifiedAsync(user!);
+
+            if (result)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "Email is already verified",
+                    HasSucceeded = false
+                };
+            }
+            else
+            {
+
+                await _userManager.AddToRoleAsync(user!, "Admin");
+                return new UserManagerResponse
+                {
+                    Message = "User's email was confirmed",
+                    HasSucceeded = true
+                };
+            }
         }
 
         private async Task<string> GenerateJwtTokenForUserAsync(AppUser user)
@@ -73,12 +133,10 @@ namespace AlWaddahClinic.Server.Repositories
                 new Claim(ClaimTypes.Email, user.Email!),
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
+                new Claim("ClinicId", user.ClinicId.ToString())
             };
 
-            //Check if the user logging in is an admin user
-            var result = await _userManager.IsInRoleAsync(user, "Admin");
-
-            if (result)
+           if(user.EmailConfirmed)
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
             }
@@ -100,6 +158,18 @@ namespace AlWaddahClinic.Server.Repositories
             var tokenHandler = new JwtSecurityTokenHandler();
 
             return tokenHandler.WriteToken(token);
+        }
+
+        private bool CheckIfEmailIsVerifiedAsync(AppUser user)
+        {
+            if (user.EmailConfirmed)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
