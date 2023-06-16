@@ -24,5 +24,30 @@ namespace AlWaddahClinic.Client.Services
             var result = await response.Content.ReadFromJsonAsync<ApiResponse<LoginResult>>();
             return result.Value;
         }
+
+        public async Task RegisterClinicAsync(RegisterClinicDto model)
+        {
+            var response = await _httpClient.PostAsJsonAsync("/api/auth/register", model);
+
+            if(!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new ClinicRegisterationFailedException(error.Message);
+            }
+        }
+
+        public async Task<LoginResult> VerifyUserAsync(string userId)
+        {
+            var response = await _httpClient.PutAsync($"/api/auth/{userId}", null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
+            }
+
+            var result = await response.Content.ReadFromJsonAsync<ApiResponse<LoginResult>>();
+            return result.Value;
+        }
     }
 }

@@ -8,18 +8,33 @@ namespace AlWaddahClinic.Client.Pages.User
 		[Inject]
 		public NavigationManager NavigationManager { get; set; } = default!;
 
+		[Inject]
+		public IAuthService AuthService { get; set; } = default!;
+
 		private RegisterClinicDto model = new();
 
-		private string _country = "🇸🇾 Syria";
 		private string _errorMessage = string.Empty;
 		private bool _isMakingRequest = false;
 
 		private DateTime? graduationDate;
-		private RegisterUserDto userModel = new();
 
 		private async Task RegisterAsync()
 		{
+			_isMakingRequest = true;
+			_errorMessage = string.Empty;
 
+			try
+			{
+				await AuthService.RegisterClinicAsync(model);
+				NavigationManager.NavigateTo("/user/login");
+
+            }
+			catch(ClinicRegisterationFailedException ex)
+			{
+				_errorMessage = ex.Message;
+			}
+
+			_isMakingRequest = false;
 		}
 
 	}
