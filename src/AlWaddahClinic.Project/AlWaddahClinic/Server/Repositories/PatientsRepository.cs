@@ -1,21 +1,24 @@
 ﻿using System;
 using AlWaddahClinic.Server.Data;
+using AlWaddahClinic.Server.Options;
 
 namespace AlWaddahClinic.Server.Repositories
 {
     public class PatientsRepository : IPatientsRepository
     {
         private readonly ClinicDbContext _context;
+        private readonly IdentityOptions _options;
 
-        public PatientsRepository(ClinicDbContext context)
+        public PatientsRepository(ClinicDbContext context, IdentityOptions options)
         {
             _context = context;
+            _options = options;
         }
 
 
         public async Task<IEnumerable<Patient>> GetAllPatientsAsync()
         {
-            var patients = await _context.Patients.ToListAsync();
+            var patients = await _context.Patients.Where(p => p.ClinicId.ToString() == _options.ClinicId).ToListAsync();
 
             return patients;
         }
@@ -34,6 +37,7 @@ namespace AlWaddahClinic.Server.Repositories
 
         public async Task AddPatientAsync(Patient model)
         {
+            model.ClinicId = Guid.Parse(_options.ClinicId);
             await _context.Patients.AddAsync(model);
 
             _context.SaveChanges();
@@ -79,7 +83,7 @@ namespace AlWaddahClinic.Server.Repositories
         public async Task<IEnumerable<Patient>> SearchAsync(string searchText)
         {
             var patientsSearch = from patient in _context.Patients
-                                 where patient.FullName.Contains(searchText)
+                                 where patient.FullName.Contains(searchText) && patient.ClinicId.ToString() == _options.ClinicId
                                  select patient;
 
             if(patientsSearch == null)

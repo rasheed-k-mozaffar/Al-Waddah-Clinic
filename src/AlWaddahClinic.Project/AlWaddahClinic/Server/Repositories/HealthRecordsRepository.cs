@@ -1,20 +1,23 @@
 ﻿using System;
 using AlWaddahClinic.Server.Data;
+using AlWaddahClinic.Server.Options;
 
 namespace AlWaddahClinic.Server.Repositories
 {
     public class HealthRecordsRepository : IHealthRecordsRepository
     {
         private readonly ClinicDbContext _context;
+        private readonly IdentityOptions _options;
 
-        public HealthRecordsRepository(ClinicDbContext context)
+        public HealthRecordsRepository(ClinicDbContext context, IdentityOptions options)
         {
             _context = context;
+            _options = options;
         }
 
         public async Task<IEnumerable<HealthRecord>> GetHealthRecordsForPatientAsync(Guid patientId)
         {
-            var healthRecords = await _context.HealthRecords.Where(hr => hr.PatientId == patientId).ToListAsync();
+            var healthRecords = await _context.HealthRecords.Where(hr => hr.PatientId == patientId && hr.ClinicId.ToString() == _options.ClinicId).ToListAsync();
 
             if (!healthRecords.Any())
             {
@@ -45,6 +48,7 @@ namespace AlWaddahClinic.Server.Repositories
                 throw new NotFoundException("Patient was not found");
             }
             model.Patient = patient;
+            model.ClinicId = Guid.Parse(_options.ClinicId);
             await _context.HealthRecords.AddAsync(model);
 
             await _context.SaveChangesAsync();

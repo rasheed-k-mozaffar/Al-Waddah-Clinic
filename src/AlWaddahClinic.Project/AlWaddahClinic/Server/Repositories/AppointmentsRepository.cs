@@ -1,20 +1,23 @@
 ﻿using System;
 using AlWaddahClinic.Server.Data;
+using AlWaddahClinic.Server.Options;
 
 namespace AlWaddahClinic.Server.Repositories
 {
 	public class AppointmentsRepository : IAppointmentsRepository
 	{
         private readonly ClinicDbContext _context;
+        private readonly IdentityOptions _options;
 
-        public AppointmentsRepository(ClinicDbContext context)
+        public AppointmentsRepository(ClinicDbContext context, IdentityOptions options)
         {
             _context = context;
+            _options = options;
         }
 
         public async Task<IEnumerable<Appointment>> GetAppointmentsAsync()
         {
-            var appointmets = await _context.Appointments.ToListAsync();
+            var appointmets = await _context.Appointments.Where(a => a.ClinicId.ToString() == _options.ClinicId).ToListAsync();
 
             if(appointmets == null)
             {
@@ -47,6 +50,7 @@ namespace AlWaddahClinic.Server.Repositories
             }
 
             model.Patient = patient;
+            model.ClinicId = Guid.Parse(_options.ClinicId);
 
             await _context.Appointments.AddAsync(model);
             await _context.SaveChangesAsync();
