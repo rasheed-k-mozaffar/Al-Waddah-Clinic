@@ -4,24 +4,31 @@
 
 <AuthorizeView>
     <Authorized>
-        <MudGrid Justify="Justify.Center" Class="page-style-yellow">
-            <MudItem xs="11" md="6" lg="6">
-                <MudCard style="width: 100%; padding: 2.5rem;">
-                    <MudCardContent>
-                        <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Warning"><b>Cannot Go There</b></MudText>
-                        <MudText Align="Align.Center" Typo="Typo.body1">
-                            You still haven't verified your email, confirming it will solve this problem, click below to get verified
-                        </MudText>
-                        <MudItem Class="d-flex justify-center mt-5">
-                            <MudButton Class="justifiy-center" Variant="Variant.Filled" Color="Color.Warning"
-                                       @onclick='( () => NavigationManager.NavigateTo("/user/verify-email") )'>
-                                Go To Verification
-                            </MudButton>
-                        </MudItem>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-        </MudGrid>
+        @if (context.User.FindFirst("email_verified")?.Value == "true")
+        {
+                NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            <MudGrid Justify="Justify.Center" Class="page-style-yellow">
+                <MudItem xs="11" md="6" lg="6">
+                    <MudCard style="width: 100%; padding: 2.5rem;">
+                        <MudCardContent>
+                            <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Warning"><b>Cannot Go There</b></MudText>
+                            <MudText Align="Align.Center" Typo="Typo.body1">
+                                You still haven't verified your email, confirming it will solve this problem, click below to get verified
+                            </MudText>
+                            <MudItem Class="d-flex justify-center mt-5">
+                                <MudButton Class="justifiy-center" Variant="Variant.Filled" Color="Color.Warning"
+                                           @onclick='( () => NavigationManager.NavigateTo("/user/verify-email") )'>
+                                    Go To Verification
+                                </MudButton>
+                            </MudItem>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        }
     </Authorized>
 
     <NotAuthorized>

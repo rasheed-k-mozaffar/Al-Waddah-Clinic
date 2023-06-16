@@ -4,6 +4,7 @@
 @inject IAuthService AuthService
 @inject ILocalStorageService LocalStorage
 @layout EmptyLayout
+@attribute [Authorize(Roles = "User")]
 
 
 <MudGrid Justify="Justify.Center" Class="page-style">
@@ -50,6 +51,7 @@
             if(result.HasSucceeded)
         {
                 await LocalStorage.SetItemAsStringAsync("access_token", result.Token);
+                await AuthState.GetAuthenticationStateAsync();
                 NavigationManager.NavigateTo("/");
         }
 
