@@ -10,7 +10,11 @@
         </MudAppBar>
         <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
             <MudDrawerHeader>
-                <MudText Typo="Typo.h5" Class="mt-1"><b>Al Waddah Clinic</b></MudText>
+                <Typography>
+                    <MudText Typo="Typo.h5" Class="mt-1"><b>Al Waddah Clinic</b></MudText>
+                    
+                    <MudText Typo="Typo.body2" Color="Color.Success" Inline="false"><b>Version 0.2 (Beta)</b></MudText>
+                </Typography>
             </MudDrawerHeader>
             <MudNavMenu>
                 <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard 🏡</MudNavLink>
