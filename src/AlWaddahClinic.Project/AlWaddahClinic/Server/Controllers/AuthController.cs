@@ -59,15 +59,21 @@ namespace AlWaddahClinic.Server.Controllers
                 using (var transaction = _context.Database.BeginTransaction())
                 {
                     var clinic = model.ToClinicRegister();
-
                     try
                     {
                         var clinicRegisterationResult = await _clinicRepository.CreateClinicAsync(clinic);
-
                         try
                         {
                             //This will call the register service and create a new user in the database with their respective clinic ID
-                            var result = await _authRepository.RegisterUserAsync(model.RegisterUser, clinic.Id);
+                            var registerUserDto = new RegisterUserDto
+                            {
+                                FirstName = model.FirstName,
+                                LastName = model.LastName,
+                                Email = model.DoctorEmail,
+                                Password = model.Password,
+                                PasswordConfirmation = model.PasswordConfirmation
+                            };
+                            var result = await _authRepository.RegisterUserAsync(registerUserDto, clinic.Id);
 
                             if (result.HasSucceeded)
                             {
@@ -101,18 +107,19 @@ namespace AlWaddahClinic.Server.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpPut]
+        [HttpPut("{userId}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> ConfirmUserEmail()
+        public async Task<IActionResult> ConfirmUserEmail(string userId)
         {
 
-            var result = await _authRepository.AuthorizeUserAsync();
+            var result = await _authRepository.AuthorizeUserAsync(userId);
 
             if (result.HasSucceeded)
             {
-                return Ok(new ApiResponse
+                return Ok(new ApiResponse<LoginResult>
                 {
-                    Message = "User email was verified successfully",
+                    Message = "Access token retrieved successfully",
+                    Value = new LoginResult { Token = result.Message, HasSucceeded = true },
                     IsSuccess = true
                 });
             }

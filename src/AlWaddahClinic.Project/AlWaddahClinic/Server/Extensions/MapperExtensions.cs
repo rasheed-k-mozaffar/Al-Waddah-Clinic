@@ -117,7 +117,7 @@ namespace AlWaddahClinic.Server.Extensions
     {
         public static Clinic ToClinicRegister(this RegisterClinicDto registerClinicDto)
         {
-            string password = registerClinicDto.RegisterUser.Password;
+            string password = registerClinicDto.Password;
             return new Clinic
             {
                 Id = Guid.NewGuid(),
