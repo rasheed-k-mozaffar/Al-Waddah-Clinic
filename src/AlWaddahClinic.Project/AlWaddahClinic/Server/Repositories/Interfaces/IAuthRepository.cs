@@ -5,7 +5,7 @@ namespace AlWaddahClinic.Server.Repositories.Interfaces
     {
         Task<UserManagerResponse> RegisterUserAsync(RegisterUserDto mode, Guid clinicId);
         Task<UserManagerResponse> LoginUserAsync(LoginUserDto model);
-        Task<UserManagerResponse> AuthorizeUserAsync();
+        Task<UserManagerResponse> AuthorizeUserAsync(string userId);
     }
 }
 

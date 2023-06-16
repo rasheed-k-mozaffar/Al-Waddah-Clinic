@@ -96,9 +96,9 @@ namespace AlWaddahClinic.Server.Repositories
             }
         }
 
-        public async Task<UserManagerResponse> AuthorizeUserAsync()
+        public async Task<UserManagerResponse> AuthorizeUserAsync(string userId)
         {
-            AppUser? user = await _userManager.FindByIdAsync(_options.UserId);
+            AppUser? user = await _userManager.FindByIdAsync(userId);
 
             var result = CheckIfEmailIsVerifiedAsync(user!);
 
@@ -112,11 +112,14 @@ namespace AlWaddahClinic.Server.Repositories
             }
             else
             {
-
+                user.EmailConfirmed = true;
                 await _userManager.AddToRoleAsync(user!, "Admin");
+                await _userManager.UpdateAsync(user);
+
+                var token = await GenerateJwtTokenForUserAsync(user);
                 return new UserManagerResponse
                 {
-                    Message = "User's email was confirmed",
+                    Message = token,
                     HasSucceeded = true
                 };
             }
@@ -138,6 +141,7 @@ namespace AlWaddahClinic.Server.Repositories
 
            if(user.EmailConfirmed)
             {
+                claims.Add(new Claim("email_verified", "true"));
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
             }
             else
