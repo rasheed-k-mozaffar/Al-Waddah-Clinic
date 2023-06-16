@@ -27,7 +27,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             try
             {
                 appointments = (await AppointmentsService.GetAllAppointmentsAsync()).Value.ToList();
-                _actionsRequired = appointments.Where(a => a.StartAt < DateTime.Now.AddMinutes(-1)).Select(a => a.Status == null).Count();
+                _actionsRequired = appointments.Where(a => a.StartAt < DateTime.Now.AddMinutes(-1) && a.Status == null).Count();
                 _isBusy = false;
             }
             catch (DomainException ex)
@@ -37,7 +37,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
         }
 
         private async Task OpenRemoveDialog(Guid id)
-        {
+        { 
             var parameters = new DialogParameters();
             parameters.Add("Header", "Confirm Removal");
             parameters.Add("Content", "Do you really want to remove this appointment? Please note that once the process has completed it cannot be inverted");
