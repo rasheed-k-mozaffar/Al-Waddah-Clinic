@@ -2,20 +2,63 @@
 @inject NavigationManager NavigationManager
 @layout EmptyLayout
 
-<MudGrid Class="d-flex align-center justify-center mud-width-full" style="height:100vh; width:100vw; background-image: url('https://th.bing.com/th/id/R.9c4bd3d23ff6e1dae23af5359fb5afaa?rik=Si1KMVJLqOQRdQ&pid=ImgRaw&r=0'); background-repeat: no-repeat; background-size: cover;">
-    <MudItem xs="10" md="8" lg="6">
-        <MudCard style="width: 100%; padding: 2.5rem;">
-            <MudCardContent>
-                <MudText Align="Align.Center" Typo="Typo.h1" Color="Color.Primary"><b>Oh No!</b></MudText>
-                <MudText Align="Align.Center" Typo="Typo.body1">Looks like the author of this page has restricited the
-                    access to it, please
-                    login if you've not done already, that may fix the problem</MudText>
-                <MudItem Class="d-flex justify-center mt-5">
-                    <MudButton Class="justifiy-center" Variant="Variant.Filled" Color="Color.Primary"
-                    @onclick='( () => NavigationManager.NavigateTo("/user/login") )'>Go To
-                        Login</MudButton>
-                </MudItem>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+<AuthorizeView>
+    <Authorized>
+        <MudGrid Justify="Justify.Center" Class="page-style-yellow">
+            <MudItem xs="11" md="6" lg="6">
+                <MudCard style="width: 100%; padding: 2.5rem;">
+                    <MudCardContent>
+                        <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Warning"><b>Cannot Go There</b></MudText>
+                        <MudText Align="Align.Center" Typo="Typo.body1">
+                            You still haven't verified your email, confirming it will solve this problem, click below to get verified
+                        </MudText>
+                        <MudItem Class="d-flex justify-center mt-5">
+                            <MudButton Class="justifiy-center" Variant="Variant.Filled" Color="Color.Warning"
+                                       @onclick='( () => NavigationManager.NavigateTo("/user/verify-email") )'>
+                                Go To Verification
+                            </MudButton>
+                        </MudItem>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </Authorized>
+
+    <NotAuthorized>
+        <MudGrid Justify="Justify.Center" Class="page-style">
+            <MudItem xs="10" md="8" lg="6">
+                <MudCard style="width: 100%; padding: 2.5rem;">
+                    <MudCardContent>
+                        <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Primary"><b>Oh No!</b></MudText>
+                        <MudText Align="Align.Center" Typo="Typo.body1">
+                            Looks like the author of this page has restricited the
+                            access to it, please
+                            login if you've not done already, that may fix the problem
+                        </MudText>
+                        <MudItem Class="d-flex justify-center mt-3">
+                            <MudButton Class="justifiy-center" Variant="Variant.Filled" Color="Color.Primary"
+                                       @onclick='( () => NavigationManager.NavigateTo("/user/login") )'>
+                                Go To
+                                Login
+                            </MudButton>
+                        </MudItem>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </NotAuthorized>
+</AuthorizeView>
+
+<style>
+    .page-style{
+        height: 100vh;
+        place-items: center;
+        background-image: linear-gradient(to right, @(Colors.DeepPurple.Accent3), @(Colors.Purple.Accent1));
+    }
+
+    .page-style-yellow{
+        height: 100vh;
+        place-items: center;
+        background-image: linear-gradient(to right, @(Colors.Amber.Darken1), @(Colors.Amber.Darken4));
+    }
+</style>
