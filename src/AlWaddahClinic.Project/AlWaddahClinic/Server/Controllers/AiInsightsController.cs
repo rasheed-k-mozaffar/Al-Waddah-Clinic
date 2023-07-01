@@ -19,7 +19,7 @@ namespace AlWaddahClinic.Server.Controllers
         }
 
         [HttpPost("IllnessInfo")]
-		public async Task<IActionResult> GetRelatedCases([FromBody] CaseDto model)
+		public async Task<IActionResult> GetIllnessInfo([FromBody] CaseDto model)
 		{
 			if (ModelState.IsValid)
 			{
