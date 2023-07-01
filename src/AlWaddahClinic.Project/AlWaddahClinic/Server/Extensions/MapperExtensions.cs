@@ -52,7 +52,11 @@ namespace AlWaddahClinic.Server.Extensions
                 Description = healthRecord.Description,
                 CreatedOn = (DateTime)healthRecord.CreatedOn,
                 Notes = healthRecord.Notes.Select(n => n.ToNoteDto()).ToList(),
-                Patient = healthRecord.Patient.ToPatientDto()
+                Patient = healthRecord.Patient.ToPatientDto(),
+                PatientSuggestion = healthRecord.PatientSuggestion.Split(',').ToList(),
+                SuggestedMedicalTests = healthRecord.SuggestedMedicalTests.Split(',').ToList(),
+                RelatedMedicalCases = healthRecord.RelatedMedicalCases.Split(',').ToList(),
+                MedicalCaseInsight = healthRecord.MedicalCaseInsight.Split(',').ToList(),
             };
         }
 
@@ -189,7 +193,11 @@ namespace AlWaddahClinic.Server.Extensions
             return new HealthRecord
             {
                 Description = healthRecordDto.Description,
-                Notes = healthRecordDto.Notes?.Select(n => n.ToNoteCreate()).ToList()
+                Notes = healthRecordDto.Notes?.Select(n => n.ToNoteCreate()).ToList(),
+                PatientSuggestion = string.Join(',', healthRecordDto.PatientSuggestion),
+                SuggestedMedicalTests = string.Join(',', healthRecordDto.SuggestedMedicalTests),
+                RelatedMedicalCases = string.Join(',', healthRecordDto.RelatedMedicalCases),
+                MedicalCaseInsight = string.Join(',', healthRecordDto.MedicalCaseInsight),
             };
         }
 
@@ -201,7 +209,11 @@ namespace AlWaddahClinic.Server.Extensions
                 PatientId = healthRecordDto.Patient.Id,
                 Description = healthRecordDto.Description,
                 Patient = healthRecordDto.Patient.ToPatient(),
-                Notes = healthRecordDto.Notes?.Select(n => n.ToNote()).ToList()
+                Notes = healthRecordDto.Notes?.Select(n => n.ToNote()).ToList(),
+                PatientSuggestion = string.Join(',', healthRecordDto.PatientSuggestion),
+                SuggestedMedicalTests = string.Join(',', healthRecordDto.SuggestedMedicalTests),
+                RelatedMedicalCases = string.Join(',', healthRecordDto.RelatedMedicalCases),
+                MedicalCaseInsight = string.Join(',', healthRecordDto.MedicalCaseInsight),
             };
 
         }
@@ -284,7 +296,7 @@ namespace AlWaddahClinic.Server.Extensions
         {
             byte[] salt = new byte[16];
 
-            using(var rng = RandomNumberGenerator.Create())
+            using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(salt);
             }
