@@ -4,6 +4,7 @@ using AlWaddahClinic.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlWaddahClinic.Server.Migrations
 {
     [DbContext(typeof(ClinicDbContext))]
-    partial class ClinicDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230616115133_SwitchedToOnlineDatabase")]
+    partial class SwitchedToOnlineDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,9 +163,6 @@ namespace AlWaddahClinic.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MedicalCaseInsight")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ModifiedByUserId")
                         .HasColumnType("nvarchar(max)");
 
@@ -171,15 +171,6 @@ namespace AlWaddahClinic.Server.Migrations
 
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PatientSuggestion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RelatedMedicalCases")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SuggestedMedicalTests")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
