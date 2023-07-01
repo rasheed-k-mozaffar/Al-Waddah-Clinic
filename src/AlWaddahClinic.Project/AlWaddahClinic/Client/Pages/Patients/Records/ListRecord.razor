@@ -22,19 +22,41 @@
         <MudContainer Class="mt-5">
             <MudCard Style="padding: 2rem;">
                 <MudCardContent>
-                    <MudText Typo="Typo.h3" Color="Color.Error"><b><i class="bi bi-journal-medical"></i> Health Record</b></MudText>
+                    <MudText Typo="Typo.h3" Color="Color.Error"><b><i class="bi bi-journal-medical"></i> Health Record</b>
+                    </MudText>
                     <MudText Typo="Typo.h6"><b>Created On: @record.CreatedOn.ToLongDateString()</b></MudText>
-                    <MudText Typo="Typo.h6" Color="Color.Info" @onclick="GoBack" Style="text-decoration: underline; cursor: pointer;">@record.Patient.FullName</MudText>
+                    <MudText Typo="Typo.h6" Color="Color.Info" @onclick="GoBack"
+                        Style="text-decoration: underline; cursor: pointer;">@record.Patient.FullName</MudText>
                     <MudDivider />
                 </MudCardContent>
 
-                <MudCardContent>
-                    <MudText Typo="Typo.h6">
-                        <b>Description:</b>
-                    </MudText>
-
-                    <MudText Typo="Typo.body1">@record.Description</MudText>
+                <MudCardContent Class="mb-5">
+                    <MudTextField T="string" Label="Case Description" @bind-Text="@record.Description" ReadOnly="true"
+                        MultiLine="true" Lines="10" Variant="Variant.Outlined" />
                 </MudCardContent>
+
+                <MudCardContent Class="mb-5">
+                    <MudExpansionPanels MultiExpansion="true">
+                        <div class="vertical-align">
+                            <MudIcon Icon="@Icons.Outlined.Lightbulb" Color="Color.Tertiary" /> &nbsp;
+                            <span>
+                                <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
+                            </span>
+                            <MudChip Color="Color.Tertiary" Size="Size.Small" Variant="Variant.Filled" Text="BETA" />
+                        </div>
+
+                        <MudExpansionPanel Class="mb-5 mt-3" Text="Smart Insights Suggestions">
+                            <InsightsContainer Text="Suggestions For Patient" insights="@record.PatientSuggestion" />
+                            <InsightsContainer Text="Related Medical Cases" insights="@record.RelatedMedicalCases" />
+                            <InsightsContainer Text="Suggested Medical Tests" insights="@record.SuggestedMedicalTests" />
+                            <InsightsContainer Text="Case Information" insights="@record.MedicalCaseInsight" />
+                        </MudExpansionPanel>
+
+                    </MudExpansionPanels>
+                </MudCardContent>
+
+
+
 
                 @if (record.Notes == null)
                 {
@@ -51,14 +73,13 @@
                     else
                     {
                         <MudCardContent>
-                            <MudText Typo="Typo.h6"><b>Notes & Information</b></MudText>
+                            <MudText Typo="Typo.h6"><b>Additional Information</b></MudText>
                             @foreach (var note in record.Notes)
                             {
                                 <MudText Typo="Typo.body2"><i class="bi bi-pin-angle-fill"></i> @note.Title</MudText>
                             }
                         </MudCardContent>
                     }
-
                 }
 
 
@@ -74,3 +95,9 @@
 }
 
 
+<style>
+    .vertical-align {
+        display: flex;
+        align-items: center;
+    }
+</style>

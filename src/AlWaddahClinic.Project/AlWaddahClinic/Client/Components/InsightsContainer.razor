@@ -1,0 +1,13 @@
+﻿<MudExpansionPanel Text="@Text" Style="direction: rtl;">
+    @foreach (string insight in insights)
+    {
+        <MudText Typo="Typo.subtitle1"><i class="bi bi-pin-angle-fill"></i> @insight</MudText>
+    }
+</MudExpansionPanel>
+
+@code{
+    [Parameter] public string Text { get; set; }
+    [Parameter] public List<string>? insights { get; set; }
+}
+
+
