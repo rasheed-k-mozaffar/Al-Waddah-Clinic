@@ -31,27 +31,30 @@ namespace AlWaddahClinic.Server.Repositories
         {
             var healthRecord = await _context.HealthRecords.FindAsync(recordId);
 
-            if (healthRecord == null)
+            if (healthRecord != null)
             {
-                throw new NotFoundException("Health record was not found");
+                return healthRecord;
             }
 
-            return healthRecord;
+            throw new NotFoundException("Health record was not found");
         }
 
         public async Task AddHealthRecordAsync(Guid patientId, HealthRecord model)
         {
             var patient = await _context.Patients.FindAsync(patientId);
 
-            if (patient == null)
+            if (patient != null)
+            {
+                model.Patient = patient;
+                model.ClinicId = Guid.Parse(_options.ClinicId);
+                await _context.HealthRecords.AddAsync(model);
+
+                await _context.SaveChangesAsync();
+            }
+            else
             {
                 throw new NotFoundException("Patient was not found");
             }
-            model.Patient = patient;
-            model.ClinicId = Guid.Parse(_options.ClinicId);
-            await _context.HealthRecords.AddAsync(model);
-
-            await _context.SaveChangesAsync();
         }
 
         public async Task RemoveHealthRecord(Guid recordId)
