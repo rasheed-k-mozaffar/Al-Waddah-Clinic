@@ -16,6 +16,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPatientsService, PatientsService>();
 builder.Services.AddScoped<IHealthRecordsService, HealthRecordsService>();
 builder.Services.AddScoped<IAppointmentsService, AppointmentsService>();
+builder.Services.AddScoped<IAiService, AiService>();
 
 builder.Services.AddHttpClient("AlWaddahClinic.ServerAPI", client =>
 {
