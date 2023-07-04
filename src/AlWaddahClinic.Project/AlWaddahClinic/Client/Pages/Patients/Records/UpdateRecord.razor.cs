@@ -18,7 +18,10 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
         private List<NoteUpdateDto>? notes = new();
 
         private string _noteTitle = string.Empty;
+        private string InsightsPannelText => _isPreparingInsights ? "Loading..." : "Get Ai Generated Insights Regarding Your Patient's Case! Just Click The Lightbulb";
 
+        private bool _isInsightReady = false;
+        private bool _isPreparingInsights = false;
         private string _errorMessage = string.Empty;
         private bool _isMakingRequest = false;
         private bool _isBusy = true;
@@ -72,6 +75,28 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 
             _noteTitle = string.Empty;
         }
+
+        //private async Task GetInsights()
+        //{
+        //    CaseDto _case = new()
+        //    {
+        //        message = model.Description
+        //    };
+        //    //Pass the description from the health record to the Ai Service
+        //    if (!string.IsNullOrEmpty(_case.message))
+        //    {
+        //        _isInsightReady = false;
+        //        _isPreparingInsights = true;
+
+        //        model.PatientSuggestion = (await AiService.GetSuggestionsForPatientAsync(_case)).Value.ToList();
+        //        model.RelatedMedicalCases = (await AiService.GetRelatedMedicalCasesAsync(_case)).Value.ToList();
+        //        model.SuggestedMedicalTests = (await AiService.GetSuggestedMedicalTestsAsync(_case)).Value.ToList();
+        //        model.MedicalCaseInsight = (await AiService.GetCaseInsightsAsync(_case)).Value.ToList();
+
+        //        _isInsightReady = true;
+        //        _isPreparingInsights = false;
+        //    }
+        //}
 
         private void GoBack()
         {

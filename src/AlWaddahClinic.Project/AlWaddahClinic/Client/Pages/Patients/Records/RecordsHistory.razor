@@ -44,7 +44,7 @@ else
                                 <td style="text-align: end;">
                                     <MudIconButton Color="Color.Tertiary" Icon="@Icons.Material.Filled.FileOpen" Title="Go To Record" OnClick='(() => NavigationManager.NavigateTo($"/patients/records/{record.Id}"))' />
                                     <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" Title="Edit Record Details" OnClick='(() => NavigationManager.NavigateTo($"/patients/records/update/{record.Id}"))' />
-                                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.DeleteOutline" Title="Delete Record" OnClick='(() =>  OpenRemoveDialog(record.Id))' />
+                                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.DeleteOutline" Title="Delete Record" OnClick='(() =>  OpenRemoveDialog(record.Id))' Disabled="true"/>
                                 </td>
                             </tr>
                         }
