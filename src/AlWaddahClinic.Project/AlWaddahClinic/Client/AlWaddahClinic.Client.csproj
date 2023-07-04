@@ -36,6 +36,7 @@
     <None Remove="Pages\Patients\Records\" />
     <None Remove="Pages\User\" />
     <None Remove="Pages\Appointments\" />
+    <None Remove="UiServices\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shared\" />
@@ -44,5 +45,6 @@
     <Folder Include="Pages\Patients\Records\" />
     <Folder Include="Pages\User\" />
     <Folder Include="Pages\Appointments\" />
+    <Folder Include="UiServices\" />
   </ItemGroup>
 </Project>
