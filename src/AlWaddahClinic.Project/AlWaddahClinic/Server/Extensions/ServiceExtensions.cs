@@ -19,7 +19,6 @@ namespace AlWaddahClinic.Server.Extensions
 		{
 			var sqlConnectionString = new SqlConnectionStringBuilder();
 			sqlConnectionString.ConnectionString = configuration.GetConnectionString("AppConnection");
-			sqlConnectionString.Password = configuration["DatabaseDetails:Password"];
 			services.AddDbContext<ClinicDbContext>(options =>
 			{
 				options.UseSqlServer(sqlConnectionString.ConnectionString);

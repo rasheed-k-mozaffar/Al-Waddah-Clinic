@@ -19,6 +19,10 @@ builder.Services.AddScoped<IHealthRecordsRepository, HealthRecordsRepository>();
 builder.Services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
 builder.Services.AddScoped<IClinicRepository, ClinicRepository>();
 
+builder.Services.AddScoped<IAiRepository, AiRepository>();
+
+builder.Services.AddHttpClient();
+
 builder.Services.AddScoped(sp =>
 {
     var options = new AlWaddahClinic.Server.Options.IdentityOptions();
