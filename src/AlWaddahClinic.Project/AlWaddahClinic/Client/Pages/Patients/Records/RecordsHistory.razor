@@ -1,0 +1,56 @@
+﻿@page "/patients/records/history/{patientName}/{patientId:guid}"
+
+@if (_isBusy == true)
+{
+        <MudGrid Justify="Justify.Center" Style="height: 100vh; align-content: center;">
+            <MudItem>
+                <Loader />
+            </MudItem>
+        </MudGrid>
+}
+else
+{
+    <MudContainer Class="mt-5">
+        <MudItem Class="d-flex justify-space-between mb-5">
+            <MudItem>
+                <MudText Typo="Typo.h6"><b>@PatientName' Health Records History</b></MudText>
+            </MudItem>
+
+            <MudItem>
+                <MudIconButton Color="Color.Dark" Icon="@Icons.Material.Filled.ArrowBack" Title="Go To All Patients Page" OnClick='(() => NavigationManager.NavigateTo($"/patients/all"))' />
+            </MudItem>
+        </MudItem>
+
+        <MudItem>
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">@_errorMessage</MudAlert>
+            }
+            else
+            {
+                <MudSimpleTable Hover="true" Striped="true" Style="overflow-x: auto;">
+                    <thead>
+                        <tr>
+                            <th>Date Of Creation</th>
+                            <th style="text-align: end;">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var record in records)
+                        {
+                            <tr>
+                                <td>@record.CreatedOn.ToLongDateString()</td>
+                                <td style="text-align: end;">
+                                    <MudIconButton Color="Color.Tertiary" Icon="@Icons.Material.Filled.FileOpen" Title="Go To Record" OnClick='(() => NavigationManager.NavigateTo($"/patients/records/{record.Id}"))' />
+                                    <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" Title="Edit Record Details" OnClick='(() => NavigationManager.NavigateTo($"/patients/records/update/{record.Id}"))' />
+                                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.DeleteOutline" Title="Delete Record" OnClick='(() =>  OpenRemoveDialog(record.Id))' />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </MudSimpleTable>
+            }
+        </MudItem>
+    </MudContainer>
+}
