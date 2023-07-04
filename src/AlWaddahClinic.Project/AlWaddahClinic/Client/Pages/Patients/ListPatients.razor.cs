@@ -16,6 +16,9 @@ namespace AlWaddahClinic.Client.Pages.Patients
         [Inject]
         public IDialogService DialogService { get; set; } = default!;
 
+        [Inject]
+        public IDialogsHandler DialogsHandler { get; set; } = default!;
+
         ApiResponse<IEnumerable<PatientSummaryDto>> patients = new();
 
         private void GoToAddPatient()
@@ -24,6 +27,11 @@ namespace AlWaddahClinic.Client.Pages.Patients
         }
 
         protected override async Task OnInitializedAsync()
+        {
+            patients = await PatientsService.GetAllPatients();
+        }
+
+        public async Task HandlePatientRemoval()
         {
             patients = await PatientsService.GetAllPatients();
         }

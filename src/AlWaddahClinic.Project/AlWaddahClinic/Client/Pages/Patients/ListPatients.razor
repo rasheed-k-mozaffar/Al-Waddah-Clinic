@@ -33,14 +33,13 @@
                     @foreach (var patient in patients.Value.OrderBy(p => p.FullName))
                     {
                         <MudItem xs="12" md="6" lg="4">
-                            <PatientSummaryCard Patient="patient" />
+                            <PatientSummaryCard Patient="patient" OnPatientRemoval="HandlePatientRemoval"/>
                         </MudItem>
                     }
                 </MudGrid>
             }
         }
     </MudItem>
-
 </MudContainer>
 
 

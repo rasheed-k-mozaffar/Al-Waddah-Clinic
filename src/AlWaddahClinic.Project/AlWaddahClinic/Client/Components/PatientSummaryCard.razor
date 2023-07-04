@@ -1,19 +1,28 @@
-﻿@inject NavigationManager NavigationManager
-
-<MudCard Outlined="true" Style="width: 100%; height: fit-content">
+﻿<MudCard Class="card-style" @onclick='( () => NavigationManager.NavigateTo($"/patients/{Patient.PatientId}"))'>
     <MudCardContent>
-        <MudText Typo="Typo.h5" Class="mb-3"><b>@Patient.FullName</b></MudText>
-        <MudText Typo="Typo.body1"><b style="@($"color: {Color.Primary}")">Email:</b> @Patient.EmailAddress</MudText>
-        <MudText Typo="Typo.body1"><b style="@($"color: {Color.Primary}")">Phone:</b> @Patient.PhoneNumber</MudText>
+        <MudText Typo="Typo.h5" Class="mb-3"><b>@Patient.FullName</b> <MudChip Color="@(Patient.Gender == 0 ? Color.Info : Color.Secondary)" Size="Size.Medium" Variant="Variant.Outlined"><MudIcon Icon="@(Patient.Gender == 0 ? @Icons.Material.Filled.Male : @Icons.Material.Filled.Female)" /></MudChip></MudText>
+        <MudText Typo="Typo.body1"><i class="bi bi-envelope-at"></i> <b>Email:</b> @(Patient.EmailAddress ?? "N/A")</MudText>
+        <MudText Typo="Typo.body1"><i class="bi bi-telephone-fill"></i> <b>Phone:</b> @(Patient.PhoneNumber ?? "N/A")</MudText>
     </MudCardContent>
-    <MudCardActions Class="mb-3">
-        <MudButton Variant="Variant.Filled" Style=@($"color: white;background: {Colors.Purple.Darken4}") Class="mr-2" @onclick='( () => NavigationManager.NavigateTo($"/patients/{Patient.PatientId}") )'>Learn More</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick=' ( () => NavigationManager.NavigateTo($"/patients/update/{Patient.PatientId}") )'>Update</MudButton>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Class="mr-2"  Color="Color.Info" @onclick=' ( () => NavigationManager.NavigateTo($"/patients/update/{Patient.PatientId}") )'>Update</MudButton>
+        <MudIconButton Color="Color.Tertiary" OnClick='(() => NavigationManager.NavigateTo($"/patients/records/history/{Patient.FullName}/{Patient.PatientId}"))' Icon="@Icons.Material.Filled.ListAlt" Title="Patient's Cases History"/>
+        <MudIconButton Color="Color.Warning" OnClick='(() => NavigationManager.NavigateTo($"/appointments/make/{Patient.PatientId}"))' Icon="@Icons.Material.Filled.CalendarMonth" Title="Make An Appointment" />
+        <MudIconButton Color="Color.Error" OnClick='(async () => await OpenRemoveDialog(Patient.PatientId))' Icon="@Icons.Material.Filled.PersonRemove" Title="Remove Patient Details"  />
     </MudCardActions>
 </MudCard>
 
-@code {
-    [Parameter]
-    public PatientSummaryDto Patient { get; set; } = null!;
-}
+<style>
+    .card-style {
+        width: 100%;
+        padding: .5rem;
+        transition: .25s;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
+        .card-style:hover {
+            border: 2.5px solid @(Colors.Blue.Default);
+            box-shadow: 5px 5px 10px gray;
+        }
+</style>
