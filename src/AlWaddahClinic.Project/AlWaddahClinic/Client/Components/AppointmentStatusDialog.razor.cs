@@ -13,7 +13,7 @@ namespace AlWaddahClinic.Client.Components
         [Parameter] public Guid AppointmentId { get; set; }
 
         private List<NoteCreateDto>? notes = new();
-        private HealthRecordCreateDto recordModel = new();
+        private HealthRecordCreateDto? recordModel = new();
         private AppointmentStatusCheckDto model = new();
 
         private string _noteTitle = string.Empty;
@@ -37,6 +37,7 @@ namespace AlWaddahClinic.Client.Components
             _errorMessage = string.Empty;
             try
             {
+                model.HealthRecordCreate = recordModel;
                 await AppointmentsService.CompleteAppointmentAsync(AppointmentId, model);
             }
             catch(DomainException ex)

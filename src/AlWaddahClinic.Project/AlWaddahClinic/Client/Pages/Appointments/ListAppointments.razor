@@ -52,7 +52,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var appointment in appointments.Where(a => a.StartAt < DateTime.Now.AddHours(-1)).OrderBy(a => a.StartAt - DateTime.Now))
+                            @foreach (var appointment in appointments.Where(a => a.StartAt < DateTime.Now.AddMinutes(-15)).OrderBy(a => a.StartAt - DateTime.Now))
                             {
                                 <tr style="border: @(!appointment.Status.HasValue ? "3px solid gold" : "none") ">
                                     <td>@appointment.PatientName</td>

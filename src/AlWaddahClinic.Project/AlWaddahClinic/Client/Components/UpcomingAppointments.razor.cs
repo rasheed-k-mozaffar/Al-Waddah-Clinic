@@ -33,11 +33,11 @@ namespace AlWaddahClinic.Client.Components
             {
                 result = await AppointmentsService.GetAllAppointmentsAsync();
 
-                if (result.IsSuccess)
-                {
-                    appointments = result.Value.Where(a => a.StartAt.Value < DateTime.Now.AddHours(24)).ToList();
+            if (result.IsSuccess)
+            {
+                appointments = result.Value.Where(a => a.StartAt.Value < DateTime.Now.AddHours(24) && a.StartAt.Value > DateTime.Now).ToList();
 
-                }
+            }
             }
             catch (DomainException ex)
             {

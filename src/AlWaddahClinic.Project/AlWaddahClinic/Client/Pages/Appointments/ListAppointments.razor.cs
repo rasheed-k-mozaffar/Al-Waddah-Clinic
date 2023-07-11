@@ -16,6 +16,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
         [Inject]
         public IDialogService DialogService { get; set; } = default!;
 
+        private List<AppointmentSummaryDto> result;
         private List<AppointmentSummaryDto> appointments;
 
         private bool _isBusy = true;
@@ -26,8 +27,9 @@ namespace AlWaddahClinic.Client.Pages.Appointments
         {
             try
             {
-                appointments = (await AppointmentsService.GetAllAppointmentsAsync()).Value.ToList();
-                _actionsRequired = appointments.Where(a => a.StartAt < DateTime.Now.AddMinutes(-1) && a.Status == null).Count();
+                result = (await AppointmentsService.GetAllAppointmentsAsync()).Value.ToList();
+                appointments = result;
+                _actionsRequired = appointments.Where(a => a.StartAt > DateTime.Now.AddMinutes(-15) && a.Status == null).Count();
                 _isBusy = false;
             }
             catch (DomainException ex)
@@ -87,7 +89,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             try
             {
                 await AppointmentsService.RemoveAppointmentAsync(id);
-                var itemToRemove = appointments.SingleOrDefault(a => a.Id == id);
+                var itemToRemove = result.SingleOrDefault(a => a.Id == id);
                 appointments.Remove(itemToRemove);
             }
             catch (DomainException ex)
