@@ -5,11 +5,16 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 {
     public partial class UpdateRecord : ComponentBase
     {
+        #region Injected Services
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
         public IHealthRecordsService HealthRecordsService { get; set; } = default!;
+
+        [Inject]
+        public IAiService AiService { get; set; } = default!;
+        #endregion
 
         [Parameter] public Guid Id { get; set; }
 
@@ -45,8 +50,34 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
             return new HealthRecordUpdateDto
             {
                 Description = recordDto.Description,
-                Notes = notes
+                Notes = notes,
+                PatientSuggestion = recordDto.PatientSuggestion,
+                SuggestedMedicalTests = recordDto.SuggestedMedicalTests,
+                MedicalCaseInsight = recordDto.MedicalCaseInsight,
+                RelatedMedicalCases = recordDto.RelatedMedicalCases
             };
+        }
+
+        private async Task GetInsights()
+        {
+            CaseDto _case = new()
+            {
+                message = model.Description
+            };
+            //Pass the description from the health record to the Ai Service
+            if (!string.IsNullOrEmpty(_case.message))
+            {
+                _isInsightReady = false;
+                _isPreparingInsights = true;
+
+                model.PatientSuggestion = (await AiService.GetSuggestionsForPatientAsync(_case)).Value.ToList();
+                model.RelatedMedicalCases = (await AiService.GetRelatedMedicalCasesAsync(_case)).Value.ToList();
+                model.SuggestedMedicalTests = (await AiService.GetSuggestedMedicalTestsAsync(_case)).Value.ToList();
+                model.MedicalCaseInsight = (await AiService.GetCaseInsightsAsync(_case)).Value.ToList();
+
+                _isInsightReady = true;
+                _isPreparingInsights = false;
+            }
         }
 
         private async Task UpdateAsync()
@@ -75,28 +106,6 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 
             _noteTitle = string.Empty;
         }
-
-        //private async Task GetInsights()
-        //{
-        //    CaseDto _case = new()
-        //    {
-        //        message = model.Description
-        //    };
-        //    //Pass the description from the health record to the Ai Service
-        //    if (!string.IsNullOrEmpty(_case.message))
-        //    {
-        //        _isInsightReady = false;
-        //        _isPreparingInsights = true;
-
-        //        model.PatientSuggestion = (await AiService.GetSuggestionsForPatientAsync(_case)).Value.ToList();
-        //        model.RelatedMedicalCases = (await AiService.GetRelatedMedicalCasesAsync(_case)).Value.ToList();
-        //        model.SuggestedMedicalTests = (await AiService.GetSuggestedMedicalTestsAsync(_case)).Value.ToList();
-        //        model.MedicalCaseInsight = (await AiService.GetCaseInsightsAsync(_case)).Value.ToList();
-
-        //        _isInsightReady = true;
-        //        _isPreparingInsights = false;
-        //    }
-        //}
 
         private void GoBack()
         {

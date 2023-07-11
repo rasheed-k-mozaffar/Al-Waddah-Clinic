@@ -18,7 +18,7 @@ else
     }
 
 
-    <MudContainer style="margin-top: 5rem;">
+    <MudContainer Class="mt-2 mb-2">
         <MudCard Style="padding: 2rem; box-shadow: 5px 5px 25px lightgray;">
             <MudItem>
                 <MudText Typo="Typo.h6"><b><i class="bi bi-envelope-paper-fill"></i> Update health record for @result.Value.Patient.FullName</b></MudText>
@@ -58,18 +58,18 @@ else
                             <MudExpansionPanels MultiExpansion="true">
                                 <div class="vertical-align">
                                     <MudIconButton Icon="@Icons.Outlined.Lightbulb" Color="Color.Tertiary"
-                                                   Disabled="true" /> &nbsp;
+                                                  OnClick="GetInsights"  Disabled="@_isPreparingInsights" /> &nbsp;
                                     <span>
                                         <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
                                     </span>
                                     <MudChip Color="Color.Error" Size="Size.Medium" Variant="Variant.Outlined"
                                              Text="Currently Not Available" />
                                 </div>
-                                <MudExpansionPanel Class="mb-5 mt-3" Text="@InsightsPannelText" Disabled="true">
-                                        @*<InsightsContainer Text="Suggestions For Patient" insights="patientSuggestions" />
-                                        <InsightsContainer Text="Related Medical Cases" insights="relatedCases" />
-                                        <InsightsContainer Text="Suggested Medical Tests" insights="suggestedTests" />
-                                        <InsightsContainer Text="Case Information" insights="caseInsight" />*@
+                                <MudExpansionPanel Class="mb-5 mt-3" Text="@InsightsPannelText">
+                                        <InsightsContainer Text="Suggestions For Patient" insights="model.PatientSuggestion" />
+                                        <InsightsContainer Text="Related Medical Cases" insights="model.RelatedMedicalCases" />
+                                        <InsightsContainer Text="Suggested Medical Tests" insights="model.SuggestedMedicalTests" />
+                                        <InsightsContainer Text="Case Information" insights="model.MedicalCaseInsight" />
 
                                         <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-5 mb-5">
                                             Not
