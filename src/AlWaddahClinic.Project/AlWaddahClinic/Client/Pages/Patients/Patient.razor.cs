@@ -87,6 +87,11 @@ namespace AlWaddahClinic.Client.Pages.Patients
 			NavigationManager.NavigateTo($"/patients/records/update/{recordId}");
 		}
 
+		private void GoToRecordsHistory()
+		{
+			NavigationManager.NavigateTo($"/patients/records/history/{patient.FullName}/{Id}");
+		}
+
 		private async Task RemovePatientAsync()
 		{
 			await PatientsService.RemovePatient(Id);

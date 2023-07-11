@@ -12,10 +12,18 @@
     }
     else
     {
-        <MudContainer Class="mt-5">
+        <MudContainer Class="mt-2">
             <MudCard Style="padding: 2rem;">
                 <MudCardContent>
-                    <MudText Typo="Typo.h4"><b>@patient.FullName's Details</b></MudText>
+                    <MudItem Class="d-flex justify-space-between mb-3">
+                        <MudItem>
+                            <MudText Typo="Typo.h5"><b>@patient.FullName's Details</b></MudText>
+                        </MudItem>
+
+                        <MudItem>
+                            <MudIconButton Color="Color.Dark" Icon="@Icons.Material.Filled.ArrowBack" Title="Go To All Patients Page" OnClick='(() => NavigationManager.NavigateTo("/patients/all"))' />
+                        </MudItem>
+                    </MudItem>
                     <MudText Typo="Typo.h6"><b>Gender:</b> @patient.Gender.ToString()</MudText>
                     @if (patient.DateOfBirth.HasValue)
                     {
@@ -33,40 +41,47 @@
                     <MudText Typo="Typo.body1"><i class="bi bi-house-door"></i> <b>Address:</b> @(patient.Address ?? "Not Available")</MudText>
                 </MudCardContent>
 
-                @if (patient.HealthRecords != null)
-                {
-                    <MudCardContent>
-                        <MudExpansionPanels MultiExpansion="true">
-                            <MudExpansionPanel Text="@_recordsTableHeader">
-                                <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Breakpoint="Breakpoint.Sm">
-                                    <HeaderContent>
-                                        <MudTh>Created on</MudTh>
-                                        <MudTh>Actions</MudTh>
-                                    </HeaderContent>
+                @*@if (patient.HealthRecords != null)
+                    {
+                        <MudCardContent>
+                            <MudExpansionPanels MultiExpansion="true">
+                                <MudExpansionPanel Text="@_recordsTableHeader">
+                                    <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Breakpoint="Breakpoint.Sm">
+                                        <HeaderContent>
+                                            <MudTh>Created on</MudTh>
+                                            <MudTh>Actions</MudTh>
+                                        </HeaderContent>
 
-                                    <RowTemplate>
-                                        <MudTd DataLabel="Created On">@context.CreatedOn.ToShortDateString()</MudTd>
-                                        <MudTd DataLabel="Record Number" Class="text-end">
-                                            <MudButton Color="Color.Info" Variant="Variant.Text" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder-fill"></i> &nbsp; View</MudButton>
-                                            <MudButton Color="Color.Secondary" Variant="Variant.Text" @onclick=' (() => GoToUpdateRecord(context.Id)) '><i class="bi bi-pen-fill"></i> &nbsp; Update</MudButton>
-                                        </MudTd>
-                                    </RowTemplate>
-                                </MudTable>
-                            </MudExpansionPanel>
-                        </MudExpansionPanels>
-                    </MudCardContent>
-                }
+                                        <RowTemplate>
+                                            <MudTd DataLabel="Created On">@context.CreatedOn.ToShortDateString()</MudTd>
+                                            <MudTd DataLabel="Record Number" Class="text-end">
+                                                <MudButton Color="Color.Info" Variant="Variant.Text" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder-fill"></i> &nbsp; View</MudButton>
+                                                <MudButton Color="Color.Secondary" Variant="Variant.Text" @onclick=' (() => GoToUpdateRecord(context.Id)) '><i class="bi bi-pen-fill"></i> &nbsp; Update</MudButton>
+                                            </MudTd>
+                                        </RowTemplate>
+                                    </MudTable>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </MudCardContent>
+                    }*@
 
                 <MudDivider />
 
                 <MudCardContent>
-                    <MudButton Variant="Variant.Filled" Color="Color.Info" @onclick="GoToAddHealthRecord"><i class="bi bi-file-earmark-text-fill"></i>&nbsp; Add Health Record</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="OpenRemoveDialog"><i class="bi bi-person-dash"></i>&nbsp; Remove Patient</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="GoToMakeAppointment"><i class="bi bi-calendar-week-fill"></i>&nbsp; Make Appointment</MudButton>
+                    <MudTooltip Text="Add Health Record">
+                        <MudIconButton Variant="Variant.Outlined" Class="mr-2" Color="Color.Info" @onclick="GoToAddHealthRecord" Icon="@Icons.Custom.FileFormats.FileDocument" Size="Size.Large"/>
+                    </MudTooltip>
+                    <MudTooltip Text="Make Appointment">
+                        <MudIconButton Variant="Variant.Outlined" Class="mr-2" Color="Color.Warning" @onclick="GoToMakeAppointment" Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Large" />
+                    </MudTooltip>
+                    <MudTooltip Text="Remove Patient Details">
+                        <MudIconButton Variant="Variant.Outlined" Class="mr-2" Color="Color.Error" @onclick="OpenRemoveDialog" Icon="@Icons.Material.Filled.PersonRemove" Size="Size.Large"  />
+                    </MudTooltip>
+                    <MudTooltip Text="View Health Records For Patient">
+                        <MudIconButton Variant="Variant.Outlined" Color="Color.Tertiary" @onclick="GoToRecordsHistory" Icon="@Icons.Material.Filled.ListAlt" Size="Size.Large" />
+                    </MudTooltip>
                 </MudCardContent>
             </MudCard>
         </MudContainer>
     }
 }
-
-
