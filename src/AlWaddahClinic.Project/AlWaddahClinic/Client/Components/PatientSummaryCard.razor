@@ -5,10 +5,16 @@
         <MudText Typo="Typo.body1"><i class="bi bi-telephone-fill"></i> <b>Phone:</b> @(Patient.PhoneNumber ?? "N/A")</MudText>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Filled" Class="mr-2"  Color="Color.Info" @onclick=' ( () => NavigationManager.NavigateTo($"/patients/update/{Patient.PatientId}") )'>Update</MudButton>
-        <MudIconButton Color="Color.Tertiary" OnClick='(() => NavigationManager.NavigateTo($"/patients/records/history/{Patient.FullName}/{Patient.PatientId}"))' Icon="@Icons.Material.Filled.ListAlt" Title="Patient's Cases History"/>
-        <MudIconButton Color="Color.Warning" OnClick='(() => NavigationManager.NavigateTo($"/appointments/make/{Patient.PatientId}"))' Icon="@Icons.Material.Filled.CalendarMonth" Title="Make An Appointment" />
-        <MudIconButton Color="Color.Error" OnClick='(async () => await OpenRemoveDialog(Patient.PatientId))' Icon="@Icons.Material.Filled.PersonRemove" Title="Remove Patient Details"  />
+        <MudButton Variant="Variant.Filled" Class="mr-2" Color="Color.Info" @onclick=' ( () => NavigationManager.NavigateTo($"/patients/update/{Patient.PatientId}") )'>Update</MudButton>
+        <MudTooltip Text="View health records history">
+            <MudIconButton Color="Color.Tertiary" OnClick='(() => NavigationManager.NavigateTo($"/patients/records/history/{Patient.FullName}/{Patient.PatientId}"))' Icon="@Icons.Material.Filled.ListAlt" />
+        </MudTooltip>
+        <MudTooltip Text="Make an appointment">
+            <MudIconButton Color="Color.Warning" OnClick='(() => NavigationManager.NavigateTo($"/appointments/make/{Patient.PatientId}"))' Icon="@Icons.Material.Filled.CalendarMonth"  />
+        </MudTooltip>
+        <MudTooltip Text="Remove patient's details">
+            <MudIconButton Color="Color.Error" OnClick='(async () => await OpenRemoveDialog(Patient.PatientId))' Icon="@Icons.Material.Filled.PersonRemove" />
+        </MudTooltip>
     </MudCardActions>
 </MudCard>
 

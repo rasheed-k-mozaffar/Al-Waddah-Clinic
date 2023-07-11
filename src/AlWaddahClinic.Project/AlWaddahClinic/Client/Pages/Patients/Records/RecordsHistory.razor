@@ -13,11 +13,11 @@ else
     <MudContainer Class="mt-5">
         <MudItem Class="d-flex justify-space-between mb-5">
             <MudItem>
-                <MudText Typo="Typo.h6"><b>@PatientName' Health Records History</b></MudText>
+                <MudText Typo="Typo.h6"><b>@PatientName's Health Records History</b></MudText>
             </MudItem>
 
             <MudItem>
-                <MudIconButton Color="Color.Dark" Icon="@Icons.Material.Filled.ArrowBack" Title="Go To All Patients Page" OnClick='(() => NavigationManager.NavigateTo($"/patients/all"))' />
+                <MudIconButton Color="Color.Dark" Icon="@Icons.Material.Filled.ArrowBack" Title="Go To All Patients Page" OnClick='(() => NavigationManager.NavigateTo($"/patients/{PatientId}"))' />
             </MudItem>
         </MudItem>
 
