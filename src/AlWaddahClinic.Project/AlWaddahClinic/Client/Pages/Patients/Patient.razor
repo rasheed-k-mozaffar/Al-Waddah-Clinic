@@ -41,20 +41,20 @@
                     <MudText Typo="Typo.body1"><i class="bi bi-house-door"></i> <b>Address:</b> @(patient.Address ?? "Not Available")</MudText>
                 </MudCardContent>
 
-                @*@if (patient.HealthRecords != null)
+                @if (patient.HealthRecords != null)
                     {
                         <MudCardContent>
                             <MudExpansionPanels MultiExpansion="true">
                                 <MudExpansionPanel Text="@_recordsTableHeader">
-                                    <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Breakpoint="Breakpoint.Sm">
+                                    <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Dense="true">
                                         <HeaderContent>
                                             <MudTh>Created on</MudTh>
-                                            <MudTh>Actions</MudTh>
+                                            <MudTh Style="text-align: end;">Actions</MudTh>
                                         </HeaderContent>
 
                                         <RowTemplate>
                                             <MudTd DataLabel="Created On">@context.CreatedOn.ToShortDateString()</MudTd>
-                                            <MudTd DataLabel="Record Number" Class="text-end">
+                                            <MudTd Style="text-align: end;" DataLabel="Record Number">
                                                 <MudButton Color="Color.Info" Variant="Variant.Text" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder-fill"></i> &nbsp; View</MudButton>
                                                 <MudButton Color="Color.Secondary" Variant="Variant.Text" @onclick=' (() => GoToUpdateRecord(context.Id)) '><i class="bi bi-pen-fill"></i> &nbsp; Update</MudButton>
                                             </MudTd>
@@ -63,23 +63,14 @@
                                 </MudExpansionPanel>
                             </MudExpansionPanels>
                         </MudCardContent>
-                    }*@
+                    }
 
                 <MudDivider />
 
                 <MudCardContent>
-                    <MudTooltip Text="Add Health Record">
-                        <MudIconButton Variant="Variant.Outlined" Class="mr-2" Color="Color.Info" @onclick="GoToAddHealthRecord" Icon="@Icons.Custom.FileFormats.FileDocument" Size="Size.Large"/>
-                    </MudTooltip>
-                    <MudTooltip Text="Make Appointment">
-                        <MudIconButton Variant="Variant.Outlined" Class="mr-2" Color="Color.Warning" @onclick="GoToMakeAppointment" Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Large" />
-                    </MudTooltip>
-                    <MudTooltip Text="Remove Patient Details">
-                        <MudIconButton Variant="Variant.Outlined" Class="mr-2" Color="Color.Error" @onclick="OpenRemoveDialog" Icon="@Icons.Material.Filled.PersonRemove" Size="Size.Large"  />
-                    </MudTooltip>
-                    <MudTooltip Text="View Health Records For Patient">
-                        <MudIconButton Variant="Variant.Outlined" Color="Color.Tertiary" @onclick="GoToRecordsHistory" Icon="@Icons.Material.Filled.ListAlt" Size="Size.Large" />
-                    </MudTooltip>
+                    <MudButton Class="mr-2" Color="Color.Info" Variant="Variant.Filled" OnClick="GoToAddHealthRecord" StartIcon="@Icons.Material.Filled.PostAdd" IconColor="Color.Surface">Add Health Record</MudButton>
+                    <MudButton Class="mr-2" Color="Color.Warning" Variant="Variant.Filled" OnClick="GoToMakeAppointment" StartIcon="@Icons.Material.Filled.CalendarMonth" IconColor="Color.Surface">Make Appointment</MudButton>
+                    <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="OpenRemoveDialog" StartIcon="@Icons.Material.Filled.PersonRemoveAlt1" IconColor="Color.Surface">Remove Patient</MudButton>
                 </MudCardContent>
             </MudCard>
         </MudContainer>

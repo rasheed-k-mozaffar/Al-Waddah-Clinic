@@ -38,8 +38,8 @@ namespace AlWaddahClinic.Client.Pages.Patients
 				if(result.IsSuccess)
 				{
 					patient = result.Value;
-					_isBusy = false;
 					_recordsTableHeader = $"Health Records ({patient.HealthRecords.Count})";
+					_isBusy = false;
                 }
 			}
 			catch(NotFoundException ex)
@@ -87,10 +87,10 @@ namespace AlWaddahClinic.Client.Pages.Patients
 			NavigationManager.NavigateTo($"/patients/records/update/{recordId}");
 		}
 
-		private void GoToRecordsHistory()
-		{
-			NavigationManager.NavigateTo($"/patients/records/history/{patient.FullName}/{Id}");
-		}
+		//private void GoToRecordsHistory()
+		//{
+		//	NavigationManager.NavigateTo($"/patients/records/history/{patient.FullName}/{Id}");
+		//}
 
 		private async Task RemovePatientAsync()
 		{

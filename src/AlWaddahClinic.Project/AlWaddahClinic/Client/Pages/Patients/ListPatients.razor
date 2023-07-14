@@ -15,8 +15,8 @@
         </MudItem>
 
         <MudItem>
-            <MudIconButton Variant="Variant.Text" Color="Color.Info" OnClick="OpenSearchDialog" Icon="@Icons.Material.Filled.Search" />
-            <MudButton Variant="Variant.Outlined" Color="Color.Dark" OnClick="@GoToAddPatient">Add patient</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Dark" OnClick="OpenSearchDialog" StartIcon="@Icons.Material.Filled.Search" IconSize="Size.Large">Search</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Dark" OnClick="@GoToAddPatient" StartIcon="@Icons.Material.Filled.Add">Add patient</MudButton>
         </MudItem>
     </MudItem>
 
@@ -30,7 +30,7 @@
             }
             else
             {
-                <MudGrid Justify="Justify.FlexStart" Spacing="2">
+                <MudGrid Justify="Justify.FlexStart" Spacing="1">
                     @foreach (var patient in patients.Value.OrderBy(p => p.FullName))
                     {
                         <MudItem xs="12" md="6" lg="4">
