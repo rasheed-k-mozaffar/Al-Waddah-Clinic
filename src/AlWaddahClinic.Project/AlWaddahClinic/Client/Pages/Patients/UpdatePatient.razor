@@ -3,7 +3,7 @@
 
 @if (_isBusy == true)
 {
-    <MudGrid Class="d-flex justify-center" Style="height: 100vh; align-items: center;">
+    <MudGrid Class="d-flex justify-center align-center" Style="height: 100vh;">
         <MudItem>
             <Loader />
         </MudItem>
@@ -17,8 +17,8 @@ else
         <MudAlert Severity="Severity.Error" Variant="Variant.Filled">@_errorMessage</MudAlert>
     }
 
-    <MudContainer style="margin-top: 5rem;">
-        <MudCard Style="padding: 2rem; border: 1px solid black">
+    <MudContainer Class="mt-2">
+        <MudCard Style="padding: 2rem;">
             <MudItem>
                 <MudText Typo="Typo.h4"><b><i class="bi bi-pen-fill"></i> Update details for @model.FullName</b></MudText>
             </MudItem>
