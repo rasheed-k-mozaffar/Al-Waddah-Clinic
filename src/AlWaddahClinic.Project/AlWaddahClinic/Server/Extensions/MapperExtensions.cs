@@ -29,9 +29,8 @@ namespace AlWaddahClinic.Server.Extensions
                 DateOfBirth = patient.DateOfBirth,
                 Address = patient.Address,
                 PhoneNumber = patient.PhoneNumber,
-                HealthRecords = patient.HealthRecords.Select(h => h.ToHealthRecordSummaryDto()).ToList(),
-                Appointments = patient.Appointments.Select(a => a.ToAppointmentSummaryDto()).ToList(),
-                Gender = patient.Gender
+                Gender = patient.Gender,
+                HealthRecords = patient.HealthRecords.Select(hr => hr.ToHealthRecordSummaryDto()).ToList()
             };
         }
 
