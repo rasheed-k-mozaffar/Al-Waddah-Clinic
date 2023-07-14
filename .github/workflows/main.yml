@@ -8,7 +8,7 @@ on:
 jobs:
   build_and_deploy_to_ftp:
     runs-on: ubuntu-latest
-
+    environment: Production
     steps:
     - uses: actions/checkout@v2
 
