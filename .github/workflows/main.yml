@@ -19,7 +19,7 @@ jobs:
 
     - name: Publish
       run: |
-        dotnet publish "src/AlWaddahClinic.Project/AlWaddahClinic/Server/AlWaddahClinic.Server.csproj" -c Release -o ./publish --runtime win-x64 --self-contained false
+        dotnet publish "src/AlWaddahClinic.Project/AlWaddahClinic/Server/AlWaddahClinic.Server.csproj" -c Release -o ./publish  --self-contained true
 
     - name: Add app_offline
       uses: "finnp/create-file-action@master"
