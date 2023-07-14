@@ -7,10 +7,10 @@
         <MudPaper Class="page-style">
             <MudGrid Style="padding: 2rem;">
                 <MudItem xs="12" md="12" lg="12">
-                    @if (context.User.FindFirst("email_verified")?.Value != "true")
+                    @*@if (context.User.FindFirst("email_verified")?.Value != "true")
                     {
                         <MudAlert Variant="Variant.Filled" Severity="Severity.Warning" Class="mb-3 mt-5">Your email has not been verified, please verify it first to authorize your clinic! <MudLink Color="Color.Info" Href="/user/verify-email">Click here</MudLink></MudAlert>
-                    }
+                    }*@
                     <MudCard style="width: 100%; padding: 2rem;" Class="mt-3">
                         <MudCardContent>
                             <MudText Align="Align.Center" Typo="Typo.h2" Color="Color.Dark"><b>Hello Doctor</b></MudText>
