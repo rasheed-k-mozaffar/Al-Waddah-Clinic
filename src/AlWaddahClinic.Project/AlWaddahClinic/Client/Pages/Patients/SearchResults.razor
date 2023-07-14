@@ -4,7 +4,7 @@
 
 @if (_isBusy == true)
 {
-    <MudGrid Class="d-flex justify-center" Style="height: 100vh; align-items: center;">
+    <MudGrid Justify="Justify.Center" Style="height: 100vh; align-items: center;">
         <MudItem>
             <Loader />
         </MudItem>
@@ -14,10 +14,10 @@ else
 {
     <MudContainer Class="mt-5">
         <MudItem Class="mb-5">
-            <MudText Typo="Typo.h4" Color="Color.Dark"><b>Search results for: </b>@SearchText</MudText>
+            <MudText Typo="Typo.h4" Color="Color.Dark"><b>@patients.Value.Count() Results for: </b>@SearchText</MudText>
         </MudItem>
 
-        <MudItem Class="d-flex justify-center align-center">
+        <MudItem>
             @{
                 if (patients.Value == null)
                 {
@@ -29,13 +29,19 @@ else
                 {
                     @if (!patients.Value.Any())
                     {
-                        <MudItem Class="d-flex justify-content-center align-center" Style="height: 100%;">
-                            <MudText Typo="Typo.h4">Nothing was found</MudText>
+
+                        <MudItem xs="12" md="12" lg="12" Class="d-flex justify-center align-center flex-column" Style="height: 500px;">
+                            <MudItem>
+                                <MudText Typo="Typo.h5" Color="Color.Primary">Nothing was found</MudText>
+                            </MudItem>
+                            <MudItem>
+                                <img width="300" src="images/empty-results.png" alt="Nothing was found" />
+                            </MudItem>
                         </MudItem>
                     }
                     else
                     {
-                        <MudGrid Justify="Justify.FlexStart" Spacing="2">
+                        <MudGrid Justify="Justify.FlexStart" Spacing="1">
                             @foreach (var patient in patients.Value.OrderBy(p => p.FullName))
                             {
                                 <MudItem xs="12" md="6" lg="4">
