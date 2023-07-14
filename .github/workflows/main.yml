@@ -27,30 +27,30 @@ jobs:
         FILE_NAME: "./publish/app_offline.htm"
 
     - name: FTP Deploy
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      uses: SamKirkland/FTP-Deploy-Action@4.3.4
       with:
-        ftp-server: ${{ env.FTP_SERVER }}
+        server: ${{ secrets.FTP_SERVER }}
         protocol: ftp
         security: strict
         # FTP account username
-        username: ${{ env.FTP_USERNAME }}
+        username: ${{ secrets.FTP_USERNAME }}
         # FTP account password
-        password: ${{ env.FTP_PASSWORD }}
+        password: ${{ secrets.FTP_PASSWORD }}
         # The local folder to copy, defaults to root project folder
         local-dir: ./publish/
         # The remote folder on the FTP server to upload files to, defaults to root folder (/)
         server-dir: /
 
     - name: Remove app_offline
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      uses: SamKirkland/FTP-Deploy-Action@4.3.4
       with:
-        ftp-server: ${{ env.FTP_SERVER }}
+        server: ${{ secrets.FTP_SERVER }}
         protocol: ftps
         security: strict
         # FTP account username
-        username: ${{ env.FTP_USERNAME }}
+        username: ${{ secrets.FTP_USERNAME }}
         # FTP account password
-        password: ${{ env.FTP_PASSWORD }}
+        password: ${{ secrets.FTP_PASSWORD }}
         # The local folder to copy, defaults to root project folder
         local-dir: ./stop_app/
         # The remote folder on the FTP server to upload files to, defaults to root folder (/)
