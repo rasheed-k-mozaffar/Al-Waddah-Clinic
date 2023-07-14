@@ -83,7 +83,7 @@ namespace AlWaddahClinic.Server.Repositories
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.AddToRoleAsync(user, "Admin");
                 return new UserManagerResponse
                 {
                     Message = "User created successfully",
@@ -139,14 +139,20 @@ namespace AlWaddahClinic.Server.Repositories
                 new Claim("ClinicId", user.ClinicId.ToString())
             };
 
-           if(user.EmailConfirmed)
+            //// Email Confirmation Check.
+            //if(user.EmailConfirmed)
+            // {
+            //     claims.Add(new Claim("email_verified", "true"));
+            //     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            // }
+            // else
+            // {
+            //     claims.Add(new Claim(ClaimTypes.Role, "User"));
+            // }
+
+            if(await _userManager.IsInRoleAsync(user, "Admin"))
             {
-                claims.Add(new Claim("email_verified", "true"));
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-            }
-            else
-            {
-                claims.Add(new Claim(ClaimTypes.Role, "User"));
             }
 
             //Creating the token with the claims
