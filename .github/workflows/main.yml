@@ -27,7 +27,7 @@ jobs:
         FILE_NAME: "./publish/app_offline.htm"
 
     - name: FTP Deploy
-      uses: SamKirkland/FTP-Deploy-Action@4.3.4
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         server: ${{ secrets.FTP_SERVER }}
         protocol: ftp
@@ -42,10 +42,10 @@ jobs:
         server-dir: /
 
     - name: Remove app_offline
-      uses: SamKirkland/FTP-Deploy-Action@4.3.4
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         server: ${{ secrets.FTP_SERVER }}
-        protocol: ftps
+        protocol: ftp
         security: strict
         # FTP account username
         username: ${{ secrets.FTP_USERNAME }}
