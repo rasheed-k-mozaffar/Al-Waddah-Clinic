@@ -30,7 +30,7 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         ftp-server: ${{ secrets.FTP_SERVER }}
-        protocol: ftps
+        protocol: ftp
         security: strict
         # FTP account username
         username: ${{ secrets.FTP_USERNAME }}
@@ -39,7 +39,7 @@ jobs:
         # The local folder to copy, defaults to root project folder
         local-dir: ./publish/
         # The remote folder on the FTP server to upload files to, defaults to root folder (/)
-        server-dir: /api/
+        server-dir: /
 
     - name: Remove app_offline
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
