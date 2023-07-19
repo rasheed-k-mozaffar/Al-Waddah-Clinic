@@ -46,5 +46,9 @@
     <Folder Include="Pages\User\" />
     <Folder Include="Pages\Appointments\" />
     <Folder Include="UiServices\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\" />
   </ItemGroup>
 </Project>

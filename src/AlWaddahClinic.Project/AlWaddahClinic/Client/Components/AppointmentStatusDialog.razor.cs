@@ -9,6 +9,9 @@ namespace AlWaddahClinic.Client.Components
         [Inject]
         public IAppointmentsService AppointmentsService { get; set; } = default!;
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; } = default!;
+
         [Parameter] public Guid PatientId { get; set; }
         [Parameter] public Guid AppointmentId { get; set; }
 
@@ -37,7 +40,12 @@ namespace AlWaddahClinic.Client.Components
             _errorMessage = string.Empty;
             try
             {
+                model.PatientId = PatientId;
                 model.HealthRecordCreate = recordModel;
+                model.HealthRecordCreate.PatientSuggestion = new List<string>();
+                model.HealthRecordCreate.RelatedMedicalCases = new List<string>();
+                model.HealthRecordCreate.SuggestedMedicalTests = new List<string>();
+                model.HealthRecordCreate.MedicalCaseInsight = new List<string>();
                 await AppointmentsService.CompleteAppointmentAsync(AppointmentId, model);
             }
             catch(DomainException ex)
