@@ -10,6 +10,7 @@ namespace AlWaddahClinic.Client.Components
         private bool _isFetchingInformation = false;
 
         private string _errorMessage = string.Empty;
+        private int PeriodInHours = 24;
 
         #region Injected Services
         [Inject]
@@ -27,6 +28,7 @@ namespace AlWaddahClinic.Client.Components
 
         protected override async Task OnInitializedAsync()
         {
+            _isBusy = true;
             _errorMessage = string.Empty;
             _isFetchingInformation = true;
             try
@@ -35,7 +37,7 @@ namespace AlWaddahClinic.Client.Components
 
             if (result.IsSuccess)
             {
-                appointments = result.Value.Where(a => a.StartAt.Value < DateTime.Now.AddHours(24) && a.StartAt.Value > DateTime.Now).ToList();
+                appointments = result.Value.Where(a => a.StartAt.Value < DateTime.Now.AddHours(PeriodInHours) && a.StartAt.Value > DateTime.Now).ToList();
 
             }
             }
@@ -46,6 +48,11 @@ namespace AlWaddahClinic.Client.Components
 
             _isBusy = false;
             _isFetchingInformation = false;
+        }
+
+        private async Task ChangeTimePeriod()
+        {
+            await OnInitializedAsync();
         }
     }
 }

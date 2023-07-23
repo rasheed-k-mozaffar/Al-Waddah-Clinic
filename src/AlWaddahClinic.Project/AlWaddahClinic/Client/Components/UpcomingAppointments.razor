@@ -7,9 +7,17 @@
     }
     else
     {
-        <MudCardHeader>
+        <MudCardHeader Class="d-flex justify-space-between">
             <MudItem>
-                <MudText Typo="Typo.h6"><b>Upcoming Appointments Within 24 Hours</b></MudText>
+                <MudText Typo="Typo.h6"><b>Upcoming Appointments Within @PeriodInHours Hours</b></MudText>
+            </MudItem>
+
+            <MudItem>
+                <select  @bind="PeriodInHours" @oninput="ChangeTimePeriod">
+                    <option value="24">24 Hours</option>
+                    <option value="48">48 Hours</option>
+                    <option value="72">72 Hours</option>
+                </select>
             </MudItem>
         </MudCardHeader>
 
@@ -43,9 +51,8 @@
             }
             else
             {
-                <MudAlert Severity="Severity.Success" Variant="Variant.Filled">You don't seem to have any upcoming appointments within the next 24 hours!</MudAlert>
+                <MudAlert Severity="Severity.Success" Variant="Variant.Filled">You don't seem to have any upcoming appointments within the next @PeriodInHours hours!</MudAlert>
             }
         </MudCardContent>
     }
 </MudCard>
-

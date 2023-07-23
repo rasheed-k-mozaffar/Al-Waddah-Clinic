@@ -13,7 +13,7 @@ else
 {
     <MudContainer Class="mt-5">
         <MudText Typo="Typo.h4" Class="mb-3"><b>Appointments</b></MudText>
-        <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" Color="Color.Dark" PanelClass="pa-6">
+        <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
             <MudTabPanel Text="Upcoming">
                 <MudContainer Class="mt-5">
                     <MudSimpleTable Style="overflow-x: auto;">
@@ -25,7 +25,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var appointment in appointments.Where(a => a.StartAt > DateTime.Now.AddHours(-1)).OrderBy(a => a.StartAt - DateTime.Now))
+                            @foreach (var appointment in appointments.Where(a => a.StartAt.Value > DateTime.Now.AddMinutes(-1)).OrderBy(a => a.StartAt.Value - DateTime.Now))
                             {
                                 <tr>
                                     <td>@appointment.PatientName</td>
@@ -48,11 +48,11 @@ else
                             <tr>
                                 <th>Patient's Name</th>
                                 <th>Appointment Day</th>
-                                <th style="text-align: end;">Actions</th>
+                                <th style="text-align: end;">Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var appointment in appointments.Where(a => a.StartAt < DateTime.Now.AddMinutes(-15)).OrderBy(a => a.StartAt - DateTime.Now))
+                            @foreach (var appointment in appointments.Where(a => a.StartAt.Value < DateTime.Now.AddMinutes(-1)).OrderBy(a => a.StartAt.Value - DateTime.Now))
                             {
                                 <tr style="border: @(!appointment.Status.HasValue ? "3px solid gold" : "none") ">
                                     <td>@appointment.PatientName</td>
@@ -62,6 +62,10 @@ else
                                         <td style="text-align: end;">
                                             <MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick='(() => OpenActionDialog(appointment.PatientId, appointment.Id))'>Action Required</MudButton>
                                         </td>
+                                    }
+                                    else
+                                    {
+                                        <td>@appointment.Status.ToString()</td>
                                     }
                                 </tr>
                             }
