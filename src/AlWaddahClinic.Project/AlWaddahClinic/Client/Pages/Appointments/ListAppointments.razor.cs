@@ -29,7 +29,7 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             {
                 result = (await AppointmentsService.GetAllAppointmentsAsync()).Value.ToList();
                 appointments = result;
-                _actionsRequired = appointments.Where(a => a.StartAt > DateTime.Now.AddMinutes(-15) && a.Status == null).Count();
+                _actionsRequired = appointments.Where(a => a.StartAt.Value > DateTime.Now.AddMinutes(-1) && a.Status == null).Count();
                 _isBusy = false;
             }
             catch (DomainException ex)
