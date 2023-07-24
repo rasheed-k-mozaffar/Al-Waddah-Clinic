@@ -57,25 +57,23 @@ else
                         <MudItem xs="12" md="12" lg="12">
                             <MudExpansionPanels MultiExpansion="true">
                                 <div class="vertical-align">
-                                    <MudIconButton Icon="@Icons.Outlined.Lightbulb" Color="Color.Tertiary"
-                                                  OnClick="GetInsights"  Disabled="@_isPreparingInsights" /> &nbsp;
+                                    <MudFab StartIcon="@Icons.Outlined.Lightbulb" Size="Size.Small" Label="@_insightsButtonTitle" Color="Color.Tertiary"
+                                            OnClick="GetInsights" Disabled="_isPreparingInsights" /> &nbsp;
                                     <span>
                                         <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
                                     </span>
-                                    <MudChip Color="Color.Error" Size="Size.Medium" Variant="Variant.Outlined"
-                                             Text="Currently Not Available" />
                                 </div>
                                 <MudExpansionPanel Class="mb-5 mt-3" Text="@InsightsPannelText">
-                                        <InsightsContainer Text="Suggestions For Patient" insights="model.PatientSuggestion" />
-                                        <InsightsContainer Text="Related Medical Cases" insights="model.RelatedMedicalCases" />
-                                        <InsightsContainer Text="Suggested Medical Tests" insights="model.SuggestedMedicalTests" />
-                                        <InsightsContainer Text="Case Information" insights="model.MedicalCaseInsight" />
+                                    <InsightsContainer Text="Suggestions For Patient" insights="model.PatientSuggestion" />
+                                    <InsightsContainer Text="Related Medical Cases" insights="model.RelatedMedicalCases" />
+                                    <InsightsContainer Text="Suggested Medical Tests" insights="model.SuggestedMedicalTests" />
+                                    <InsightsContainer Text="Case Information" insights="model.MedicalCaseInsight" />
 
-                                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-5 mb-5">
-                                            Not
-                                            convincing results? Try regenerating the insights again
-                                        </MudAlert>
-                                    </MudExpansionPanel>
+                                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-5 mb-5">
+                                        Not
+                                        convincing results? Try regenerating the insights again
+                                    </MudAlert>
+                                </MudExpansionPanel>
 
                                 <MudExpansionPanel Text="Case Notes">
                                     <MudGrid>
