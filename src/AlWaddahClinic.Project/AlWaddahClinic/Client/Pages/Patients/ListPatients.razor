@@ -8,21 +8,26 @@
     }
 </style>
 
-<MudContainer Class="mt-5" >
+<MudContainer Class="mt-5">
+    <MudItem Class="d-flex justify-space-between mb-3 align-center">
+        <MudItem xs="12" md="12" lg="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="Search for patients by name" @bind-Value="_searchText" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" T="string"  />
+        </MudItem>
+    </MudItem>
     <MudItem Class="d-flex justify-space-between mb-5">
         <MudItem>
             <MudText Typo="Typo.h4" Color="Color.Dark"><b>All Patients</b></MudText>
         </MudItem>
 
         <MudItem>
-            <MudButton Variant="Variant.Filled" Color="Color.Dark" OnClick="OpenSearchDialog" StartIcon="@Icons.Material.Filled.Search" IconSize="Size.Large">Search</MudButton>
+            <MudIconButton Color="Color.Dark" OnClick="OpenSearchDialog" Icon="@Icons.Material.Filled.Search" IconSize="Size.Large" />
             <MudButton Variant="Variant.Filled" Color="Color.Dark" OnClick="@GoToAddPatient" StartIcon="@Icons.Material.Filled.Add">Add patient</MudButton>
         </MudItem>
     </MudItem>
 
     <MudItem Class="d-flex justify-center align-center">
         @{
-            if (patients.Value == null)
+            if (patients == null)
             {
                 <MudItem Class="mt-5">
                     <Loader />
@@ -31,11 +36,41 @@
             else
             {
                 <MudGrid Justify="Justify.FlexStart" Spacing="1">
-                    @foreach (var patient in patients.Value.OrderBy(p => p.FullName))
+                    @if (string.IsNullOrEmpty(_searchText))
                     {
-                        <MudItem xs="12" md="6" lg="4">
-                            <PatientSummaryCard Patient="patient" OnPatientRemoval="HandlePatientRemoval"/>
-                        </MudItem>
+                        @foreach (var patient in patients.OrderBy(p => p.FullName))
+                        {
+                            <MudItem xs="12" md="6" lg="4">
+                                <PatientSummaryCard Patient="patient" OnPatientRemoval="HandlePatientRemoval" />
+                            </MudItem>
+                        }
+                    }
+                    else
+                    {
+                        @if (patients.Where(p => p.FullName.ToLower().Contains(_searchText.ToLower())).Count() > 0)
+                        {
+                            @foreach (var patient in patients.OrderBy(p => p.FullName).Where(p => p.FullName.ToLower().Contains(_searchText.ToLower())))
+                            {
+
+                                <MudItem xs="12" md="6" lg="4">
+                                    <PatientSummaryCard Patient="patient" OnPatientRemoval="HandlePatientRemoval" />
+                                </MudItem>
+                            }
+                        }
+                        else
+                        {
+                            <MudItem xs="12" md="12" lg="12" Class="d-flex justify-center align-center flex-column" Style="height: 500px;">
+                                <MudItem>
+                                    <MudText Typo="Typo.h5" Color="Color.Primary">Nothing was found</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <img width="300" src="images/empty-results.png" alt="Nothing was found" />
+                                </MudItem>
+                            </MudItem>
+                        }
+
+
+
                     }
                 </MudGrid>
             }
@@ -44,4 +79,6 @@
 </MudContainer>
 
 
+@code{
 
+}
