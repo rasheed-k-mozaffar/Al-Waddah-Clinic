@@ -11,7 +11,7 @@
 <MudContainer Class="mt-5">
     <MudItem Class="d-flex justify-space-between mb-3 align-center">
         <MudItem xs="12" md="12" lg="12">
-            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="Search for patients by name" @bind-Value="_searchText" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" T="string"  />
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense" Placeholder="Search for patients by name" @bind-Value="_searchText" Immediate="true" Adornment="Adornment.Start" AdornmentColor="Color.Primary" AdornmentIcon="@Icons.Material.Filled.Search" T="string"  />
         </MudItem>
     </MudItem>
     <MudItem Class="d-flex justify-space-between mb-5">
@@ -20,7 +20,6 @@
         </MudItem>
 
         <MudItem>
-            <MudIconButton Color="Color.Dark" OnClick="OpenSearchDialog" Icon="@Icons.Material.Filled.Search" IconSize="Size.Large" />
             <MudButton Variant="Variant.Filled" Color="Color.Dark" OnClick="@GoToAddPatient" StartIcon="@Icons.Material.Filled.Add">Add patient</MudButton>
         </MudItem>
     </MudItem>
