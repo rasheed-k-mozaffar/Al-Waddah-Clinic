@@ -47,7 +47,32 @@
                                                   HelperText="Describe the patient and list some relevant information" HelperTextOnFocus="true" />
                                 </MudItem>
 
+                                <MudItem xs="12" md="12" lg="12">
+                                    <MudExpansionPanels MultiExpansion="true">
+                                        <div class="vertical-align">
+                                            <MudFab StartIcon="@Icons.Outlined.Lightbulb" Size="Size.Small" Label="@_insightsButtonTitle" Color="Color.Tertiary"
+                                                    OnClick="GetInsights" Disabled="_isPreparingInsights" /> &nbsp;
+                                            <span>
+                                                <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
+                                            </span>
+                                        </div>
 
+                                        @if (_isPreparingInsights)
+                                        {
+                                            <MudProgressLinear Color="Color.Tertiary" Indeterminate="true" Class="my-7" />
+                                        }
+                                        <MudExpansionPanel Class="mb-5 mt-3" Text="@InsightsPannelText" Disabled="!_isInsightReady">
+                                            <InsightsContainer Text="Suggestions For Patient" insights="patientSuggestions" />
+                                            <InsightsContainer Text="Related Medical Cases" insights="relatedCases" />
+                                            <InsightsContainer Text="Suggested Medical Tests" insights="suggestedTests" />
+                                            <InsightsContainer Text="Case Information" insights="caseInsight" />
+
+                                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-5 mb-5">
+                                                Not convincing results? Try regenerating the insights again
+                                            </MudAlert>
+                                        </MudExpansionPanel>
+                                    </MudExpansionPanels>
+                                </MudItem>
                                 <MudItem xs="12" md="12" lg="12">
                                     <MudCard Style="border: 1px solid lightgray">
                                         <MudCardContent>
@@ -88,11 +113,16 @@
 
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton OnClick="Cancel" Disabled="_isPreparingInsights">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Disabled="_isPreparingInsights" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>
-
+<style>
+    .vertical-align {
+        display: flex;
+        align-items: center;
+    }
+</style>
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 }

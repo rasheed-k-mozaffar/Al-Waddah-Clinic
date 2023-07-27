@@ -7,7 +7,7 @@ namespace AlWaddahClinic.Shared.Dtos
 	{
 		public Guid PatientId { get; set; }
 		public AppointmentStatusEnum Status { get; set; }
-		public HealthRecordCreateDto? HealthRecordCreate { get; set; }
+		public OptionHealthRecordCreateDto? HealthRecordCreate { get; set; }
 	}
 }
 
