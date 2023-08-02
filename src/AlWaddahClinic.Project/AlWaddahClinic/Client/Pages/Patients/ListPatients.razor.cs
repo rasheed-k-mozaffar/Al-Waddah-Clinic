@@ -40,26 +40,6 @@ namespace AlWaddahClinic.Client.Pages.Patients
             result = await PatientsService.GetAllPatients();
             patients = result.Value.ToList();
         }
-
-        private void OpenSearchDialog()
-        {
-            var options = new DialogOptions() { ClassBackground = "dialog-background-blur", MaxWidth = MaxWidth.Medium, Position = DialogPosition.TopCenter };
-            var dialog = DialogService.Show<PatientSearchDialog>("Search", options);
-        }
-
-        private void Search()
-        {
-            filteredPatients = patients.Where(p => p.FullName.ToLower().Contains(_searchText.ToLower())).ToList();
-            _searchText = string.Empty;
-        }
-
-        private void GoToSearchResults()
-        {
-            if (!string.IsNullOrEmpty(_searchText))
-            {
-                NavigationManager.NavigateTo($"/patients/search/{_searchText}");
-            }
-        }
     }
 }
 
