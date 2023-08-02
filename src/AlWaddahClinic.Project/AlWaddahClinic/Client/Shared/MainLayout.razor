@@ -12,17 +12,22 @@
             <MudDrawerHeader>
                 <typography>
                     <MudText Typo="Typo.h5" Class="mt-1"><b>Clinic Pro</b></MudText>
-                    
+
                     <MudText Typo="Typo.body2" Inline="false"><b>Version 0.3</b> <MudChip Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined">BETA</MudChip></MudText>
                 </typography>
             </MudDrawerHeader>
             <MudNavMenu>
                 <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard 🏡</MudNavLink>
                 <MudNavGroup Title="Records" Expanded="true">
-                    <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix">Patients 🩺</MudNavLink>
-                    <MudNavLink Href="/patients/healthrecords" Match="NavLinkMatch.Prefix">Health Records 📑</MudNavLink>
+                    <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix">Patients 🙍‍♂️🙍‍♀️</MudNavLink>
                     <MudNavLink Href="/appointments" Match="NavLinkMatch.Prefix">Appointments 🗓️</MudNavLink>
                 </MudNavGroup>
+
+                <MudNavLink Href="/release-notes" Match="NavLinkMatch.All">
+                        <MudBadge Color="Color.Error"  Dot="true">
+                            Release Notes 🗂️
+                        </MudBadge>
+                </MudNavLink>
                 <AuthorizeView>
                     <NotAuthorized>
                         <MudNavLink Href="/user/login" Match="NavLinkMatch.Prefix">Login</MudNavLink>
