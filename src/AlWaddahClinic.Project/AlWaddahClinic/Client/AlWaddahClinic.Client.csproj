@@ -37,6 +37,7 @@
     <None Remove="Pages\User\" />
     <None Remove="Pages\Appointments\" />
     <None Remove="UiServices\" />
+    <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shared\" />
@@ -47,8 +48,11 @@
     <Folder Include="Pages\Appointments\" />
     <Folder Include="UiServices\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="Models\" />
+    <Folder Include="wwwroot\release-notes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\" />
+    <Content Remove="wwwroot\release-notes\" />
   </ItemGroup>
 </Project>

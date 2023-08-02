@@ -35,22 +35,27 @@
                     <MudItem xs="12" md="12" lg="12">
                         <MudExpansionPanels MultiExpansion="true">
                             <div class="vertical-align">
-                                <MudIconButton Icon="@Icons.Outlined.Lightbulb" Color="Color.Tertiary"
-                                    OnClick="GetInsights" Disabled="_isPreparingInsights" /> &nbsp;
+                                <MudFab StartIcon="@Icons.Outlined.Lightbulb" Size="Size.Small" Label="@_insightsButtonTitle" Color="Color.Tertiary"
+                                        OnClick="GetInsights" Disabled="_isPreparingInsights" /> &nbsp;
                                 <span>
                                     <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
                                 </span>
-                                <MudChip Color="Color.Tertiary" Size="Size.Small" Variant="Variant.Filled"
-                                    Text="BETA" />
                             </div>
+
+                            @if (_isPreparingInsights)
+                            {
+                                <MudProgressLinear Color="Color.Tertiary" Indeterminate="true" Class="my-7" />
+                            }
                             <MudExpansionPanel Class="mb-5 mt-3" Text="@InsightsPannelText" Disabled="!_isInsightReady">
                                 <InsightsContainer Text="Suggestions For Patient" insights="patientSuggestions" />
                                 <InsightsContainer Text="Related Medical Cases" insights="relatedCases" />
                                 <InsightsContainer Text="Suggested Medical Tests" insights="suggestedTests" />
                                 <InsightsContainer Text="Case Information" insights="caseInsight" />
 
-                                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-5 mb-5">Not
-                                    convincing results? Try regenerating the insights again</MudAlert>
+                                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-5 mb-5">
+                                    Not
+                                    convincing results? Try regenerating the insights again
+                                </MudAlert>
                             </MudExpansionPanel>
 
 
@@ -58,7 +63,7 @@
                                 <MudGrid>
                                     <MudItem xs="12" md="12" lg="12">
                                         <MudTextField T="string" @bind-Value="@_noteTitle"
-                                            Label="Note field (optional)" />
+                                                      Label="Note field (optional)" />
                                     </MudItem>
 
                                     @if (notes != null)
@@ -66,7 +71,8 @@
                                         @foreach (var note in notes)
                                         {
                                             <MudItem xs="12">
-                                                <MudText Typo="Typo.body2"><i class="bi bi-pin-angle-fill"></i>@note.Title
+                                                <MudText Typo="Typo.body2">
+                                                    <i class="bi bi-pin-angle-fill"></i>@note.Title
                                                 </MudText>
                                             </MudItem>
                                         }
@@ -79,8 +85,12 @@
                                     }
                                     <MudItem xs="12" md="12" lg="12">
                                         <MudButton Style="width: 100%;" Variant="Variant.Filled" Color="Color.Warning"
-                                        @onclick="AddNote"><i class="bi bi-file-earmark-plus-fill"></i><b> Add
-                                                Note</b></MudButton>
+                                                   @onclick="AddNote">
+                                            <i class="bi bi-file-earmark-plus-fill"></i><b>
+                                                Add
+                                                Note
+                                            </b>
+                                        </MudButton>
                                     </MudItem>
                                 </MudGrid>
                             </MudExpansionPanel>

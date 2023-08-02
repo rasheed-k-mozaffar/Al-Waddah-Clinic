@@ -68,9 +68,17 @@
                 <MudDivider />
 
                 <MudCardContent>
-                    <MudButton Class="mr-2" Color="Color.Info" Variant="Variant.Filled" OnClick="GoToAddHealthRecord" StartIcon="@Icons.Material.Filled.PostAdd" IconColor="Color.Surface">Add Health Record</MudButton>
-                    <MudButton Class="mr-2" Color="Color.Warning" Variant="Variant.Filled" OnClick="GoToMakeAppointment" StartIcon="@Icons.Material.Filled.CalendarMonth" IconColor="Color.Surface">Make Appointment</MudButton>
-                    <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="OpenRemoveDialog" StartIcon="@Icons.Material.Filled.PersonRemoveAlt1" IconColor="Color.Surface">Remove Patient</MudButton>
+                    <MudGrid Justify="Justify.FlexStart">
+                        <MudItem xs="12" sm="12" md="12" lg="4">
+                            <MudButton Style="width: 100%;" Class="mr-2" Color="Color.Info" Variant="Variant.Filled" OnClick="GoToAddHealthRecord" StartIcon="@Icons.Material.Filled.PostAdd" IconColor="Color.Surface">Add Health Record</MudButton>
+                        </MudItem>
+                        <MudItem xs="12" sm="12" md="12" lg="4">
+                            <MudButton Style="width: 100%;" Class="mr-2" Color="Color.Warning" Variant="Variant.Filled" OnClick="GoToMakeAppointment" StartIcon="@Icons.Material.Filled.CalendarMonth" IconColor="Color.Surface">Make Appointment</MudButton>
+                        </MudItem>
+                        <MudItem xs="12" sm="12" md="12" lg="4">
+                            <MudButton Style="width: 100%;" Color="Color.Error" Variant="Variant.Filled" OnClick="OpenRemoveDialog" StartIcon="@Icons.Material.Filled.PersonRemoveAlt1" IconColor="Color.Surface">Remove Patient</MudButton>
+                        </MudItem>
+                    </MudGrid>
                 </MudCardContent>
             </MudCard>
         </MudContainer>

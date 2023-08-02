@@ -79,10 +79,6 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             NavigationManager.NavigateTo($"/appointments/reschedule/{patientName}/{appointmentId}");
         }
 
-        private void GoToPastAppointments()
-        {
-            NavigationManager.NavigateTo("/appointments/past");
-        }
 
         private async Task RemoveAsync(Guid id)
         {

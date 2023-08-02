@@ -1,0 +1,12 @@
+﻿@using AlWaddahClinic.Client.Models
+
+<div @attributes="UserAttributes">
+    <MudText Typo="Typo.h4" Style="color: rebeccapurple"><b>@ReleaseNote.Title</b></MudText>
+    <MudText Style="font-size: 20px;">@ReleaseNote.Content</MudText>
+</div>
+
+
+@code{
+    [Parameter, EditorRequired] public ReleaseNote? ReleaseNote { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? UserAttributes { get; set; }
+}

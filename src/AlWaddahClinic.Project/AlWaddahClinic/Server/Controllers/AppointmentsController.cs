@@ -229,14 +229,15 @@ namespace AlWaddahClinic.Server.Controllers
             try
             {
                 var appointmentToChange = await _appointmentsRepository.GetAppointmentByIdAsync(appointmentId);
-
+                appointmentToChange.ModifiedOn = DateTime.Now;
                 appointmentToChange.Status = model.Status;
 
-                if(model.HealthRecordCreate != null)
+                if(model.HealthRecordCreate != null && model.HealthRecordCreate.Description != null)
                 {
                     var recordToAdd = model.HealthRecordCreate.ToHealthRecordCreate();
                     try
                     {
+                        recordToAdd.CreatedOn = DateTime.Now;
                         await _healthRecordsRepository.AddHealthRecordAsync(model.PatientId, recordToAdd);
                     }
                     catch(NotFoundException ex)

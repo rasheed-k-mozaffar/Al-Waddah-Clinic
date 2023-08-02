@@ -200,6 +200,19 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
+        public static HealthRecord ToHealthRecordCreate(this OptionHealthRecordCreateDto healthRecordCreateDto)
+        {
+            return new HealthRecord
+            {
+                Description = healthRecordCreateDto.Description,
+                Notes = healthRecordCreateDto.Notes?.Select(n => n.ToNoteCreate()).ToList(),
+                PatientSuggestion = string.Join(',', healthRecordCreateDto.PatientSuggestion),
+                SuggestedMedicalTests = string.Join(',', healthRecordCreateDto.SuggestedMedicalTests),
+                RelatedMedicalCases = string.Join(',', healthRecordCreateDto.RelatedMedicalCases),
+                MedicalCaseInsight = string.Join(',', healthRecordCreateDto.MedicalCaseInsight),
+            };
+        }
+
         public static HealthRecord ToHealthRecord(this HealthRecordDto healthRecordDto)
         {
             return new HealthRecord
