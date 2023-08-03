@@ -18,7 +18,7 @@ namespace AlWaddahClinic.Server.Extensions
 		public static void AddDbContextAndIdentity(this IServiceCollection services, IConfiguration configuration)
 		{
 			var sqlConnectionString = new SqlConnectionStringBuilder();
-			sqlConnectionString.ConnectionString = configuration.GetConnectionString("AppConnection");
+			sqlConnectionString.ConnectionString = configuration.GetConnectionString("DevelopmentConnection");
 			services.AddDbContext<ClinicDbContext>(options =>
 			{
 				options.UseSqlServer(sqlConnectionString.ConnectionString);

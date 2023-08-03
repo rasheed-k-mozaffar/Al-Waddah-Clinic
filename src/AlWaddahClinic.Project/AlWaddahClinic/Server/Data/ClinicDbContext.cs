@@ -62,11 +62,16 @@ namespace AlWaddahClinic.Server.Data
 				.HasOne(p => p.HealthRecord)
 				.WithMany(p => p.Notes)
 				.OnDelete(DeleteBehavior.NoAction);
+
 			builder.Entity<Appointment>()
 				.HasOne(p => p.HealthRecord)
 				.WithOne(p => p.Appointment)
 				.OnDelete(DeleteBehavior.NoAction);
 
+			builder.Entity<HealthRecord>()
+				.HasMany(p => p.Payments)
+				.WithOne(p => p.HealthRecord)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			//Seeding the 2 only roles to the database.
 			builder.Entity<IdentityRole>().HasData
