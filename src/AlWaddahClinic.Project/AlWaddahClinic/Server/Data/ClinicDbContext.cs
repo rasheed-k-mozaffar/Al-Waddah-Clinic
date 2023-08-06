@@ -15,6 +15,7 @@ namespace AlWaddahClinic.Server.Data
 		public DbSet<Appointment> Appointments { get; set; }
 		public DbSet<Prescription> Prescriptions { get; set; }
 		public DbSet<Note> Notes { get; set; }
+		public DbSet<Payment> Payments { get; set; }
 
 		public ClinicDbContext(DbContextOptions<ClinicDbContext> options, IConfiguration configuration) : base(options)
 		{
