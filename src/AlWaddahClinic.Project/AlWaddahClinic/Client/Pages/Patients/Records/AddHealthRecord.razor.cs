@@ -50,6 +50,13 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 		private async Task AddRecord()
 		{
 			_errorMessage = string.Empty;
+
+			if (string.IsNullOrWhiteSpace(model.Description))
+			{
+				_errorMessage = "Please fill in the required details for the health record";
+				return;
+			}
+			_errorMessage = string.Empty;
 			try
 			{
 				model.Notes = notes;
