@@ -56,7 +56,8 @@ namespace AlWaddahClinic.Server.Extensions
                 SuggestedMedicalTests = healthRecord.SuggestedMedicalTests.Split(',').ToList(),
                 RelatedMedicalCases = healthRecord.RelatedMedicalCases.Split(',').ToList(),
                 MedicalCaseInsight = healthRecord.MedicalCaseInsight.Split(',').ToList(),
-                TotalAmount = healthRecord.TotalPayment
+                TotalAmount = healthRecord.TotalPayment,
+                Currency = healthRecord.Currency
             };
         }
 
@@ -224,6 +225,7 @@ namespace AlWaddahClinic.Server.Extensions
                 TotalPayment = healthRecordDto.TotalPayment,
                 IsPaymentCompleted = false,
                 Payments = new List<Payment>(),
+                Currency = healthRecordDto.Currency
                 // property for dentists
                 //TeethIds = string.Join(" ", healthRecordDto.TeethIds)
             };
@@ -242,6 +244,7 @@ namespace AlWaddahClinic.Server.Extensions
                 IsPaymentCompleted = false,
                 Payments = new List<Payment>(),
                 TotalPayment = healthRecordCreateDto.TotalPayment,
+                Currency = healthRecordCreateDto.Currency
                 // property for dentists
                 //TeethIds = string.Join(" ", healthRecordCreateDto.TeethIds)
             };
@@ -260,7 +263,9 @@ namespace AlWaddahClinic.Server.Extensions
                 SuggestedMedicalTests = string.Join(',', healthRecordDto.SuggestedMedicalTests),
                 RelatedMedicalCases = string.Join(',', healthRecordDto.RelatedMedicalCases),
                 MedicalCaseInsight = string.Join(',', healthRecordDto.MedicalCaseInsight),
-                TeethIds = string.Join(" ", healthRecordDto.TeethIds)
+                //TeethIds = string.Join(" ", healthRecordDto.TeethIds)
+                TotalPayment = healthRecordDto.TotalAmount,
+                Currency = healthRecordDto.Currency
             };
 
         }
