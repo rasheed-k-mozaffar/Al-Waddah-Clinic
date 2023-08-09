@@ -17,6 +17,7 @@ namespace AlWaddahClinic.Server.Models
 
 		public string? TeethIds { get; set; }
 		public decimal? TotalPayment { get; set; }
+		public string? Currency { get; set; }
 		public bool IsPaymentCompleted { get; set; }
 
 		//Ai Insights Related Properties

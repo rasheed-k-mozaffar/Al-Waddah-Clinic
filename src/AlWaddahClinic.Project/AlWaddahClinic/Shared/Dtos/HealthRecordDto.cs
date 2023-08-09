@@ -11,6 +11,7 @@ namespace AlWaddahClinic.Shared.Dtos
         public bool IsPaymentCompleted { get; set; }
         public string[]? TeethIds { get; set; }
         public decimal? TotalAmount { get; set; }
+        public string? Currency { get; set; }
         public DateTime CreatedOn { get; set; }
         public List<string>? PatientSuggestion { get; set; }
         public List<string>? SuggestedMedicalTests { get; set; }
