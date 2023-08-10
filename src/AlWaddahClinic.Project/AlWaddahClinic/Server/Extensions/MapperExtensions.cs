@@ -57,7 +57,8 @@ namespace AlWaddahClinic.Server.Extensions
                 RelatedMedicalCases = healthRecord.RelatedMedicalCases.Split(',').ToList(),
                 MedicalCaseInsight = healthRecord.MedicalCaseInsight.Split(',').ToList(),
                 TotalAmount = healthRecord.TotalPayment,
-                Currency = healthRecord.Currency
+                Currency = healthRecord.Currency,
+                IsPaymentCompleted = healthRecord.IsPaymentCompleted
             };
         }
 

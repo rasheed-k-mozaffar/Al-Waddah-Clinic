@@ -55,7 +55,9 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
                 PatientSuggestion = recordDto.PatientSuggestion,
                 SuggestedMedicalTests = recordDto.SuggestedMedicalTests,
                 MedicalCaseInsight = recordDto.MedicalCaseInsight,
-                RelatedMedicalCases = recordDto.RelatedMedicalCases
+                RelatedMedicalCases = recordDto.RelatedMedicalCases,
+                TotalPayment = recordDto.TotalAmount,
+                Currency = recordDto.Currency
             };
         }
 
@@ -88,7 +90,7 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
             try
             {
                 await HealthRecordsService.UpdateRecordAsync(Id ,model);
-                NavigationManager.NavigateTo($"/patients/{result.Value.Patient.Id}");
+                NavigationManager.NavigateTo($"/patients/records/{Id}");
             }
             catch(DomainException ex)
             {
