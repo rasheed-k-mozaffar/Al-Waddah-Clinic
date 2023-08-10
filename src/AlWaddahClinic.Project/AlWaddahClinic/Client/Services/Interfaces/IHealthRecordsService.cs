@@ -8,6 +8,7 @@ namespace AlWaddahClinic.Client.Services.Interfaces
 		Task AddRecordAsync(Guid patientId, HealthRecordCreateDto model);
 		Task RemoveRecordAsync(Guid recordId);
 		Task UpdateRecordAsync(Guid recordId, HealthRecordUpdateDto model);
-	}
+		Task MarkPaymentsCompletedAsync(Guid recordId);
+    }
 }
 
