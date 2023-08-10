@@ -73,6 +73,17 @@ namespace AlWaddahClinic.Client.Services
                 throw new DomainException(error.Message);
             }
         }
+
+        public async Task MarkPaymentsCompletedAsync(Guid recordId)
+        {
+            var response = await _httpClient.PutAsync($"/api/healthrecords/payment-completed/{recordId}", null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new DomainException(error.Message);
+            }
+        }
     }
 }
 

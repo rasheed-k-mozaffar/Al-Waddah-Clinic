@@ -7,6 +7,7 @@ namespace AlWaddahClinic.Server.Models
 	{
 		public Guid ClinicId { get; set; }
 		public virtual Clinic Clinic { get; set; }
+		public DoctorTypeEnum DoctorType { get; set; } = DoctorTypeEnum.GeneralPractitioner;
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string? ProfilePicture { get; set; }

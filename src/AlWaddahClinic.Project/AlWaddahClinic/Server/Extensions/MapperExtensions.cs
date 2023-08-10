@@ -56,6 +56,9 @@ namespace AlWaddahClinic.Server.Extensions
                 SuggestedMedicalTests = healthRecord.SuggestedMedicalTests.Split(',').ToList(),
                 RelatedMedicalCases = healthRecord.RelatedMedicalCases.Split(',').ToList(),
                 MedicalCaseInsight = healthRecord.MedicalCaseInsight.Split(',').ToList(),
+                TotalAmount = healthRecord.TotalPayment,
+                Currency = healthRecord.Currency,
+                IsPaymentCompleted = healthRecord.IsPaymentCompleted
             };
         }
 
@@ -112,6 +115,29 @@ namespace AlWaddahClinic.Server.Extensions
             {
                 Id = note.Id,
                 Title = note.Title
+            };
+        }
+
+        public static PaymentDto ToPaymentDto(this Payment payment)
+        {
+            return new PaymentDto
+            {
+                Id = payment.Id,
+                HealthRecordId = payment.HealthRecordId,
+                Description = payment.Description,
+                Amount = payment.Amount,
+                Currency = payment.Currency,
+                PaidOn = payment.PaidOn
+            };
+        }
+
+        public static Payment ToPaymentCreate(this PaymentCreateDto paymentCreateDto)
+        {
+            return new Payment
+            {
+                Description = paymentCreateDto.Description,
+                Amount = paymentCreateDto.Amount,
+                Currency = paymentCreateDto.Currency
             };
         }
     }
@@ -197,6 +223,12 @@ namespace AlWaddahClinic.Server.Extensions
                 SuggestedMedicalTests = string.Join(',', healthRecordDto.SuggestedMedicalTests),
                 RelatedMedicalCases = string.Join(',', healthRecordDto.RelatedMedicalCases),
                 MedicalCaseInsight = string.Join(',', healthRecordDto.MedicalCaseInsight),
+                TotalPayment = healthRecordDto.TotalPayment,
+                IsPaymentCompleted = false,
+                Payments = new List<Payment>(),
+                Currency = healthRecordDto.Currency
+                // property for dentists
+                //TeethIds = string.Join(" ", healthRecordDto.TeethIds)
             };
         }
 
@@ -210,6 +242,12 @@ namespace AlWaddahClinic.Server.Extensions
                 SuggestedMedicalTests = string.Join(',', healthRecordCreateDto.SuggestedMedicalTests),
                 RelatedMedicalCases = string.Join(',', healthRecordCreateDto.RelatedMedicalCases),
                 MedicalCaseInsight = string.Join(',', healthRecordCreateDto.MedicalCaseInsight),
+                IsPaymentCompleted = false,
+                Payments = new List<Payment>(),
+                TotalPayment = healthRecordCreateDto.TotalPayment,
+                Currency = healthRecordCreateDto.Currency
+                // property for dentists
+                //TeethIds = string.Join(" ", healthRecordCreateDto.TeethIds)
             };
         }
 
@@ -226,6 +264,9 @@ namespace AlWaddahClinic.Server.Extensions
                 SuggestedMedicalTests = string.Join(',', healthRecordDto.SuggestedMedicalTests),
                 RelatedMedicalCases = string.Join(',', healthRecordDto.RelatedMedicalCases),
                 MedicalCaseInsight = string.Join(',', healthRecordDto.MedicalCaseInsight),
+                //TeethIds = string.Join(" ", healthRecordDto.TeethIds)
+                TotalPayment = healthRecordDto.TotalAmount,
+                Currency = healthRecordDto.Currency
             };
 
         }

@@ -112,8 +112,20 @@ namespace AlWaddahClinic.Server.Controllers
                     var recordToUpdate = await _healthRecordsRepository.GetHealthRecordByIdAsync(id);
 
                     recordToUpdate.Description = model.Description;
+                    recordToUpdate.TotalPayment = model.TotalPayment;
+                    recordToUpdate.Currency = model.Currency;
 
-                    if (recordToUpdate.Notes != null)
+                    if(recordToUpdate.Payments != null && recordToUpdate.Payments.Any())
+                    {
+                        recordToUpdate.Payments.Select(p => p.Currency = model.Currency);
+
+                        if(recordToUpdate.TotalPayment > recordToUpdate.Payments.Sum(p => p.Amount))
+                        {
+                            recordToUpdate.IsPaymentCompleted = false;
+                        }
+                    }
+
+                    if (recordToUpdate.Notes != null && model.Notes != null)
                     {
                         _context.Notes.RemoveRange(recordToUpdate.Notes);
                         recordToUpdate.Notes = model.Notes.Select(n => n.ToNoteUpdate()).ToList();
@@ -122,6 +134,8 @@ namespace AlWaddahClinic.Server.Controllers
                     {
                         recordToUpdate.Notes = model.Notes.Select(n => n.ToNoteUpdate()).ToList();
                     }
+
+
 
                     await _context.SaveChangesAsync();
 
@@ -140,6 +154,29 @@ namespace AlWaddahClinic.Server.Controllers
             else
             {
                 return BadRequest(ModelState);
+            }
+        }
+
+        [HttpPut("payment-completed/{id}")]
+        public async Task<IActionResult> UpdatePaymentStatus(Guid id)
+        {
+            try
+            {
+                var recordToUpdate = await _healthRecordsRepository
+                    .GetHealthRecordByIdAsync(id);
+
+                recordToUpdate.IsPaymentCompleted = true;
+
+                _context.SaveChanges();
+
+                return NoContent();
+            }
+            catch(NotFoundException ex)
+            {
+                return BadRequest(new ApiErrorResponse
+                {
+                    Message = ex.Message,
+                });
             }
         }
 

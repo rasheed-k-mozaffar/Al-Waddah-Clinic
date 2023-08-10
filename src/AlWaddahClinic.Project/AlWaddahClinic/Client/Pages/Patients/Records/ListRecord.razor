@@ -21,77 +21,211 @@
     {
         <MudContainer Class="mt-5">
             <MudCard Style="padding: 2rem;">
+
+                @* RECORD HEADERR SECTION *@
+
                 <MudCardContent>
-                    <MudText Typo="Typo.h3" Color="Color.Error"><b><i class="bi bi-journal-medical"></i> Health Record</b>
+                    <MudText Typo="Typo.h3">
+                        <b><i class="bi bi-journal-medical"></i> Health Record</b>
                     </MudText>
                     <MudText Typo="Typo.h6"><b>Created On: @record.CreatedOn.ToLongDateString()</b></MudText>
                     <MudText Typo="Typo.h6" Color="Color.Info" @onclick="GoBack"
-                        Style="text-decoration: underline; cursor: pointer;">@record.Patient.FullName</MudText>
-                    <MudDivider />
-                </MudCardContent>
-
-                <MudCardContent Class="mb-5">
-                    <MudTextField T="string" Label="Case Description" @bind-Text="@record.Description" ReadOnly="true"
-                        MultiLine="true" Lines="10" Variant="Variant.Outlined" />
-                </MudCardContent>
-
-                <MudCardContent Class="mb-5">
-                    <MudExpansionPanels MultiExpansion="true">
-                        <div class="vertical-align">
-                            <MudIcon Icon="@Icons.Outlined.Lightbulb" Color="Color.Tertiary" /> &nbsp;
-                            <span>
-                                <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
-                            </span>
-                            <MudChip Color="Color.Tertiary" Size="Size.Small" Variant="Variant.Filled" Text="BETA" />
-                        </div>
-
-                        <MudExpansionPanel Class="mb-5 mt-3" Text="Smart Insights Suggestions">
-                            <InsightsContainer Text="Suggestions For Patient" insights="@record.PatientSuggestion" />
-                            <InsightsContainer Text="Related Medical Cases" insights="@record.RelatedMedicalCases" />
-                            <InsightsContainer Text="Suggested Medical Tests" insights="@record.SuggestedMedicalTests" />
-                            <InsightsContainer Text="Case Information" insights="@record.MedicalCaseInsight" />
-                        </MudExpansionPanel>
-
-                    </MudExpansionPanels>
-                </MudCardContent>
-
-
-
-
-                @if (record.Notes == null)
-                {
-                    <Loader />
-                }
-                else
-                {
-                    if (record.Notes.Count == 0)
-                    {
-                        <MudCardContent>
-                            <MudText Typo="Typo.body1" Color="Color.Error">This record doesn't include any notes!</MudText>
+                             Style="text-decoration: underline; cursor: pointer;">@record.Patient.FullName</MudText>
+                            <MudDivider />
                         </MudCardContent>
-                    }
-                    else
-                    {
+
+                        @* RECORD DESCRIPTION NOTES *@
+
+                        <MudCardContent Class="mb-5">
+                            <MudTextField T="string" Label="Case Description" @bind-Text="@record.Description" ReadOnly="true"
+                                          MultiLine="true" Lines="10" Variant="Variant.Outlined" />
+                        </MudCardContent>
+
+                        @* SMART INSIGHTS SECTION *@
+
                         <MudCardContent>
-                            <MudText Typo="Typo.h6"><b>Additional Information</b></MudText>
-                            @foreach (var note in record.Notes)
+                            <MudExpansionPanels MultiExpansion="true">
+                                <div class="vertical-align">
+                                    <MudIcon Icon="@Icons.Outlined.Lightbulb" Color="Color.Tertiary" /> &nbsp;
+                                    <span>
+                                        <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
+                                    </span>
+                                    <MudChip Color="Color.Tertiary" Size="Size.Small" Variant="Variant.Filled" Text="BETA" />
+                                </div>
+
+                                <MudExpansionPanel Class="mb-5 mt-3" Text="Smart Insights Suggestions">
+                                    <InsightsContainer Text="Suggestions For Patient" insights="@record.PatientSuggestion" />
+                                    <InsightsContainer Text="Related Medical Cases" insights="@record.RelatedMedicalCases" />
+                                    <InsightsContainer Text="Suggested Medical Tests" insights="@record.SuggestedMedicalTests" />
+                                    <InsightsContainer Text="Case Information" insights="@record.MedicalCaseInsight" />
+                                </MudExpansionPanel>
+
+                            </MudExpansionPanels>
+                        </MudCardContent>
+
+                        @* RECORD NOTES SECTION *@
+
+                        <MudCardContent>
+                            <div class="vertical-align">
+                                <MudIcon Icon="@Icons.Outlined.MedicalInformation" /> &nbsp;
+                                <span>
+                                    <MudText Typo="Typo.h6"><b>Additional Information</b></MudText>
+                                </span>
+                            </div>
+
+                            @if (record.Notes == null)
                             {
-                                <MudText Typo="Typo.body2"><i class="bi bi-pin-angle-fill"></i> @note.Title</MudText>
+                                <Loader />
+                            }
+                            else
+                            {
+                                if (record.Notes.Count == 0)
+                                {
+
+                                    <MudAlert Severity="Severity.Info" Icon="@Icons.Material.Filled.Info">
+                                        This record doesn't include any notes!
+                                    </MudAlert>
+
+                                }
+                                else
+                                {
+                                    <MudCardContent>
+                                        @foreach (var note in record.Notes)
+                                        {
+                                            <MudText Typo="Typo.body2"><i class="bi bi-pin-angle-fill"></i> @note.Title</MudText>
+                                        }
+                                    </MudCardContent>
+                                }
                             }
                         </MudCardContent>
-                    }
-                }
 
+                        @* THIS SECTION IS FOR THE PAYMENTS*@
 
-                <MudCardContent>
-                    <MudButton Variant="Variant.Outlined" Color="Color.Info" @onclick="GoBack">Go Back</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="OpenRemoveDialog">
-                        Remove Record
-                    </MudButton>
-                </MudCardContent>
-            </MudCard>
-        </MudContainer>
-    }
+                        <MudCardContent>
+                            <AuthorizeView>
+                                <Authorized>
+                                    @if (context.User.FindFirst("DoctorType").Value == "Dentist")
+                                    {
+                                        <div class="vertical-align">
+                                            <MudIcon Icon="@Icons.Material.Filled.Money" Color="Color.Success" /> &nbsp;
+                                            <span>
+                                                <MudText Typo="Typo.h6">
+                                                    <b>Payments:</b> <MudChip Color="Color.Primary"
+                                                                              Size="Size.Small">@record.TotalAmount@record.Currency</MudChip>
+                                                </MudText>
+                                            </span>
+                                        </div>
+
+                                        @if (payments != null && payments.Any())
+                                        {
+                                            if (_refreshingPayments)
+                                            {
+                                                <MudItem>
+                                                    <Loader />
+                                                </MudItem>
+                                            }
+                                            else
+                                            {
+                                                <MudSimpleTable Dense="true">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Amount in @record.Currency</th>
+                                                            <th>Paid On</th>
+                                                            <th style="text-align: end;">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var payment in payments)
+                                                        {
+                                                            <tr>
+                                                                <td>@payment.Amount</td>
+                                                                <td>@payment.PaidOn</td>
+                                                                <td style="text-align: end">
+                                                                    @*<MudButton Variant="Variant.Text" Color="Color.Info" @onclick="ViewPaymentDetails(payment.Id)">View</MudButton>*@
+                                                                    <MudButton Disabled="record.IsPaymentCompleted" Variant="Variant.Text" Color="Color.Error" @onclick="@(() => OpenPaymentRemoveDialog(payment.Id))" StartIcon="@Icons.Material.Filled.Delete">Remove</MudButton>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </MudSimpleTable>
+                                                <MudText Typo="Typo.body1" Class="mt-2" Color="Color.Surface">Amount Left: @(record.TotalAmount - payments.Sum(p => p.Amount))@record.Currency</MudText>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <MudAlert Severity="Severity.Info" Icon="@Icons.Material.Filled.Info">Looks like there isn't any payments made! Click below to add one</MudAlert>
+                                        }
+                                        @if (_wantsToAddPayment)
+                                        {
+                                            <MudItem Class="add-payment-form" Style="border: 2px solid lightgray; border-radius: 10px; padding: 1rem;">
+                                                @if (!string.IsNullOrEmpty(_paymentErrorMessage))
+                                                {
+                                                    <MudAlert Class="mt-2"
+                                                              Severity="Severity.Error"
+                                                              Variant="Variant.Filled"
+                                                              Icon="@Icons.Material.Filled.Warning">
+                                                        @_paymentErrorMessage
+                                                    </MudAlert>
+                                                }
+                                                <MudGrid>
+                                                    <MudItem xs="12" sm="12" md="6" lg="6">
+                                                        <MudTextField T="string" Label="Description (Optional)"
+                                                                      @bind-Text="paymentModel.Description" Class="mt-2"
+                                                                      Variant="Variant.Outlined" Margin="Margin.Dense" />
+                                                    </MudItem>
+                                                    <MudItem xs="12" sm="12" md="6" lg="6">
+                                                        <MudTextField T="decimal" Label="Amount Paid"
+                                                                      @bind-Value="paymentModel.Amount"
+                                                                      Variant="Variant.Outlined" Class="mt-2"
+                                                                      AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                                                      AdornmentColor="Color.Success"
+                                                                      Margin="Margin.Dense" />
+                                                    </MudItem>
+                                                    <MudItem xs="12" sm="12" md="6" lg="6">
+                                                        <MudButton Variant="Variant.Outlined" Style="width: 100%;"
+                                                                   StartIcon="@Icons.Material.Filled.AddToQueue"
+                                                                   @onclick="AddPayment" Class="mt-2"
+                                                                   Color="Color.Primary">Add New Payment</MudButton>
+                                                    </MudItem>
+                                                    <MudItem xs="12" sm="12" md="6" lg="6">
+                                                        <MudButton Variant="Variant.Outlined" Style="width: 100%"
+                                                                   StartIcon="@Icons.Material.Filled.Cancel" Class="mt-2 mb-2"
+                                                                   Color="Color.Dark"
+                                                                   @onclick="CancelPaymentCreation">Cancel Payment</MudButton>
+                                                    </MudItem>
+                                                </MudGrid>
+                                            </MudItem>
+                                        }
+
+                                        <MudItem Class="add-btn">
+                                            <MudButton Variant="Variant.Outlined" Disabled="record.IsPaymentCompleted"
+                                                       Color="Color.Info" Class="mt-3"
+                                                       StartIcon="@Icons.Material.Filled.Add" Style="width: 100%"
+                                                       @onclick="ShowAddPaymentForm">Add New Payment</MudButton>
+                                        </MudItem>
+                                    }
+                                </Authorized>
+                            </AuthorizeView>
+                        </MudCardContent>
+
+                        <MudDivider />
+
+                        <MudCardContent>
+                            <MudGrid Justify="Justify.FlexStart">
+                                <MudItem xs="12" sm="12" md="12" lg="4">
+                                    <MudButton Style="width: 100%;" Class="mr-2" Color="Color.Info" Variant="Variant.Filled" OnClick="GoBack" StartIcon="@Icons.Material.Filled.ArrowBack" IconColor="Color.Surface">Go Back</MudButton>
+                                </MudItem>
+                                <MudItem xs="12" sm="12" md="12" lg="4">
+                                    <MudButton Style="width: 100%;" Class="mr-2" Color="Color.Error" Variant="Variant.Filled" OnClick="OpenRemoveDialog" StartIcon="@Icons.Material.Filled.PersonRemoveAlt1" IconColor="Color.Surface">Remove Record</MudButton>
+                                </MudItem>
+                                <MudItem xs="12" sm="12" md="12" lg="4">
+                                    <MudButton Style="width: 100%;" Color="Color.Secondary" Variant="Variant.Filled" OnClick="@(()=> NavigationManager.NavigateTo($"/patients/records/update/{Id}"))" StartIcon="@Icons.Material.Filled.Edit" IconColor="Color.Surface">Update Record</MudButton>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                </MudContainer>
+            }
 }
 
 
@@ -99,5 +233,17 @@
     .vertical-align {
         display: flex;
         align-items: center;
+    }
+
+    .add-btn {
+        width: 100%;
+        display: @_addPaymentButtonStauts;
+    }
+
+    .add-payment-form {
+        border: 1px solid lightgray;
+        border-radius: 2.5px;
+        padding: 1rem;
+        margin-top: 1rem;
     }
 </style>

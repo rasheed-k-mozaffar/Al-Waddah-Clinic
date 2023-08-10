@@ -64,14 +64,16 @@ namespace AlWaddahClinic.Server.Controllers
                         var clinicRegisterationResult = await _clinicRepository.CreateClinicAsync(clinic);
                         try
                         {
-                            //This will call the register service and create a new user in the database with their respective clinic ID
+                            // This will call the register service and create a new user in the
+                            // database with their respective clinic ID
                             var registerUserDto = new RegisterUserDto
                             {
                                 FirstName = model.FirstName,
                                 LastName = model.LastName,
                                 Email = model.DoctorEmail,
                                 Password = model.Password,
-                                PasswordConfirmation = model.PasswordConfirmation
+                                PasswordConfirmation = model.PasswordConfirmation,
+                                DoctorType = model.DoctorType
                             };
                             var result = await _authRepository.RegisterUserAsync(registerUserDto, clinic.Id);
 

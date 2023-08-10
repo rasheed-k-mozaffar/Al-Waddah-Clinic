@@ -34,10 +34,26 @@ else
 
                     <MudGrid>
 
-                        <MudItem Class="mb-3 mt-5" xs="12" md="12" lg="12">
+                        <MudItem Class="mt-5" xs="12" md="12" lg="12">
                             <MudTextField T="string" Variant="Variant.Outlined" Counter="0" Immediate="true" Label="Description" Multiline="true"
                                           Required="true" RequiredError="Description is required" @bind-Value="model.Description" Lines="10"
                                           HelperText="Describe the patient and list some relevant information" HelperTextOnFocus="true" />
+                        </MudItem>
+
+                        <MudItem xs="12" sm="12" md="8" lg="8">
+                            <MudTextField T="decimal?" Variant="Variant.Outlined"
+                                          Label="Total payment" Adornment="Adornment.End"
+                                          AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                          AdornmentColor="Color.Success" Margin="Margin.Dense"
+                                          @bind-Value="model.TotalPayment"
+                                          Required="true" RequiredError="The total payment is required" />
+                        </MudItem>
+
+                        <MudItem xs="12" sm="12" md="4" lg="4">
+                            <MudSelect T="string" Label="Select currency" @bind-Value="model.Currency" Margin="Margin.Dense" Variant="Variant.Outlined">
+                                <MudSelectItem Value="@("SYP")">Syrian Pounds 💷</MudSelectItem>
+                                <MudSelectItem Value="@("USD")">American Dollars 💵</MudSelectItem>
+                            </MudSelect>
                         </MudItem>
 
                         <MudItem xs="12" md="12" lg="12">

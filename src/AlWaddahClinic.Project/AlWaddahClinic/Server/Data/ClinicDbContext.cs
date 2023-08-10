@@ -15,6 +15,7 @@ namespace AlWaddahClinic.Server.Data
 		public DbSet<Appointment> Appointments { get; set; }
 		public DbSet<Prescription> Prescriptions { get; set; }
 		public DbSet<Note> Notes { get; set; }
+		public DbSet<Payment> Payments { get; set; }
 
 		public ClinicDbContext(DbContextOptions<ClinicDbContext> options, IConfiguration configuration) : base(options)
 		{
@@ -62,11 +63,16 @@ namespace AlWaddahClinic.Server.Data
 				.HasOne(p => p.HealthRecord)
 				.WithMany(p => p.Notes)
 				.OnDelete(DeleteBehavior.NoAction);
+
 			builder.Entity<Appointment>()
 				.HasOne(p => p.HealthRecord)
 				.WithOne(p => p.Appointment)
 				.OnDelete(DeleteBehavior.NoAction);
 
+			builder.Entity<HealthRecord>()
+				.HasMany(p => p.Payments)
+				.WithOne(p => p.HealthRecord)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			//Seeding the 2 only roles to the database.
 			builder.Entity<IdentityRole>().HasData

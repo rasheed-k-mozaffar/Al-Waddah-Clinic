@@ -1,27 +1,23 @@
 ﻿.page-style{
     margin-top: 1rem;
-    padding-left: 10rem;
-    padding-right: 10rem;
+    padding: 0 4rem;
     transition: .25s ease all;
 }
 
 @media (screen-width: 1200px) {
     .page-style {
-        padding-left: 7rem;
-        padding-right: 7rem;
+        padding: 0 3rem;
     }
 }
 
-@media (max-width: 900px) {
+@media (screen-width: 900px) {
     .page-style {
-        padding-left: 4rem;
-        padding-right: 4rem;
+        padding: 0 2.25rem;
     }
 }
 
-@media (max-width: 768px) {
+@media (screen-width: 768px) {
     .page-style {
-        padding-left: 2rem;
-        padding-right: 2rem;
+        padding: 0 1.75rem;
     }
 }
