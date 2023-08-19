@@ -56,6 +56,7 @@ namespace AlWaddahClinic.Server.Extensions
                 SuggestedMedicalTests = healthRecord.SuggestedMedicalTests.Split(',').ToList(),
                 RelatedMedicalCases = healthRecord.RelatedMedicalCases.Split(',').ToList(),
                 MedicalCaseInsight = healthRecord.MedicalCaseInsight.Split(',').ToList(),
+                Payments = healthRecord.Payments.Select(p => p.ToPaymentDto()).ToList(),
                 TotalAmount = healthRecord.TotalPayment,
                 Currency = healthRecord.Currency,
                 IsPaymentCompleted = healthRecord.IsPaymentCompleted

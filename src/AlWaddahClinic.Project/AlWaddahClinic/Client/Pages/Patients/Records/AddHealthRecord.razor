@@ -36,21 +36,28 @@
                                       HelperTextOnFocus="true" />
                     </MudItem>
 
-                    <MudItem Class="mb-3" xs="12" sm="12" md="8" lg="8">
-                        <MudTextField T="decimal" Variant="Variant.Outlined"
-                                      Label="Total payment" Adornment="Adornment.End"
-                                      AdornmentIcon="@Icons.Material.Filled.AttachMoney"
-                                      AdornmentColor="Color.Success" Margin="Margin.Dense"
-                                      @bind-Value="model.TotalPayment"
-                                      Required="true" RequiredError="The total payment is required" />
-                    </MudItem>
+                    <AuthorizeView Context="authContext">
+                        <Authorized>
+                            @if (authContext.User.FindFirst("DoctorType").Value == "Dentist")
+                            {
+                                <MudItem Class="mb-3" xs="12" sm="12" md="8" lg="8">
+                                    <MudTextField T="decimal?" Variant="Variant.Outlined"
+                                                  Label="Total payment" Adornment="Adornment.End"
+                                                  AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                                  AdornmentColor="Color.Success" Margin="Margin.Dense"
+                                                  @bind-Value="model.TotalPayment"
+                                                  Required="true" RequiredError="The total payment is required" />
+                                </MudItem>
 
-                    <MudItem xs="12" sm="12" md="4" lg="4">
-                        <MudSelect T="string" Label="Select currency" Margin="Margin.Dense" @bind-Value="model.Currency" Variant="Variant.Outlined">
-                            <MudSelectItem Value="@("SYP")">Syrian Pounds 💷</MudSelectItem>
-                            <MudSelectItem Value="@("USD")">American Dollars 💵</MudSelectItem>
-                        </MudSelect>
-                    </MudItem>
+                                <MudItem xs="12" sm="12" md="4" lg="4">
+                                    <MudSelect T="string" Label="Select currency" Margin="Margin.Dense" @bind-Value="model.Currency" Variant="Variant.Outlined">
+                                        <MudSelectItem Value="@("SYP")">Syrian Pounds 💷</MudSelectItem>
+                                        <MudSelectItem Value="@("USD")">American Dollars 💵</MudSelectItem>
+                                    </MudSelect>
+                                </MudItem>
+                            }
+                        </Authorized>
+                    </AuthorizeView>
 
 
                     <MudItem xs="12" md="12" lg="12">

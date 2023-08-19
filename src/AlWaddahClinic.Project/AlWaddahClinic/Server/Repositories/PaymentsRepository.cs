@@ -26,7 +26,7 @@ namespace AlWaddahClinic.Server.Repositories
             }
 
             var payments = await _context.Payments
-                .Where(p => p.HealthRecordId == healthRecordId && p.ClinicId.ToString() == _options.ClinicId)
+                .Where(p => p.HealthRecordId == healthRecordId)
                 .ToListAsync();
 
             return payments;
@@ -52,7 +52,9 @@ namespace AlWaddahClinic.Server.Repositories
             if(healthRecord != null)
             {
                 payment.HealthRecord = healthRecord;
+                payment.HealthRecordId = healthRecordId;
                 payment.ClinicId = Guid.Parse(_options.ClinicId);
+                payment.Currency = healthRecord.Currency;
 
                 await _context.Payments.AddAsync(payment);
                 await _context.SaveChangesAsync();

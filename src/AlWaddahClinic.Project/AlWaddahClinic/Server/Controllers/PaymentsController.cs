@@ -54,7 +54,7 @@ namespace AlWaddahClinic.Server.Controllers
             }
         }
 
-        [HttpGet("/payment-details/{id}")]
+        [HttpGet("payment-details/{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             try

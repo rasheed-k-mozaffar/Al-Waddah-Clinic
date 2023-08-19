@@ -174,6 +174,7 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 		private void CancelPaymentCreation()
 		{
 			paymentModel = new PaymentCreateDto();
+			_paymentErrorMessage = string.Empty;
 			ShowAddPaymentForm();
 		}
 
@@ -191,7 +192,20 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 			_refreshingPayments = false;
 		}
 
-		private void GoBack()
+		private void OpenPaymentDetailsDialog(Guid id)
+		{
+			var parameters = new DialogParameters();
+
+			parameters.Add("Header", "Payment Details");
+			parameters.Add("PaymentId", id);
+
+			var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium, ClassBackground = "dialog-overlay"};
+
+			DialogService.Show<PaymentDetailsDialog>(null, parameters, options);
+		}
+
+
+        private void GoBack()
 		{
 			NavigationManager.NavigateTo($"/patients/{record.Patient.Id}");
 		}
