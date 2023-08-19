@@ -1,0 +1,62 @@
+﻿@inject IPaymentsService PaymentsService
+<MudDialog Style="padding: 1rem;">
+    <DialogContent>
+        <MudText Typo="Typo.h5"><b>@Header</b></MudText>
+        <MudDivider Class="mb-3" />
+
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+        }
+        else
+        {
+            <MudText Typo="Typo.h6" Color="Color.Primary">🗓️ <b>Paid On:</b> <span style="color: black">@payment.PaidOn</span></MudText> 
+            <MudText Typo="Typo.h6" Color="Color.Info">💰 <b>Payment:</b> <span style="color: black">@payment.Amount@payment.Currency</span></MudText> 
+            <MudText Typo="Typo.body1" Class="mb-2"></MudText>
+
+            <MudText Typo="Typo.body1">@payment.Description</MudText>
+        }
+
+        <MudDivider Class="mt-3" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Info" Style="width: 100%;">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
+    [Parameter] public string? Header { get; set; }
+    [Parameter] public Guid PaymentId { get; set; }
+
+    private PaymentDto payment = new PaymentDto();
+    private ApiResponse<PaymentDto> result = new();
+    private string _errorMessage = string.Empty;
+
+    private void Cancel() => MudDialog.Cancel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _errorMessage = string.Empty;
+        try
+        {
+            if (PaymentId.Equals(Guid.Empty))
+            {
+                Cancel();
+            }
+
+            result = await PaymentsService.GetPaymentByIdAsync(PaymentId);
+
+            if (result.IsSuccess)
+            {
+                payment = result.Value;
+            }
+        }
+        catch (DomainException ex)
+        {
+            _errorMessage = ex.Message;
+        }
+    }
+}
+
+
+
