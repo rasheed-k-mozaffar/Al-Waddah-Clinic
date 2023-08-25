@@ -8,8 +8,8 @@
     }
 }
 
-<MudContainer style="margin-top: 5rem;">
-    <MudCard Style="padding: 2rem; border: 1px solid black">
+<MudContainer Class="mt-5 mb-5">
+    <MudCard Style="padding: 2rem;">
         <MudItem>
             <MudText Typo="Typo.h4"><b><i class="bi bi-person-fill-add"></i> Add a new patient</b></MudText>
         </MudItem>
@@ -46,21 +46,52 @@
                         <MudTextField T="string" Label="Address (optional)" @bind-value="model.Address" />
                     </MudItem>
 
-                    <MudItem Class="mb-3">
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
                         <MudRadioGroup @bind-SelectedOption="model.Gender">
                             <MudRadio Option="GenderEnum.Male" Color="Color.Info">Male</MudRadio>
                             <MudRadio Option="GenderEnum.Female" Color="Color.Secondary"> Female</MudRadio>
                         </MudRadioGroup>
                     </MudItem>
 
+                    <MudItem xs="12" md="12" lg="12">
+                        <div class="vertical-align">
+                            <MudIcon Icon="@Icons.Material.Filled.MedicalInformation" Color="Color.Info" /> &nbsp;
+                            <span>
+                                <MudText Typo="Typo.h6"><b>Additional Information</b></MudText>
+                            </span>
+                        </div>
+                    </MudItem>
+
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        <MudSelect T="string" Label="Medical History (Optional)"
+                                   @bind-Value="_medicalHistoryStr" MultiSelection="true"
+                                   Style="width: 100%;">
+                            @foreach (string value in cases)
+                            {
+                                <MudSelectItem Value="value">@value</MudSelectItem>
+                            }
+
+                        </MudSelect>
+                    </MudItem>
+
                     <MudDivider />
 
-                    <MudItem Class="mb-3">
-                        <MudButton Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
-                                   ButtonType="ButtonType.Submit">
-                            Add
-                            Patient
-                        </MudButton>
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        <MudGrid Justify="Justify.FlexStart">
+                            <MudItem xs="12" sm="12" md="6" lg="6">
+                                <MudButton Style="width: 100%;" Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
+                                           ButtonType="ButtonType.Submit" StartIcon="@Icons.Material.Filled.Add">
+                                    Add Patient
+                                </MudButton>
+                            </MudItem>
+                            <MudItem xs="12" sm="12" md="6" lg="6">
+                                <MudButton Style="width: 100%;" Disabled="@_isBusy" Variant="Variant.Filled"
+                                           Color="Color.Dark" StartIcon="@Icons.Material.Filled.Cancel"
+                                           @onclick='() => NavigationManager.NavigateTo("/patients/all")'>
+                                    Cancel
+                                </MudButton>
+                            </MudItem>
+                        </MudGrid>
                     </MudItem>
                 </MudGrid>
             </EditForm>
