@@ -21,8 +21,7 @@ namespace AlWaddahClinic.Server.Extensions
 
         public static PatientDto ToPatientDto(this Patient patient)
         {
-            return new PatientDto
-            {
+            return new PatientDto {
                 Id = patient.Id,
                 FullName = patient.FullName,
                 EmailAddress = patient.EmailAddress,
@@ -30,7 +29,8 @@ namespace AlWaddahClinic.Server.Extensions
                 Address = patient.Address,
                 PhoneNumber = patient.PhoneNumber,
                 Gender = patient.Gender,
-                HealthRecords = patient.HealthRecords.Select(hr => hr.ToHealthRecordSummaryDto()).ToList()
+                HealthRecords = patient.HealthRecords?.Select(hr => hr.ToHealthRecordSummaryDto()).ToList(),
+                MedicalHistory = patient.MedicalHistory?.Split(',').ToList()
             };
         }
 
@@ -39,7 +39,7 @@ namespace AlWaddahClinic.Server.Extensions
             return new HealthRecordSummaryDto
             {
                 Id = healthRecord.Id,
-                CreatedOn = (DateTime)healthRecord.CreatedOn
+                CreatedOn = (DateTime)healthRecord.CreatedOn!
             };
         }
 
@@ -49,14 +49,14 @@ namespace AlWaddahClinic.Server.Extensions
             {
                 Id = healthRecord.Id,
                 Description = healthRecord.Description,
-                CreatedOn = (DateTime)healthRecord.CreatedOn,
-                Notes = healthRecord.Notes.Select(n => n.ToNoteDto()).ToList(),
+                CreatedOn = (DateTime)healthRecord.CreatedOn!,
+                Notes = healthRecord.Notes?.Select(n => n.ToNoteDto()).ToList(),
                 Patient = healthRecord.Patient.ToPatientDto(),
-                PatientSuggestion = healthRecord.PatientSuggestion.Split(',').ToList(),
-                SuggestedMedicalTests = healthRecord.SuggestedMedicalTests.Split(',').ToList(),
-                RelatedMedicalCases = healthRecord.RelatedMedicalCases.Split(',').ToList(),
-                MedicalCaseInsight = healthRecord.MedicalCaseInsight.Split(',').ToList(),
-                Payments = healthRecord.Payments.Select(p => p.ToPaymentDto()).ToList(),
+                PatientSuggestion = healthRecord.PatientSuggestion?.Split(',').ToList(),
+                SuggestedMedicalTests = healthRecord.SuggestedMedicalTests?.Split(',').ToList(),
+                RelatedMedicalCases = healthRecord.RelatedMedicalCases?.Split(',').ToList(),
+                MedicalCaseInsight = healthRecord.MedicalCaseInsight?.Split(',').ToList(),
+                Payments = healthRecord.Payments?.Select(p => p.ToPaymentDto()).ToList(),
                 TotalAmount = healthRecord.TotalPayment,
                 Currency = healthRecord.Currency,
                 IsPaymentCompleted = healthRecord.IsPaymentCompleted
@@ -71,7 +71,7 @@ namespace AlWaddahClinic.Server.Extensions
                 CommercialName = medication.CommercialName,
                 DailyDose = medication.DailyDose,
                 FinishAt = medication.FinishAt,
-                Prescription = medication.Prescription.ToPrescriptionDto()
+                Prescription = medication.Prescription?.ToPrescriptionDto()
             };
         }
 
@@ -172,8 +172,7 @@ namespace AlWaddahClinic.Server.Extensions
 
         public static Patient ToPatientCreate(this PatientCreateDto patientDto)
         {
-            return new Patient
-            {
+            return new Patient {
                 FullName = patientDto.FullName,
                 EmailAddress = patientDto.EmailAddress,
                 PhoneNumber = patientDto.PhoneNumber,
@@ -181,7 +180,8 @@ namespace AlWaddahClinic.Server.Extensions
                 DateOfBirth = patientDto.DateOfBirth,
                 Gender = patientDto.Gender,
                 Appointments = new List<Appointment>(),
-                HealthRecords = new List<HealthRecord>()
+                HealthRecords = new List<HealthRecord>(),
+                MedicalHistory = string.Join(',', patientDto.MedicalHistory)
             };
         }
 
@@ -194,7 +194,8 @@ namespace AlWaddahClinic.Server.Extensions
                 PhoneNumber = patientUpdateDto.PhoneNumber,
                 Address = patientUpdateDto.Address,
                 DateOfBirth = patientUpdateDto.DateOfBirth,
-                Gender = patientUpdateDto.Gender
+                Gender = patientUpdateDto.Gender,
+                MedicalHistory = string.Join(',', patientUpdateDto.MedicalHistory)
             };
         }
 
@@ -210,7 +211,8 @@ namespace AlWaddahClinic.Server.Extensions
                 DateOfBirth = patientDto.DateOfBirth,
                 Gender = patientDto.Gender,
                 Appointments = new List<Appointment>(),
-                HealthRecords = new List<HealthRecord>()
+                HealthRecords = new List<HealthRecord>(),
+                MedicalHistory = string.Join(',', patientDto.MedicalHistory)
             };
         }
 
@@ -237,7 +239,7 @@ namespace AlWaddahClinic.Server.Extensions
         {
             return new HealthRecord
             {
-                Description = healthRecordCreateDto.Description,
+                Description = healthRecordCreateDto.Description!,
                 Notes = healthRecordCreateDto.Notes?.Select(n => n.ToNoteCreate()).ToList(),
                 PatientSuggestion = string.Join(',', healthRecordCreateDto.PatientSuggestion),
                 SuggestedMedicalTests = string.Join(',', healthRecordCreateDto.SuggestedMedicalTests),
@@ -280,7 +282,7 @@ namespace AlWaddahClinic.Server.Extensions
                 CommercialName = medicationDto.CommercialName,
                 DailyDose = medicationDto.DailyDose,
                 FinishAt = medicationDto.FinishAt,
-                Prescription = medicationDto.Prescription.ToPrescription(),
+                Prescription = medicationDto.Prescription?.ToPrescription(),
             };
         }
 

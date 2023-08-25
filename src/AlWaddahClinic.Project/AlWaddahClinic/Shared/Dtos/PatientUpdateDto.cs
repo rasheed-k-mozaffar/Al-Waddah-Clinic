@@ -10,6 +10,7 @@ namespace AlWaddahClinic.Shared.Dtos
         public string? PhoneNumber { get; set; }
         public string? EmailAddress { get; set; }
         public string? Address { get; set; }
+        public List<string>? MedicalHistory { get; set; }
         public GenderEnum Gender { get; set; }
     }
 }
