@@ -1,0 +1,87 @@
+﻿@page "/user/settings"
+@inject ILocalStorageService LocalStorage
+@inject ILanguageContainerService Lang
+@inject NavigationManager NavigationManager
+<AuthorizeView>
+    <Authorized>
+        <MudContainer Class="mt-3 mb-3">
+            <MudCard>
+                <MudCardHeader>
+                    <MudText Typo="Typo.h4">
+                        ⚙️ <b>@Lang.Keys["Settings:Title"]</b>
+                    </MudText>
+                </MudCardHeader>
+
+                <MudCardContent>
+                    <MudTabs Outlined="true">
+                        <MudTabPanel Text="@Lang.Keys["Settings:Account"]" Icon="@Icons.Material.Filled.Person">
+                            <MudContainer Class="mt-3 mb-3">
+                                <ul>
+                                    <li><MudText Typo="Typo.body1"><b>@Lang.Keys["Settings:FirstName"]:</b> @context.User.FindFirst(ClaimTypes.GivenName).Value</MudText></li>
+                                    <li><MudText Typo="Typo.body1"><b>@Lang.Keys["Settings:LastName"]:</b> @context.User.FindFirst(ClaimTypes.Surname).Value</MudText></li>
+                                    <li><MudText Typo="Typo.body1"><b>@Lang.Keys["Settings:Email"]:</b> @context.User.FindFirst(ClaimTypes.Email).Value</MudText></li>
+                                    <li><MudText Typo="Typo.body1"><b>@Lang.Keys["Settings:DocType"]:</b> @context.User.FindFirst("DoctorType").Value</MudText></li>
+                                </ul>
+                            </MudContainer>
+                        </MudTabPanel>
+
+                        <MudTabPanel Text="@Lang.Keys["Settings:Lang"]" Icon="@Icons.Material.Filled.Translate">
+                            <MudContainer Class="mt-3 mb-3">
+                                <MudText Typo="Typo.h5"><b>@Lang.Keys["Settings:ChangeLang"]</b></MudText>
+                                <MudGrid Justify="Justify.FlexStart">
+                                    @foreach (var pair in languageCodes)
+                                    {
+                                        <MudItem xs="12" sm="12" md="6" lg="6">
+                                            <MudButton Variant="Variant.Outlined" Color="Color.Dark" Class="@(selectedLang == pair.Key ? "selected mx-2": "mx-2")"
+                                                       @onclick="(async () => await SetLanguage(pair.Key))" Style="width: 100%;">
+                                                @pair.Value
+                                            </MudButton>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+                            </MudContainer>
+                        </MudTabPanel>
+                    </MudTabs>
+                </MudCardContent>
+            </MudCard>
+        </MudContainer>
+    </Authorized>
+
+    <NotAuthorized>
+        <MudText Typo="Typo.h1">Nothing to see here!</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+<style>
+    .selected {
+        background-color: var(--selected-green);
+    }
+</style>
+
+@code {
+    private string? selectedLang;
+    private string? currentLanguageCode = null;
+
+    private Dictionary<string, string> languageCodes = new Dictionary<string, string>() {
+        { "en-US", "English 🇺🇸" },
+        { "ar-SY", "Arabic 🇸🇾" },
+    };
+    protected override async Task OnInitializedAsync()
+    {
+        currentLanguageCode = await LocalStorage.GetItemAsStringAsync("language-code");
+        selectedLang = await LocalStorage.GetItemAsync<string>("language-code");
+        // convert the language code to the language name; i.e "en-US" => "English"
+        Lang.InitLocalizedComponent(this);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task SetLanguage(string langCode)
+    {
+        Lang.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(langCode));
+        // save the language to the browser's storage
+        await LocalStorage.SetItemAsync<string>("language-code", langCode);
+        selectedLang = langCode;
+        StateHasChanged();
+        NavigationManager.NavigateTo("/user/settings", forceLoad: true);
+    }
+}
