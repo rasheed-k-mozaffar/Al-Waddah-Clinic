@@ -25,7 +25,6 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
 
 		private ApiResponse<PatientDto> result = new();
-		private ApiResponse<string[]> suggestionsResult = new();
 		private PatientDto patient = new();
 		//private List<string>? suggestions = new();
 
@@ -44,15 +43,6 @@ namespace AlWaddahClinic.Client.Pages.Patients
 				{
 					patient = result.Value;
 					_recordsTableHeader = $"Health Records ({patient.HealthRecords.Count})";
-
-					if((patient?.MedicalHistory != null) && (patient.MedicalHistory.Any())) {
-                        string history = string.Join(',', patient.MedicalHistory);
-                        //suggestionsResult = await AiService.GetSuggestionsForPatientAsync(new CaseDto { message = history});
-
-						//if(suggestionsResult.IsSuccess) {
-      //                      suggestions = suggestionsResult.Value.ToList();
-      //                  }
-                    }
 					_isBusy = false;
                 }
 			}

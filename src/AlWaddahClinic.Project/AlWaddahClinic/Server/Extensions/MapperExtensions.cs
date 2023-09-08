@@ -30,7 +30,6 @@ namespace AlWaddahClinic.Server.Extensions
                 PhoneNumber = patient.PhoneNumber,
                 Gender = patient.Gender,
                 HealthRecords = patient.HealthRecords?.Select(hr => hr.ToHealthRecordSummaryDto()).ToList(),
-                MedicalHistory = patient.MedicalHistory?.Split(',').ToList()
             };
         }
 
@@ -181,7 +180,6 @@ namespace AlWaddahClinic.Server.Extensions
                 Gender = patientDto.Gender,
                 Appointments = new List<Appointment>(),
                 HealthRecords = new List<HealthRecord>(),
-                MedicalHistory = string.Join(',', patientDto.MedicalHistory)
             };
         }
 
@@ -195,7 +193,6 @@ namespace AlWaddahClinic.Server.Extensions
                 Address = patientUpdateDto.Address,
                 DateOfBirth = patientUpdateDto.DateOfBirth,
                 Gender = patientUpdateDto.Gender,
-                MedicalHistory = string.Join(',', patientUpdateDto.MedicalHistory)
             };
         }
 
@@ -212,7 +209,6 @@ namespace AlWaddahClinic.Server.Extensions
                 Gender = patientDto.Gender,
                 Appointments = new List<Appointment>(),
                 HealthRecords = new List<HealthRecord>(),
-                MedicalHistory = string.Join(',', patientDto.MedicalHistory)
             };
         }
 
