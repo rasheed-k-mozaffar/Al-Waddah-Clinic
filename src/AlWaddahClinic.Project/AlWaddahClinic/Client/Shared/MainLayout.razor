@@ -1,12 +1,11 @@
 ﻿@inherits LayoutComponentBase
-
-<main>
+@inject ILanguageContainerService LangService
+<MudRTLProvider RightToLeft="@_isRightToLeft">
     <MudLayout>
         <MudAppBar Elevation="1" Color="Color.Primary">
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
                            OnClick="@((e) => DrawerToggle())" />
             <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
         </MudAppBar>
         <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
             <MudDrawerHeader>
@@ -17,25 +16,42 @@
                 </typography>
             </MudDrawerHeader>
             <MudNavMenu>
-                <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard 🏡</MudNavLink>
-                <MudNavGroup Title="Records" Expanded="true">
-                    <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix">Patients 🙍‍♂️🙍‍♀️</MudNavLink>
-                    <MudNavLink Href="/appointments" Match="NavLinkMatch.Prefix">Appointments 🗓️</MudNavLink>
+                <MudNavLink Href="/" Match="NavLinkMatch.All"
+                            Icon="@Icons.Material.Filled.Home"
+                            IconColor="Color.Primary">@LangService.Keys["Menu:Dash"]
+                </MudNavLink>
+
+                <MudNavGroup Title="@LangService.Keys["Menu:Records"]" Icon="@Icons.Material.Filled.FileCopy"
+                             IconColor="Color.Dark" Expanded="true">
+                    <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix"
+                                Icon="@Icons.Material.Filled.People"
+                                IconColor="Color.Primary">@LangService.Keys["Menu:Patients"]
+                    </MudNavLink>
+                    <MudNavLink Href="/appointments" Match="NavLinkMatch.Prefix"
+                                Icon="@Icons.Material.Filled.CalendarMonth"
+                                IconColor="Color.Secondary">@LangService.Keys["Menu:Appointments"]
+                    </MudNavLink>
                 </MudNavGroup>
 
-                <MudNavLink Href="/release-notes" Match="NavLinkMatch.All">
-                        <MudBadge Color="Color.Error"  Dot="true">
-                            Release Notes 🗂️
-                        </MudBadge>
+                <MudNavLink Href="/release-notes" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Folder" IconColor="Color.Warning">
+                        @LangService.Keys["Menu:ReleaseNotes"]
+                </MudNavLink>
+
+                <MudNavLink Href="/user/settings" Match="NavLinkMatch.All"
+                            Icon="@Icons.Material.Filled.Settings"
+                            IconColor="Color.Dark">@LangService.Keys["Menu:Settings"]
                 </MudNavLink>
                 <AuthorizeView>
                     <NotAuthorized>
-                        <MudNavLink Href="/user/login" Match="NavLinkMatch.Prefix">Login</MudNavLink>
+                        <MudNavLink Href="/user/login" Match="NavLinkMatch.Prefix"
+                                    Icon="@Icons.Material.Filled.Login"
+                                    IconColor="Color.Success">@LangService.Keys["Menu:Login"]
+                        </MudNavLink>
                     </NotAuthorized>
 
                     <Authorized>
                         <MudContainer>
-                            <MudButton Variant="Variant.Outlined" Color="Color.Error" @onclick="OpenLogoutDialog">Log Out</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" @onclick="OpenLogoutDialog" Icon="@Icons.Material.Filled.Logout" IconColor="Color.Error">@LangService.Keys["Menu:LogOut"]</MudButton>
                         </MudContainer>
                     </Authorized>
                 </AuthorizeView>
@@ -45,10 +61,11 @@
             @Body
         </MudMainContent>
     </MudLayout>
-</main>
+</MudRTLProvider>
 
 @code {
     bool _drawerOpen = true;
+    bool _isRightToLeft = false;
 
     void DrawerToggle()
     {
@@ -78,6 +95,28 @@
         {
             await LogoutAsync();
         }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        LangService.InitLocalizedComponent(this);
+        string languageCode = "en-US";
+
+        if (await LocalStorage.ContainKeyAsync("language-code"))
+        {
+            languageCode = await LocalStorage.GetItemAsync<string>("language-code");
+
+            if (languageCode == "en-US")
+            {
+                _isRightToLeft = false;
+            }
+            else
+            {
+                _isRightToLeft = true;
+            }
+        }
+
+        LangService.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(languageCode));
     }
 
     private async Task LogoutAsync()

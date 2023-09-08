@@ -1,5 +1,6 @@
 ﻿@page "/appointments/reschedule/{patientName}/{appointmentId:guid}"
 @attribute [Authorize(Roles = "Admin")]
+@inject ILanguageContainerService Lang
 
 @if (_isBusy == true)
 {
@@ -18,10 +19,10 @@ else
     }
 
 
-    <MudContainer style="margin-top: 5rem;">
-        <MudCard Style="padding: 2rem; border: 1px solid black">
+    <MudContainer Class="mt-5 mb-5">
+        <MudCard Style="padding: 2rem;">
             <MudItem Class="mb-5">
-                <MudText Typo="Typo.h4"><b><i class="bi bi-calendar-week-fill"></i>&nbsp; Reschedule an appointment for:</b> @PatientName</MudText>
+                <MudText Typo="Typo.h4"><b><i class="bi bi-calendar-week-fill"></i>&nbsp; @Lang.Keys["EditAppointment:Title"]:</b> @PatientName</MudText>
             </MudItem>
 
             <MudDivider />
@@ -31,34 +32,46 @@ else
                     <DataAnnotationsValidator />
                     <ValidationSummary style="color: red;" />
 
-                    <MudText Typo="Typo.h6"><b>Old date:</b> <code style="color: red;">@oldAppointment.StartAt.Value</code></MudText>
+                    <MudText Typo="Typo.h6"><b>@Lang.Keys["EditAppointment:OldDate"]:</b> <code style="color: red;">@oldAppointment.StartAt.Value</code></MudText>
 
                     <MudGrid>
                         <MudItem Class="mb-3" xs="12" md="6" lg="6">
-                            <MudDatePicker Label="Appointment Day" Editable="true"
+                            <MudDatePicker Label="@Lang.Keys["EditAppointment:Day"]" Editable="true"
                                            Mask='@( new DateMask("dd/MM/yyyy"))' @bind-Date="@appointmentDay"
-                                           DateFormat="dd/MM/yyyy" Required="true" RequiredError="The appointment day is required for making the appointment" />
+                                           DateFormat="dd/MM/yyyy" Required="true" RequiredError="@Lang.Keys["EditAppointment:DayError"]" />
                         </MudItem>
 
                         <MudItem Class="mb-3" xs="12" md="6" lg="6">
-                            <MudTimePicker Label="Time" AmPm="true" @bind-Time="time" Required="true" RequiredError="Please pick a time for the appointment" />
+                            <MudTimePicker Label="@Lang.Keys["EditAppointment:Time"]" AmPm="true" @bind-Time="time" Required="true" RequiredError="@Lang.Keys["EditAppointment:TimeError"]" />
                         </MudItem>
 
                         <MudDivider />
 
-                        <MudItem Class="mb-3">
-                            <MudButton Disabled="@_isMakingRequest" Style="margin: .25rem" Variant="Variant.Filled" Color="Color.Warning"
-                                       ButtonType="ButtonType.Submit">
-                                Reschedule
-                            </MudButton>
-                            <MudButton Disabled="@_isMakingRequest" Style="margin: .25rem" Variant="Variant.Outlined" Color="Color.Info" @onclick="GoBack">
-                                Go Back
-                            </MudButton>
-                        </MudItem>
+                        <MudGrid Justify="Justify.FlexStart">
+                            <MudItem xs="12" sm="12" md="6" lg="6">
+                                <MudButton Disabled="@_isMakingRequest" Class="mx-2" Variant="Variant.Filled" Color="Color.Warning"
+                                           ButtonType="ButtonType.Submit" Style="width: 100%;" StartIcon="@Icons.Material.Filled.Done">
+                                    @Lang.Keys["EditAppointment:Confirm"]
+                                </MudButton>
+                            </MudItem>
+
+                            <MudItem xs="12" sm="12" md="6" lg="6">
+                                <MudButton Disabled="@_isMakingRequest" Class="mx-2" Variant="Variant.Outlined" Color="Color.Info"
+                                           @onclick="GoBack" Style="width: 100%;" StartIcon="@Icons.Material.Filled.Cancel">
+                                    @Lang.Keys["EditAppointment:Cancel"]
+                                </MudButton>
+                            </MudItem>
+                        </MudGrid>
                     </MudGrid>
                 </EditForm>
             </MudItem>
         </MudCard>
     </MudContainer>
+}
 
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/notfound"
 @inject NavigationManager NavigationManager
+@inject ILanguageContainerService Lang
 
 @layout EmptyLayout
 
@@ -7,14 +8,14 @@
     <MudItem xs="11" md="6" lg="6">
         <MudCard style="width: 100%; padding: 2rem;">
             <MudCardContent>
-                <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Error"><b>Whoops, Wrong Address</b></MudText>
+                <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Error"><b>@Lang.Keys["NotFound:Title"]</b></MudText>
                 <MudText Align="Align.Center" Typo="Typo.body1">
-                    Looks like the page you're searching for doesn't exist or maybe <br />the author has changed the page link
+                    @Lang.Keys["NotFound:Message"]
                 </MudText>
                 <MudItem Class="d-flex justify-center mt-3">
                     <MudButton Class="justifiy-center" Variant="Variant.Filled" Color="Color.Error"
                                @onclick='( () => NavigationManager.NavigateTo("/") )'>
-                        Dashboard
+                        @Lang.Keys["NotFound:Dash"]
                     </MudButton>
                 </MudItem>
             </MudCardContent>
@@ -29,3 +30,11 @@
         background-image: linear-gradient(to right, @(Colors.Red.Lighten1), @(Colors.Blue.Darken3));
     }
 </style>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+        base.OnInitialized();
+    }
+}

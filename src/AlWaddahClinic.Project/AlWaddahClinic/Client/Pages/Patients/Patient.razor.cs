@@ -8,21 +8,26 @@ namespace AlWaddahClinic.Client.Pages.Patients
 	public partial class Patient : ComponentBase
 	{
 		[Inject]
-		public NavigationManager NavigationManager { get; set; } = null!;
+		public NavigationManager NavigationManager { get; set; } = default!;
 
 		[Inject]
-		public IPatientsService PatientsService { get; set; } = null!;
+		public IPatientsService PatientsService { get; set; } = default!;
 
 		[Inject]
-		public IDialogService DialogService { get; set; } = null!;
+		public IDialogService DialogService { get; set; } = default!;
+
+		//[Inject]
+		//public IAiService AiService { get; set; } = default!;
 
 		//Route parameter
 		[Parameter]
 		public Guid Id { get; set; }
 
 
-		ApiResponse<PatientDto> result = new();
-		PatientDto patient = new();
+		private ApiResponse<PatientDto> result = new();
+		private ApiResponse<string[]> suggestionsResult = new();
+		private PatientDto patient = new();
+		//private List<string>? suggestions = new();
 
 		private string _recordsTableHeader = string.Empty;
 		private string _errorMessage = string.Empty;
@@ -39,6 +44,15 @@ namespace AlWaddahClinic.Client.Pages.Patients
 				{
 					patient = result.Value;
 					_recordsTableHeader = $"Health Records ({patient.HealthRecords.Count})";
+
+					if((patient?.MedicalHistory != null) && (patient.MedicalHistory.Any())) {
+                        string history = string.Join(',', patient.MedicalHistory);
+                        //suggestionsResult = await AiService.GetSuggestionsForPatientAsync(new CaseDto { message = history});
+
+						//if(suggestionsResult.IsSuccess) {
+      //                      suggestions = suggestionsResult.Value.ToList();
+      //                  }
+                    }
 					_isBusy = false;
                 }
 			}

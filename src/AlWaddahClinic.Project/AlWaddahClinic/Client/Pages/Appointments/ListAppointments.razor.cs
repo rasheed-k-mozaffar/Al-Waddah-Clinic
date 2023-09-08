@@ -2,6 +2,7 @@
 using AlWaddahClinic.Client.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using AlWaddahClinic.Shared.Enums;
 
 namespace AlWaddahClinic.Client.Pages.Appointments
 {
@@ -16,8 +17,12 @@ namespace AlWaddahClinic.Client.Pages.Appointments
         [Inject]
         public IDialogService DialogService { get; set; } = default!;
 
-        private List<AppointmentSummaryDto> result;
-        private List<AppointmentSummaryDto> appointments;
+        private List<AppointmentSummaryDto>? result;
+        private List<AppointmentSummaryDto>? appointments;
+        private List<AppointmentSummaryDto>? upcoming;
+        private List<AppointmentSummaryDto>? completed;
+        private List<AppointmentSummaryDto>? missed;
+        private List<AppointmentSummaryDto>? unnoted;
 
         private bool _isBusy = true;
         private string _errorMessage = string.Empty;
@@ -29,7 +34,11 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             {
                 result = (await AppointmentsService.GetAllAppointmentsAsync()).Value.ToList();
                 appointments = result;
-                _actionsRequired = appointments.Where(a => a.StartAt.Value > DateTime.Now.AddMinutes(-1) && a.Status == null).Count();
+
+                upcoming = result.Where(a => a.StartAt > DateTime.Now.AddMinutes(-1)).ToList();
+                completed = result.Where(a => a.Status == AppointmentStatusEnum.Completed).ToList();
+                missed = result.Where(a => a.Status == AppointmentStatusEnum.Missed).ToList();
+                unnoted = result.Where(a => a.StartAt < DateTime.Now.AddMinutes(-1) && a.Status == null).ToList();
                 _isBusy = false;
             }
             catch (DomainException ex)
@@ -86,7 +95,19 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             {
                 await AppointmentsService.RemoveAppointmentAsync(id);
                 var itemToRemove = result.SingleOrDefault(a => a.Id == id);
-                appointments.Remove(itemToRemove);
+
+                if(itemToRemove.Status == null) {
+                    upcoming.Remove(itemToRemove);
+                }
+                else if(itemToRemove.Status == AppointmentStatusEnum.Missed) {
+                    missed.Remove(itemToRemove);
+                }
+                else if(itemToRemove.Status == AppointmentStatusEnum.Completed) {
+                    completed.Remove(itemToRemove);
+                }
+                else {
+                    unnoted.Remove(itemToRemove);
+                }
             }
             catch (DomainException ex)
             {

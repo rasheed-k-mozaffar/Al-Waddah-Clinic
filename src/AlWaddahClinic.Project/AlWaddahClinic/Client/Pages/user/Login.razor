@@ -1,7 +1,7 @@
 ﻿@page "/user/login"
 @layout EmptyLayout
 @namespace AlWaddahClinic.Client.Pages.User
-
+@inject ILanguageContainerService Lang
 
 <MudGrid Justify="Justify.Center" Class="page-style">
     <MudItem xs="12" md="8" lg="6">
@@ -9,22 +9,44 @@
         {
             <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Class="mb-3">@_errorMessage !</MudAlert>
         }
+        <MudCard Style="width: 100%; padding: 2rem" Class="mb-3">
+            <TextWithIcon Icon="@Icons.Material.Filled.Translate"
+                          IsBold="true" TextSize="Typo.body1"
+                          Text="@Lang.Keys["Login:ChooseLang"]" IconColor="Color.Primary" Class="mb-1"/>
+
+            <MudGrid Justify="Justify.FlexStart" Class="mb-1">
+                @foreach (var pair in languageCodes)
+                {
+                    <MudItem xs="12" sm="12" md="6" lg="6" Class="mt-2">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Dark" Class="@(selectedLang == pair.Key ? "selected mx-2": "mx-2")"
+                                   @onclick="(async () => await ChangeLanguage(pair.Key))" Style="width: 100%;">
+                            @pair.Value
+                        </MudButton>
+                    </MudItem>
+                }
+            </MudGrid>
+
+
+            <TextWithIcon Icon="@Icons.Material.Filled.Info"
+                          IsBold="false" TextSize="Typo.body2"
+                          Text="@Lang.Keys["Login:LangInfo"]" IconColor="Color.Info" Class="mt-1"/>
+        </MudCard>
         <MudCard style="width: 100%; padding: 2rem;">
-            <MudText Typo="Typo.h5" Class="mb-5"><b>Login to your account</b></MudText>
+            <MudText Typo="Typo.h5" Class="mb-5"><b>@Lang.Keys["Login:Title"]</b></MudText>
             <EditForm Model="model" OnValidSubmit="LoginAsync">
                 <DataAnnotationsValidator />
                 <ValidationSummary style="color: red;" />
-                <MudTextField T="string" Label="Email Address" InputType="InputType.Email" @bind-Value="model.Email"
+                <MudTextField T="string" Label="@Lang.Keys["Login:Email"]" InputType="InputType.Email" @bind-Value="model.Email"
                               Class="mb-3 mt-2" />
 
-                <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="model.Password"
+                <MudTextField T="string" Label="@Lang.Keys["Login:Password"]" InputType="InputType.Password" @bind-Value="model.Password"
                               Class="mb-5" />
 
-                <MudText Typo="Typo.body2"><b>Not registered yet? Create an account for your clinic <MudLink Color="Color.Info" Href="/user/register">here</MudLink> </b></MudText>
+                <MudText Typo="Typo.body2"><b>@Lang.Keys["Login:NoEmail"] <MudLink Color="Color.Info" Href="/user/register">@Lang.Keys["Login:Here"]</MudLink> </b></MudText>
 
                 <MudButton Class="mt-3" Disabled="@_isMakingRequest" Variant="Variant.Filled" Color="Color.Primary"
                            ButtonType="ButtonType.Submit">
-                    Login
+                    @Lang.Keys["Login:BtnText"]
                 </MudButton>
             </EditForm>
         </MudCard>
@@ -37,4 +59,32 @@
         place-items: center;
         background-image: linear-gradient(to right, @(Colors.DeepPurple.Default), @(Colors.Purple.Default));
     }
+
+
+    .selected {
+        background-color: var(--selected-green);
+    }
 </style>
+
+@code {
+    private string? selectedLang = "en-US";
+    private Dictionary<string, string> languageCodes = new Dictionary<string, string>()
+{
+        { "en-US", "English 🇺🇸" },
+        { "ar-SY", "Arabic 🇸🇾" },
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        selectedLang = await LocalStorage.GetItemAsync<string>("language-code");
+        Lang.InitLocalizedComponent(this);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task ChangeLanguage(string langCode)
+    {
+        Lang.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(langCode));
+        await LocalStorage.SetItemAsync<string>("language-code", langCode);
+        NavigationManager.NavigateTo("/user/login", forceLoad: true);
+    }
+}

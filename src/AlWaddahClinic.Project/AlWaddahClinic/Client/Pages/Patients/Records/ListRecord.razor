@@ -1,5 +1,6 @@
 @page "/patients/records/{id:guid}"
 @attribute [Authorize(Roles = "Admin")]
+@inject ILanguageContainerService Lang
 
 @{
     if (!string.IsNullOrEmpty(_errorMessage))
@@ -26,9 +27,9 @@
 
                 <MudCardContent>
                     <MudText Typo="Typo.h3">
-                        <b><i class="bi bi-journal-medical"></i> Health Record</b>
+                        <b><i class="bi bi-journal-medical"></i> @Lang.Keys["HealthRecord:Title"]</b>
                     </MudText>
-                    <MudText Typo="Typo.h6"><b>Created On: @record.CreatedOn.ToLongDateString()</b></MudText>
+                    <MudText Typo="Typo.h6">@record.CreatedOn.ToLongDateString()</MudText>
                     <MudText Typo="Typo.h6" Color="Color.Info" @onclick="GoBack"
                              Style="text-decoration: underline; cursor: pointer;">@record.Patient.FullName</MudText>
                             <MudDivider />
@@ -37,7 +38,7 @@
                         @* RECORD DESCRIPTION NOTES *@
 
                         <MudCardContent Class="mb-5">
-                            <MudTextField T="string" Label="Case Description" @bind-Text="@record.Description" ReadOnly="true"
+                            <MudTextField T="string" Label="@Lang.Keys["HealthRecord:Description"]" @bind-Text="@record.Description" ReadOnly="true"
                                           MultiLine="true" Lines="10" Variant="Variant.Outlined" />
                         </MudCardContent>
 
@@ -48,16 +49,16 @@
                                 <div class="vertical-align">
                                     <MudIcon Icon="@Icons.Outlined.Lightbulb" Color="Color.Tertiary" /> &nbsp;
                                     <span>
-                                        <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
+                                        <MudText Typo="Typo.h5"><b>@Lang.Keys["HealthRecord:Insights"]</b></MudText>
                                     </span>
                                     <MudChip Color="Color.Tertiary" Size="Size.Small" Variant="Variant.Filled" Text="BETA" />
                                 </div>
 
-                                <MudExpansionPanel Class="mb-5 mt-3" Text="Smart Insights Suggestions">
-                                    <InsightsContainer Text="Suggestions For Patient" insights="@record.PatientSuggestion" />
-                                    <InsightsContainer Text="Related Medical Cases" insights="@record.RelatedMedicalCases" />
-                                    <InsightsContainer Text="Suggested Medical Tests" insights="@record.SuggestedMedicalTests" />
-                                    <InsightsContainer Text="Case Information" insights="@record.MedicalCaseInsight" />
+                                <MudExpansionPanel Class="mb-5 mt-3" Text="@Lang.Keys["HealthRecord:SmartInsights"]">
+                                    <InsightsContainer Text="@Lang.Keys["HealthRecord:Suggestions"]" insights="@record.PatientSuggestion" />
+                                    <InsightsContainer Text="@Lang.Keys["HealthRecord:RelatedCases"]" insights="@record.RelatedMedicalCases" />
+                                    <InsightsContainer Text="@Lang.Keys["HealthRecord:SuggestedTests"]" insights="@record.SuggestedMedicalTests" />
+                                    <InsightsContainer Text="@Lang.Keys["HealthRecord:CaseInfo"]" insights="@record.MedicalCaseInsight" />
                                 </MudExpansionPanel>
 
                             </MudExpansionPanels>
@@ -69,7 +70,7 @@
                             <div class="vertical-align">
                                 <MudIcon Icon="@Icons.Material.Filled.MedicalInformation" /> &nbsp;
                                 <span>
-                                    <MudText Typo="Typo.h6"><b>Additional Information</b></MudText>
+                                    <MudText Typo="Typo.h6"><b>@Lang.Keys["HealthRecord:AdditionalInfo"]</b></MudText>
                                 </span>
                             </div>
 
@@ -82,9 +83,12 @@
                                 if (record.Notes.Count == 0)
                                 {
 
-                                    <MudAlert Severity="Severity.Info" Icon="@Icons.Material.Filled.Info">
-                                        This record doesn't include any notes!
-                                    </MudAlert>
+                                    <div class="vertical-align">
+                                        <MudIcon Icon="@Icons.Material.Filled.Info" Color="Color.Info" /> &nbsp;
+                                        <MudText Typo="Typo.body1">
+                                            @Lang.Keys["HealthRecord:NoNotes"]
+                                        </MudText>
+                                    </div>
 
                                 }
                                 else
@@ -110,7 +114,7 @@
                                             <MudIcon Icon="@Icons.Material.Filled.Money" Color="Color.Success" /> &nbsp;
                                             <span>
                                                 <MudText Typo="Typo.h6">
-                                                    <b>Payments:</b> <MudChip Color="Color.Primary"
+                                                    <b>@Lang.Keys["HealthRecord:Payments"]:</b> <MudChip Color="Color.Primary"
                                                                               Size="Size.Medium">@record.TotalAmount@record.Currency</MudChip>
                                                                         </MudText>
                                                                     </span>
@@ -129,9 +133,9 @@
                                                                         <MudSimpleTable Dense="true" Hover="true">
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <th>Amount in @record.Currency</th>
-                                                                                    <th>Paid On</th>
-                                                                                    <th style="text-align: end;">Actions</th>
+                                                                                    <th>@Lang.Keys["HealthRecord:AmountIn"] @record.Currency</th>
+                                                                                    <th>@Lang.Keys["HealthRecord:PaidOn"]</th>
+                                                                                    <th style="text-align: end;">@Lang.Keys["HealthRecord:Options"]</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -141,8 +145,8 @@
                                                                                         <td>@payment.Amount</td>
                                                                                         <td>@payment.PaidOn</td>
                                                                                         <td style="text-align: end">
-                                                                                            <MudButton Variant="Variant.Text" Color="Color.Info" @onclick="@(() => OpenPaymentDetailsDialog(payment.Id))" StartIcon="@Icons.Material.Filled.Details">View</MudButton>
-                                                                                            <MudButton Disabled="record.IsPaymentCompleted" Variant="Variant.Text" Color="Color.Error" @onclick="@(() => OpenPaymentRemoveDialog(payment.Id))" StartIcon="@Icons.Material.Filled.Delete">Remove</MudButton>
+                                                                                            <MudButton Variant="Variant.Text" Color="Color.Info" @onclick="@(() => OpenPaymentDetailsDialog(payment.Id))" StartIcon="@Icons.Material.Filled.Details">@Lang.Keys["HealthRecord:Details"]</MudButton>
+                                                                                            <MudButton Disabled="record.IsPaymentCompleted" Variant="Variant.Text" Color="Color.Error" @onclick="@(() => OpenPaymentRemoveDialog(payment.Id))" StartIcon="@Icons.Material.Filled.Delete">@Lang.Keys["HealthRecord:RemovePay"]</MudButton>
                                                                                         </td>
                                                                                     </tr>
                                                                                 }
@@ -150,14 +154,14 @@
                                                                         </MudSimpleTable>
                                                                         @if (record.IsPaymentCompleted)
                                                                         {
-                                                                              <MudAlert Class="mt-1" Severity="Severity.Success" Variant="Variant.Filled" Icon="@Icons.Material.Filled.CheckCircle">The total amount has been fully paid</MudAlert>
+                                                                            <MudAlert Class="mt-1" Severity="Severity.Success" Variant="Variant.Filled" Icon="@Icons.Material.Filled.CheckCircle" Style="text-align: right">@Lang.Keys["HealthRecord:Completed"]</MudAlert>
                                                                         }
-                                                                        <MudText Typo="Typo.body1" Class="mt-2" Color="Color.Surface">Amount Left: @(record.TotalAmount - payments.Sum(p => p.Amount))@record.Currency</MudText>
+                                                                        <MudText Typo="Typo.body1" Class="mt-2" Color="Color.Surface">@Lang.Keys["HealthRecord:AmountLeft"]: @(record.TotalAmount - payments.Sum(p => p.Amount))@record.Currency</MudText>
                                                                     }
                                                                 }
                                                                 else
                                                                 {
-                                                                    <MudAlert Severity="Severity.Info" Icon="@Icons.Material.Filled.Info">Looks like there isn't any payments made! Click below to add one</MudAlert>
+                                                                    <MudAlert Severity="Severity.Info" Icon="@Icons.Material.Filled.Info" Style="text-align: right">@Lang.Keys["HealthRecord:NoPayments"]</MudAlert>
                                                                 }
                                                                 @if (_wantsToAddPayment)
                                                                 {
@@ -173,12 +177,12 @@
                                                                         }
                                                                         <MudGrid>
                                                                             <MudItem xs="12" sm="12" md="6" lg="6">
-                                                                                <MudTextField T="string" Label="Description (Optional)"
+                                                                                <MudTextField T="string" Label="@Lang.Keys["HealthRecord:PayDescription"]"
                                                                                               @bind-Text="paymentModel.Description" Class="mt-2"
                                                                                               Variant="Variant.Outlined" Margin="Margin.Dense" />
                                                                             </MudItem>
                                                                             <MudItem xs="12" sm="12" md="6" lg="6">
-                                                                                <MudTextField T="decimal" Label="Amount Paid"
+                                                                                <MudTextField T="decimal" Label="@Lang.Keys["HealthRecord:AmountPaid"]"
                                                                                               @bind-Value="paymentModel.Amount"
                                                                                               Variant="Variant.Outlined" Class="mt-2"
                                                                                               AdornmentIcon="@Icons.Material.Filled.AttachMoney"
@@ -189,13 +193,13 @@
                                                                                 <MudButton Variant="Variant.Outlined" Style="width: 100%;"
                                                                                            StartIcon="@Icons.Material.Filled.AddToQueue"
                                                                                            @onclick="AddPayment" Class="mt-2"
-                                                                                           Color="Color.Primary">Add New Payment</MudButton>
+                                                                                           Color="Color.Primary">@Lang.Keys["HealthRecord:AddNewPay"]</MudButton>
                                                                             </MudItem>
                                                                             <MudItem xs="12" sm="12" md="6" lg="6">
                                                                                 <MudButton Variant="Variant.Outlined" Style="width: 100%"
                                                                                            StartIcon="@Icons.Material.Filled.Cancel" Class="mt-2 mb-2"
                                                                                            Color="Color.Dark"
-                                                                                           @onclick="CancelPaymentCreation">Cancel Payment</MudButton>
+                                                                                           @onclick="CancelPaymentCreation">@Lang.Keys["HealthRecord:CancelPay"]</MudButton>
                                                                             </MudItem>
                                                                         </MudGrid>
                                                                     </MudItem>
@@ -205,7 +209,7 @@
                                                                     <MudButton Variant="Variant.Outlined" Disabled="record.IsPaymentCompleted"
                                                                                Color="Color.Info" Class="mt-3"
                                                                                StartIcon="@Icons.Material.Filled.Add" Style="width: 100%"
-                                                                               @onclick="ShowAddPaymentForm">Add New Payment</MudButton>
+                                                                               @onclick="ShowAddPaymentForm">@Lang.Keys["HealthRecord:AddNewPay"]</MudButton>
                                                                 </MudItem>
                                                             }
                                 </Authorized>
@@ -217,13 +221,13 @@
                         <MudCardContent>
                             <MudGrid Justify="Justify.FlexStart">
                                 <MudItem xs="12" sm="12" md="12" lg="4">
-                                    <MudButton Style="width: 100%;" Class="mr-2" Color="Color.Info" Variant="Variant.Filled" OnClick="GoBack" StartIcon="@Icons.Material.Filled.ArrowBack" IconColor="Color.Surface">Go Back</MudButton>
+                                    <MudButton Style="width: 100%;" Class="mx-2" Color="Color.Info" Variant="Variant.Filled" OnClick="GoBack" StartIcon="@Icons.Material.Filled.ArrowBack" IconColor="Color.Surface">@Lang.Keys["HealthRecord:Back"]</MudButton>
                                 </MudItem>
                                 <MudItem xs="12" sm="12" md="12" lg="4">
-                                    <MudButton Style="width: 100%;" Class="mr-2" Color="Color.Error" Variant="Variant.Filled" OnClick="OpenRemoveDialog" StartIcon="@Icons.Material.Filled.PersonRemoveAlt1" IconColor="Color.Surface">Remove Record</MudButton>
+                                    <MudButton Style="width: 100%;" Class="mx-2" Color="Color.Error" Variant="Variant.Filled" OnClick="OpenRemoveDialog" StartIcon="@Icons.Material.Filled.Remove" IconColor="Color.Surface">@Lang.Keys["HealthRecord:RmRecord"]</MudButton>
                                 </MudItem>
                                 <MudItem xs="12" sm="12" md="12" lg="4">
-                                    <MudButton Style="width: 100%;" Color="Color.Secondary" Variant="Variant.Filled" OnClick="@(()=> NavigationManager.NavigateTo($"/patients/records/update/{Id}"))" StartIcon="@Icons.Material.Filled.Edit" IconColor="Color.Surface">Update Record</MudButton>
+                                    <MudButton Style="width: 100%;" Class="mx-2" Color="Color.Secondary" Variant="Variant.Filled" OnClick="@(()=> NavigationManager.NavigateTo($"/patients/records/update/{Id}"))" StartIcon="@Icons.Material.Filled.Edit" IconColor="Color.Surface">@Lang.Keys["HealthRecord:Update"]</MudButton>
                                 </MudItem>
                             </MudGrid>
                         </MudCardContent>
@@ -251,3 +255,11 @@
         -webkit-backdrop-filter: blur(20px);
     }
 </style>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,217 @@
+Index:
+  WelcomeMessage: مرحبا دكتور
+  Links: روابط سريعة
+  ViewPatients: عرض المرضى
+  Appointments: المواعيد
+  AddPatient: إضافة مريض
+NotFound:
+  Title: يصيح! عنوان خاطئ
+  Message: يبدو أن الصفحة التي تبحث عنها غير موجودة أو ربما قام المؤلف بتغيير رابط الصفحة
+  Dash: انتقل إلى لوحة التحكم
+Unauthorized:
+  Title: لا يمكن الذهاب إلى هناك
+  Message: يبدو أن مؤلف هذه الصفحة قد أعاد الوصول إليها. يرجى تسجيل الدخول إذا لم تكن قد قمت بذلك بالفعل لأن ذلك قد يحل المشكلة.
+  Login: انتقل إلى تسجيل الدخول
+Login:
+  ChooseLang: تغيير لغة التطبيق
+  LangInfo: يمكنك تغيير اللغة لاحقا في التطبيق
+  Title: تسجيل الدخول إلى حسابك
+  Email: عنوان البريد الإلكتروني
+  Password: شعار
+  NoEmail: لم تسجل بعد؟ إنشاء حساب لعيادتك
+  Here: هنا
+  BtnText: تسجيل الدخول
+Register:
+  ChooseLang: اختر لغتك المفضلة
+  LangInfo: يمكنك تغيير اللغة لاحقا في التطبيق
+  Title: سجل عيادتك
+  Alert: سيتم استخدام هذه المعلومات لأغراض التسجيل فقط
+  DocType: أي نوع من الأطباء أنت؟
+  DocTypeError: يرجى تحديد نوع الطبيب الذي أنت عليه!
+  GeneralDoc: طبيب عام
+  Dentist: طبيب الأسنان
+  FirstName: الاسم الأول
+  FirstNameError: اسمك الأول مطلوب
+  LastName: اسم العائلة
+  LastNameError: اسمك الأخير مطلوب
+  Email: عنوان البريد الإلكتروني
+  EmailError: عنوان بريدك الإلكتروني مطلوب
+  Password: شعار
+  PasswordError: كلمة المرور مطلوبة
+  PasswordConfirm: تأكيد كلمة المرور
+  PasswordConfirmError: تأكيد كلمة المرور مطلوب
+  ClinicName: اسم العيادة
+  ClinicNameError: اسم العيادة مطلوب
+  StreetAddress: عنوان الشارع
+  StreetAddressError: عنوان الشارع مطلوب
+  Area: منطقة
+  AreaError: المنطقة مطلوبة
+  City: مدينة
+  CityError: المدينة مطلوبة
+  Country: بلد
+  CountryError: البلد مطلوب
+  MedicalSpec: التخصص الطبي
+  MedicalSpecError: تخصصك الطبي مطلوب
+  PhoneNum: رقم الهاتف
+  PhoneNumError: رقم هاتفك مطلوب
+  StudiedAt: درس في
+  StudiedAtHelper: أين ذهبت لدراستك
+  StudiedAtError: مكان دراستك مطلوب =
+  DateOfGrad: تاريخ التخرج
+  DateOfGradError: تاريخ التخرج مطلوب
+  PersonalSite: رابط الموقع الشخصي (اختياري)
+  PersonalSiteHelper: أضف رابطا إلى موقع الويب الشخصي الخاص بك إذا كان لديك رابط
+  AlreadySignedUp: هل أنت مسجل بالفعل؟ يمكنك تسجيل الدخول
+  Here: هنا
+  Confirm: تأكيد التسجيل
+Settings:
+  Title: إعدادات التطبيق
+  ChangeLang: تغيير لغة النظام
+  Account: حساب
+  Lang: اللغة
+  FirstName: الاسم الأول
+  LastName: اسم العائلة
+  Email: عنوان البريد الإلكتروني
+  DocType: نوع الطبيب
+Patients:
+  Title: جميع المرضى
+  AddBtn: إضافة مريض
+  SearchText: ابحث عن مرضاك بالاسم
+  NoResults: لم يتم العثور على شيء
+  NoPatients: ليس لديك حاليا أي مرضى!
+AddPatient:
+  Title: إضافة مريض جديد
+  Name: الاسم الكامل
+  PhoneNum: رقم الهاتف (اختياري)
+  DOB: تاريخ الميلاد (اختياري)
+  Email: عنوان البريد الإلكتروني (اختياري)
+  Address: عنوان المنزل
+  Add: إضافة مريض
+  Male: ذكر
+  Female: أنثى
+  Cancel: إلغاء الأمر
+Patient:
+  Title: تفاصيل حول
+  DOB: تاريخ الميلاد
+  Email: عنوان البريد الإلكتروني
+  PhoneNum: رقم الهاتف
+  Address: عنوان
+  NA: غير متوفر
+  CreatedOn: تم إنشاؤه في
+  HRs: السجلات الصحية
+  Options: خيارات
+  Details: التفاصيل
+  Update: حرر
+  AddHR: إضافة سجل صحي
+  MakeAppointment: إحجز موعد
+  RmPatient: إزالة المريض
+  HRNum: رقم قياسي
+Menu:
+  Dash: لوحه القياده
+  Patients: المرضي
+  Appointments: المواعيد
+  Settings: إعدادات التطبيق
+  Login: تسجيل الدخول
+  LogOut: تسجيل الخروج
+  Records: السجلات الطبية
+  ReleaseNotes: ميزات التطبيق الجديدة
+UpdatePatient:
+  Title: تعديل تفاصيل المريض
+  Name: الاسم الكامل
+  FullNameValidation: حقل الاسم الكامل مطلوب
+  PhoneNum: رقم الهاتف (اختياري)
+  Email: عنوان البريد الإلكتروني (اختياري)
+  DOB: تاريخ الميلاد (اختياري)
+  Address: عنوان المنزل
+  Male: ذكر
+  Female: أنثى
+  Update: تحديث التفاصيل
+  Cancel: إلغاء الأمر
+HealthRecord:
+  Title: تفاصيل السجل الصحي
+  CreatedOn: تم إنشاؤه في
+  Insights: الرؤى الذكية
+  SmartInsights: اقتراحات الرؤى الذكية
+  Description: وصف الحالة الطبية
+  Suggestions: اقتراحات للمريض
+  RelatedCases: الحالات الطبية ذات الصلة
+  SuggestedTests: الفحوصات الطبية المقترحة
+  CaseInfo: معلومات الحالة الطبية
+  AdditionalInfo: معلومات إضافية
+  NoNotes: لا يتضمن هذا السجل الصحي أي ملاحظات
+  Payments: الدفعات
+  AmountIn: المبلغ في
+  PaidOn: مدفوع على
+  Options: خيارات
+  Details: التفاصيل
+  RemovePay: أبعد
+  Completed: تم دفع المبلغ الإجمالي بالكامل
+  AmountLeft: المبلغ المتبقي
+  NoPayments: يبدو أنه لا يوجد أي مدفوعات تم إجراؤها! انقر أدناه لإضافة واحدة
+  PayDescription: وصف الدفع (اختياري)
+  AmountPaid: المبلغ المدفوع
+  AddNewPay: إضافة دفعة جديدة
+  CancelPay: إلغاء الأمر
+  Back: العودة إلى المريض
+  RmRecord: إزالة السجل الصحي
+  Update: تحرير تفاصيل السجل
+AddHR:
+  Title: سجل صحي جديد ل
+  DescriptionValidation: وصف الحالة مطلوب
+  DescriptionHelper: وصف الحالة الطبية للمريض وسرد المعلومات ذات الصلة بها
+  TotalPay: إجمالي الدفعة
+  TotalPayValidation: الدفعة الإجمالية مطلوبة
+  SelectCurr: اختر العملة
+  SYP: الليرة السورية
+  USD: دولار أمريكي
+  AiResultsMsg: نتائج غير مقنعة؟ حاول إعادة إنشاء الرؤى مرة أخرى
+  AddNote: مذكرة طبية (اختياري)
+  CaseNotes: ملاحظات الحالة
+  AddNewNote: إضافة ملاحظة جديدة
+  AddHrBtn: سجل صحي كامل
+  GoBack: العودة إلى المريض
+  InsightsPanelText: احصل على رؤى واقتراحات تم إنشاؤها بواسطة Ai. انقر فوق الزر "إنشاء اقتراحات"!
+  Generate: توليد الاقتراحات
+  NoteField: مذكرة طبية (اختياري)
+EditHR:
+  Title: تحديث السجل الصحي ل
+  CreatedOn: تم إنشاؤه في
+  Description: وصف الحالة
+  DescriptionError: وصف الحالة مطلوب
+  DescriptionHelperText: وصف حالة المريض وسرد بعض المعلومات ذات الصلة
+  TotalPay: إجمالي الدفعة
+  TotalPayError: الدفعة الإجمالية مطلوبة
+  SelectCurrency: اختر العملة
+  OldNotes: ملاحظات الحالة القديمة
+  CaseNotes: ملاحظات الحالة
+  NoteField: مذكرة طبية (اختياري)
+  GoBack: العودة إلى المريض
+Appointments:
+  Title: المواعيد
+  Upcoming: القادمه
+  Unchecked: دون رادع
+  Missed: مفتقد
+  Completed: اكمال
+  Remove: أبعد
+  Reschedule: اعاده جدوله
+  PatientName: اسم المريض
+  Time: وقت الموعد
+  Options: خيارات
+  Action: الإجراء المطلوب
+NewAppointment:
+  Title: حدد موعدا ل
+  Day: يوم الموعد
+  DayError: يوم الموعد مطلوب لتحديد الموعد
+  Time: الوقت
+  TimeError: يرجى اختيار موعد للموعد
+  Confirm: تأكيد تاريخ الموعد
+  Cancel: إلغاء الموعد
+EditAppointment:
+  Title: إعادة جدولة موعد ل
+  OldDate: التاريخ القديم
+  Day: يوم الموعد
+  DayError: يوم الموعد مطلوب لتحديد الموعد
+  Time: الوقت
+  TimeError: يرجى اختيار موعد للموعد
+  Confirm: تأكيد تاريخ جديد
+  Cancel: إلغاء إعادة الجدولة

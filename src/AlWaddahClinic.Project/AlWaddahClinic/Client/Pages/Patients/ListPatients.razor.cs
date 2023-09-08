@@ -20,10 +20,11 @@ namespace AlWaddahClinic.Client.Pages.Patients
         public IDialogsHandler DialogsHandler { get; set; } = default!;
 
         ApiResponse<IEnumerable<PatientSummaryDto>> result = new();
-        List<PatientSummaryDto> patients = new();
+        List<PatientSummaryDto>? patients;
         List<PatientSummaryDto> filteredPatients = new();
 
         private string _searchText = string.Empty;
+        private bool _isBusy = true;
         private void GoToAddPatient()
         {
             NavigationManager.NavigateTo("/patients/add");
@@ -33,6 +34,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
         {
             result = await PatientsService.GetAllPatients();
             patients = result.Value.ToList();
+            _isBusy = false;
         }
 
         public async Task HandlePatientRemoval()

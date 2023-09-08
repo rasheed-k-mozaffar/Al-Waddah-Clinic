@@ -12,19 +12,19 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
 
         // list of medical cases for the Medical History
-        static string[] cases =
-        {
-            "Smoker", "Diabetes", "High blood pressure",
-            "Cystisis", "Asthma", "High cholesterol",
-            "Cancer", "Stroke", "Medication allergies",
-            "Alcohol", "Drugs", "Anxiety", "Depression",
-            "Previous surgeries", "Mental health issues"
-        };
+        //static string[] cases =
+        //{
+        //    "Smoker", "Diabetes", "High blood pressure",
+        //    "Cystisis", "Asthma", "High cholesterol",
+        //    "Cancer", "Stroke", "Medication allergies",
+        //    "Alcohol", "Drugs", "Anxiety", "Depression",
+        //    "Previous surgeries", "Mental health issues"
+        //};
 
         private PatientCreateDto model = new();
         private string _errorMessage = string.Empty;
         private bool _isBusy = false;
-        private string? _medicalHistoryStr;
+        //private string? _medicalHistoryStr;
 
         private async Task AddPatient()
         {
@@ -33,12 +33,12 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
             try
             {
-                if(!string.IsNullOrEmpty(_medicalHistoryStr)) {
-                    model.MedicalHistory = _medicalHistoryStr.Split(',').ToList();
-                }
-                else {
-                    model.MedicalHistory = new List<string>();
-                }
+                //if(!string.IsNullOrEmpty(_medicalHistoryStr)) {
+                //    model.MedicalHistory = _medicalHistoryStr.Split(',').ToList();
+                //}
+                //else {
+                //    model.MedicalHistory = new List<string>();
+                //}
 
                 var result = await PatientsService.AddPatient(model);
 

@@ -1,4 +1,7 @@
-﻿h1:focus {
+﻿:root {
+    --selected-green: #48E74D;
+}
+h1:focus {
     outline: none;
 }
 
