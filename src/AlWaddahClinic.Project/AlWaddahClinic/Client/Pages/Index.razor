@@ -7,26 +7,25 @@
     <Authorized>
         <MudPaper Class="page-style">
             <MudGrid Style="padding: 2rem;">
-                <MudItem xs="12" md="12" lg="12">
-                    @*@if (context.User.FindFirst("email_verified")?.Value != "true")
-                        {
-                            <MudAlert Variant="Variant.Filled" Severity="Severity.Warning" Class="mb-3 mt-5">Your email has not been verified, please verify it first to authorize your clinic! <MudLink Color="Color.Info" Href="/user/verify-email">Click here</MudLink></MudAlert>
-                        }*@
-                    <MudCard style="width: 100%; padding: 2rem;" Class="mt-3">
-                        <MudCardContent>
-                            <MudText Align="Align.Center" Typo="Typo.h2" Color="Color.Dark"><b>@Lang.Keys["Index:WelcomeMessage"]</b></MudText>
-                            <MudText Align="Align.Center" Typo="Typo.body1">
-                                @Lang.Keys["Index:Links"]
-                            </MudText>
-                            <MudItem Class="d-flex justify-center">
-                                <MudButton Style="margin: .25rem;" Variant="Variant.Text" Color="Color.Dark" @onclick='(() => NavigationManager.NavigateTo("/patients/all"))'>@Lang.Keys["Index:ViewPatients"]</MudButton>
-                                <MudButton Style="margin: .25rem;" Variant="Variant.Text" Color="Color.Primary" @onclick='(() => NavigationManager.NavigateTo("/appointments"))'>@Lang.Keys["Index:Appointments"]</MudButton>
-                                <MudButton Style="margin: .25rem;" Variant="Variant.Text" Color="Color.Secondary" @onclick='(() => NavigationManager.NavigateTo("/patients/add"))'>@Lang.Keys["Index:AddPatient"]</MudButton>
-                            </MudItem>
-                        </MudCardContent>
-                    </MudCard>
+                <MudItem xs="12" md="5" lg="4">
+                    <QuickLinks />
+                </MudItem>
+
+                <MudItem xs="12" sm="12" md="7" lg="8">
+                    <PatientsCountChart />
+                </MudItem>
+
+
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    <RecentlyAddedPatients />
+                </MudItem>
+
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    <RecentlyAddedPatients />
                 </MudItem>
             </MudGrid>
+
+
         </MudPaper>
     </Authorized>
 
@@ -36,14 +35,6 @@
         }
     </NotAuthorized>
 </AuthorizeView>
-
-
-<style>
-    .page-style{
-        height: 100vh;
-        background-image: linear-gradient(to right, @(Colors.DeepPurple.Default), @(Colors.Purple.Default));
-    }
-</style>
 
 @code {
     protected override void OnInitialized()
