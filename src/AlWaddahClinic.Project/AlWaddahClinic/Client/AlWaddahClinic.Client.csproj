@@ -56,10 +56,12 @@
     <Folder Include="Models\" />
     <Folder Include="wwwroot\release-notes\" />
     <Folder Include="Resources\" />
+    <Folder Include="wwwroot\Js\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\" />
     <Content Remove="wwwroot\release-notes\" />
+    <Content Remove="wwwroot\Js\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\en-US.yml" />
