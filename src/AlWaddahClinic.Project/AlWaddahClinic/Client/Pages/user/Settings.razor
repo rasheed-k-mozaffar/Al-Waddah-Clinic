@@ -5,7 +5,7 @@
 @inject IJSRuntime Js
 <AuthorizeView>
     <Authorized>
-        <div style="height: 100vh; background-color: @previewBg; transition: .25s ease;padding: 2rem;">
+        <div class="page-style" style="background-color: @previewBg; transition: .25s ease;padding: 2rem;">
             <MudContainer>
                 <MudCard>
                     <MudCardHeader>
@@ -50,10 +50,10 @@
                                                   Icon="@Icons.Material.Filled.ColorLens"
                                                   IconColor="Color.Primary" Text="Change Background Color"
                                                   Class="mb-3" />
-                                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
                                         @foreach (var color in backgroundColors)
                                         {
-                                            <div style="background-color:@color; border: 1px solid black; width: 50px; height: 50px; border-radius: 10px; cursor: pointer"
+                                            <div style="background-color:@color; border: 1px solid black; width: 75px; height: 75px; border-radius: 10px; cursor: pointer"
                                                  @onclick="(() => ChangeBackground(color: color))" @onmouseover="(() => PreviewBackground(color))" @onmouseleave="RevertBackground">
 
                                             </div>
@@ -63,13 +63,13 @@
 
                                 <MudContainer Class="mt-3 mb-3">
                                     <TextWithIcon IsBold="true" TextSize="Typo.h6"
-                                                  Icon="@Icons.Material.Filled.Navigation"
+                                                  Icon="@Icons.Material.Filled.Menu"
                                                   IconColor="Color.Secondary" Text="Change Navigation Bar Color"
                                                   Class="mb-3" />
-                                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                                        @foreach (var color in backgroundColors)
+                                    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                        @foreach (var color in navbarColors)
                                         {
-                                            <div style="background-color:@color; border: 1px solid black; width: 50px; height: 50px; border-radius: 10px; cursor: pointer"
+                                            <div style="background-color:@color; border: 1px solid black; width: 75px; height: 75px; border-radius: 10px; cursor: pointer"
                                                  @onclick="(() => ChangeNavbarColor(color: color))" @onmouseover="(() => PreviewNavbar(color))" @onmouseleave="RevertNavbar">
 
                                             </div>
@@ -103,15 +103,16 @@
     private string? previewBg;
     private string[]? backgroundColors =
     {
-        "white", "indigo", "purple", "plum", "#7F71FF" , "#DBF5FF" , "#C1709E", "#FFD083",
-        "cornflowerblue", "lightcoral", "lightseagreen", "#D4EECA",
-        "lightskyblue", "sandybrown", "#FFC9B9"
+        "#FFFFFF", "#FFDADA", "#EE9E9E", "#FF7B7B", "#F8A6EF" , "#C88EFF" , "#ECD7FF", "#FFDDBA",
+        "#FFB76F", "#F88585", "#ADFFA9", "#E4FFA9", "#73CBA5" , "#AEC778", "#B8EEE5", "#A9C7D9" , "#9DA9F3" , "#8A6AFF",
+        "#FFE07A", "#87CEFA", "#CECECE"
     };
 
     private string[]? navbarColors =
-{
-
-};
+    {
+        "#C165FF", "#FF65B7", "#313131", "#E5EA40", "#4084EA", "#FF7B5A", "#FF5E5E",
+        "#9BE55A", "#E55A5A", "#FF9A5C", "#393E89"
+    };
 
     private Dictionary<string, string> languageCodes = new Dictionary<string, string>() {
         { "en-US", "English 🇺🇸" },
