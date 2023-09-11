@@ -1,5 +1,6 @@
 ﻿:root {
     --selected-green: #48E74D;
+    --transparent-shade: rgba(255, 255, 255, 0.8);
 }
 h1:focus {
     outline: none;
@@ -8,6 +9,14 @@ h1:focus {
 .vertical-align {
     display: flex;
     align-items: center;
+}
+
+.custom-info-alert {
+    border-radius: 2.5px;
+    padding: 1rem;
+    background-color: #F8FAFD;
+    color: #70A1E7;
+    box-shadow: 2px 2px 4px lightgray;
 }
 
 #blazor-error-ui {
