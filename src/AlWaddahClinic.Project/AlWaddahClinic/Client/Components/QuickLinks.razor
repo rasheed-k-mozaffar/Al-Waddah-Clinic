@@ -1,0 +1,41 @@
+﻿@inject NavigationManager Navigation
+@inject ILanguageContainerService Lang
+
+<MudPaper Class="pa-4" Style="min-height: 425px; max-height: fit-content;">
+    <TextWithIcon IsBold="true" Icon="@Icons.Material.Filled.Outbound"
+                  IconColor="Color.Tertiary" TextSize="Typo.h5" Class="mb-3"
+                  Text="@Lang.Keys["QuickLinks:Title"]" />
+
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12" sm="12" md="12" lg="12">
+            <MudFab Color="Color.Dark" Style="width: 100%" Class="my-2" Label="@Lang.Keys["QuickLinks:ViewPatients"]" Icon="@Icons.Material.Filled.People"
+                    IconColor="Color.Surface" @onclick='(() => Navigation.NavigateTo("/patients/all"))' />
+        </MudItem>
+
+        <MudItem xs="12" sm="12" md="12" lg="12"> 
+            <MudFab Color="Color.Warning" Style="width: 100%" Class="my-2" Label="@Lang.Keys["QuickLinks:Appointments"]" Icon="@Icons.Material.Filled.CalendarMonth"
+                    IconColor="Color.Surface" @onclick='(() => Navigation.NavigateTo("/appointments"))' />
+        </MudItem>
+
+        <MudItem xs="12" sm="12" md="12" lg="12">
+            <MudFab Color="Color.Success" Style="width: 100%" Class="my-2" Label="@Lang.Keys["QuickLinks:AddPatient"]" Icon="@Icons.Material.Filled.PersonAdd"
+                    IconColor="Color.Dark" @onclick='(() => Navigation.NavigateTo("/patients/add"))' />
+        </MudItem>
+
+        <MudItem xs="12" sm="12" md="12" lg="12">
+                        <MudFab Color="Color.Primary" Style="width: 100%" Class="my-2" Label="@Lang.Keys["QuickLinks:Settings"]" Icon="@Icons.Material.Filled.Settings"
+                    IconColor="Color.Surface" @onclick='(() => Navigation.NavigateTo("/user/settings"))' />
+        </MudItem>
+    </MudGrid>
+
+
+</MudPaper>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+        base.OnInitialized();
+    }
+}
+

@@ -1,0 +1,86 @@
+﻿@inject IAnalysisService Analysis
+@inject ILanguageContainerService Lang
+@inject NavigationManager Navigation
+<MudPaper Class="pa-4" Style="min-height: 425px; max-height: fit-content" Elevation="2">
+    <TextWithIcon IsBold="true" Icon="@Icons.Material.Filled.PersonAdd"
+                  IconColor="Color.Primary" TextSize="Typo.h5" Class="mb-3"
+                  Text="@Lang.Keys["RecentlyAddedPatients:Title"]" />
+
+    @if (_isBusy)
+    {
+        <MudGrid Class="d-flex justify-center" Style="height: 425px; align-items: center;">
+            <MudItem>
+                <Loader />
+            </MudItem>
+        </MudGrid>
+    }
+    else
+    {
+            if (patients is not null && patients.Any())
+        {
+            <MudSimpleTable Bordered="true" Hover="true" Dense="true">
+                <thead>
+                    <tr>
+                        <th width="75%">@Lang.Keys["AddPatient:FullName"]</th>
+                        <th width="25%">@Lang.Keys["Patient:Options"]</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var p in patients)
+                    {
+                        <tr>
+                            <td width="75%">@p.FullName</td>
+                            <td width="25%">
+                                <MudTooltip Text="@Lang.Keys["RecentlyAddedPatients:View"]" Placement="Placement.Top">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Article" Color="Color.Info"
+                                                   @onclick="@(() => GoToDetails(p.PatientId))" />
+                                </MudTooltip>
+
+                                <MudTooltip Text="@Lang.Keys["RecentlyAddedPatients:Appoint"]" Placement="Placement.Top">
+                                    <MudIconButton Icon="@Icons.Material.Filled.CalendarMonth" Color="Color.Warning"
+                                                   @onclick="@(() => GoToMakeAppointment(p.PatientId))" />
+                                </MudTooltip>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+        }
+        else
+        {
+            <MudItem xs="12" md="12" lg="12" Class="d-flex justify-center align-center flex-column" Style="height: 300px;">
+                <MudItem>
+                    <img width="300" src="images/no-recents.png" alt="No recently added patients" />
+                </MudItem>
+            </MudItem>
+            <TextWithIcon IsBold="false" TextSize="Typo.body1"
+                          Icon="@Icons.Material.Filled.Info" IconColor="Color.Warning"
+                          Text="@Lang.Keys["RecentlyAddedPatients:NoPatients"]" />
+        }
+    }
+</MudPaper>
+
+@code{
+    private bool _isBusy = true;
+    private ApiResponse<List<PatientSummaryDto>> result = new();
+    private List<PatientSummaryDto>? patients;
+    protected override async Task OnInitializedAsync()
+    {
+        Lang.InitLocalizedComponent(this);
+        result = await Analysis.GetRecentlyAddedPatientsAsync(numToGet: 5);
+        patients = result.Value;
+        _isBusy = false;
+    }
+
+    private void GoToMakeAppointment(Guid patientId)
+    {
+        Navigation.NavigateTo($"/appointments/make/{patientId}");
+    }
+
+    private void GoToDetails(Guid patientId)
+    {
+        Navigation.NavigateTo($"/patients/{patientId}");
+    }
+}
+
