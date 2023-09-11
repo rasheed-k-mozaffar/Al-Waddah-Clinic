@@ -113,7 +113,6 @@ namespace AlWaddahClinic.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] PatientUpdateDto model)
         {
-            //TODO: Implement this endpoitn.
             if(ModelState.IsValid)
             {
                 try
@@ -128,6 +127,11 @@ namespace AlWaddahClinic.Server.Controllers
                     patientToUpdate.Gender = model.Gender;
                     patientToUpdate.ModifiedByUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
                     patientToUpdate.ModifiedOn = DateTime.Now;
+
+                    if(model.MedicalHistory != null && model.MedicalHistory.Any()) {
+                        patientToUpdate.MedicalHistory = string.Join(',', model.MedicalHistory);
+                        patientToUpdate.Suggestions = string.Join(',', model.Suggestions ?? new List<string>(0));
+                    }
 
                     await _context.SaveChangesAsync();
 

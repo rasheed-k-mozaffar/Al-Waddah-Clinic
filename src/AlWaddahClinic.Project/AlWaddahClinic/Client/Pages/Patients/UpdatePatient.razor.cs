@@ -13,35 +13,31 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
         [Parameter] public Guid PatientId { get; set; }
 
-        // list of medical cases for the Medical History
-        //static string[] cases =
-        //{
-        //    "Smoker", "Diabetes", "High blood pressure",
-        //    "Cystisis", "Asthma", "High cholesterol",
-        //    "Cancer", "Stroke", "Medication allergies",
-        //    "Alcohol", "Drugs", "Anxiety", "Depression",
-        //    "Previous surgeries", "Mental health issues"
-        //};
+        //list of medical cases for the Medical History
+        static string[] cases =
+        {
+            "Smoker", "Diabetes", "High blood pressure",
+            "Cystisis", "Asthma", "High cholesterol",
+            "Cancer", "Stroke", "Medication allergies",
+            "Alcohol", "Drugs", "Anxiety", "Depression",
+            "Previous surgeries", "Mental health issues"
+        };
 
         private ApiResponse<PatientDto> result = new();
         private PatientUpdateDto model = new();
+        private IEnumerable<string>? medicalHistory;
 
         private string _errorMessage = string.Empty;
         private bool _isMakingRequest = false;
         private bool _isBusy = true;
-        //private string? _medicalHistoryStr;
+        
 
         protected override async Task OnInitializedAsync() {
             try {
                 result = await PatientsService.GetPatientById(PatientId);
                 model = MapDetails(result.Value);
-
-                //if ((model.MedicalHistory != null) && (model.MedicalHistory.Any())) {
-                //    _medicalHistoryStr = string.Join(',', model.MedicalHistory);
-                //}
-                //else {
-                //    _medicalHistoryStr = null;
-                //}
+                medicalHistory = model.MedicalHistory;
+                
                 _isBusy = false;
             }
             catch (DomainException ex) {
@@ -54,6 +50,9 @@ namespace AlWaddahClinic.Client.Pages.Patients
             _errorMessage = string.Empty;
             try {
                 //model.MedicalHistory = _medicalHistoryStr.Split(',').ToList();
+                if(medicalHistory is not null && medicalHistory.Any()) {
+                    model.MedicalHistory = medicalHistory.ToList();
+                }
                 await PatientsService.UpdatePatient(PatientId, model);
                 NavigationManager.NavigateTo($"/patients/{PatientId}");
             }
@@ -75,7 +74,7 @@ namespace AlWaddahClinic.Client.Pages.Patients
                 Address = patient.Address,
                 PhoneNumber = patient.PhoneNumber,
                 Gender = patient.Gender,
-                //MedicalHistory = patient.MedicalHistory
+                MedicalHistory = patient.MedicalHistory
             };
         }
     }

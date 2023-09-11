@@ -13,7 +13,7 @@
     }
     else
     {
-        <MudContainer Class="mt-2">
+        <MudContainer Class="pa-5">
             <MudCard Style="padding: 2rem;">
                 <MudCardContent>
                     <MudItem Class="d-flex justify-space-between mb-3">
@@ -62,22 +62,21 @@
                                 </MudTable>
                             </MudExpansionPanel>
 
-                            @*@if ((patient?.MedicalHistory == null) || (!patient.MedicalHistory.Any()))
-                                {
-                                    <MudAlert Severity="Severity.Info"
-                                              Class="mt-3" Icon="@Icons.Material.Filled.Info">
-                                        There are no current suggestions for this patient, please update their medical history if you want helping suggestions.
-                                    </MudAlert>
-                                }
-                                else
-                                {
-                                    <MudExpansionPanel Text="Suggestions Based on The Patients History">
-                                        @foreach (string suggestion in suggestions)
-                                        {
-                                                <MudText Typo="Typo.body1">-> @suggestion</MudText>
-                                        }
-                                    </MudExpansionPanel>
-                                }*@
+                            @if ((patient?.MedicalHistory == null) || (!patient.MedicalHistory.Any()))
+                            {
+                                <div class="custom-info-alert mt-3">
+                                    <p>@Lang.Keys["Patient:NoSuggestions"]</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <MudExpansionPanel Text="@Lang.Keys["Patient:Suggestions"]">
+                                    @foreach (string suggestion in patient.Suggestions)
+                                    {
+                                        <MudText Typo="Typo.body1">@suggestion</MudText>
+                                    }
+                                </MudExpansionPanel>
+                            }
                         </MudExpansionPanels>
                     </MudCardContent>
                 }

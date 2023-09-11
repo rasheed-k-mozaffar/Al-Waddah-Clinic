@@ -54,26 +54,32 @@
                         </MudRadioGroup>
                     </MudItem>
 
-                    @*<MudItem xs="12" md="12" lg="12">
+                    <MudItem xs="12" md="12" lg="12">
                         <div class="vertical-align">
                             <MudIcon Icon="@Icons.Material.Filled.MedicalInformation" Color="Color.Info" /> &nbsp;
                             <span>
                                 <MudText Typo="Typo.h6"><b>Additional Information</b></MudText>
                             </span>
                         </div>
-                    </MudItem>*@
+                    </MudItem>
 
-                    @*<MudItem Class="mb-3" xs="12" md="12" lg="12">
-                        <MudSelect T="string" Label="Medical History (Optional)"
-                                   @bind-Value="_medicalHistoryStr" MultiSelection="true"
-                                   Style="width: 100%;">
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        <MudSelect Label="Medical History (Optional)" MultiSelection="true"
+                                   Style="width: 100%;" @bind-SelectedValues="medicalHistory">
                             @foreach (string value in cases)
                             {
                                 <MudSelectItem Value="value">@value</MudSelectItem>
                             }
 
                         </MudSelect>
-                    </MudItem>*@
+                    </MudItem>
+
+                    @if (_isBusy)
+                    {
+                        <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                            <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Large" Indeterminate="true" />
+                        </MudItem>
+                    }
 
                     <MudDivider />
 

@@ -18,7 +18,7 @@ else
         <MudAlert Severity="Severity.Error" Variant="Variant.Filled">@_errorMessage</MudAlert>
     }
 
-    <MudContainer Class="mt-2">
+    <MudContainer Class="pa-5">
         <MudCard Style="padding: 2rem;">
             <MudItem>
                 <MudText Typo="Typo.h4"><b><i class="bi bi-pen-fill"></i> @Lang.Keys["UpdatePatient:Title"]</b></MudText>
@@ -63,17 +63,24 @@ else
                             </MudRadioGroup>
                         </MudItem>
 
-                        @*<MudItem Class="mb-3" xs="12" md="12" lg="12">
-                                <MudSelect T="string" Label="Medical History (Optional)"
-                                           @bind-Value="_medicalHistoryStr" MultiSelection="true"
-                                           Style="width: 100%;">
-                                    @foreach (string value in cases)
-                                    {
-                                        <MudSelectItem Value="value">@value</MudSelectItem>
-                                    }
+                        <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                            <MudSelect Label="Medical History (Optional)"
+                                       @bind-SelectedValues="medicalHistory" MultiSelection="true"
+                                       Style="width: 100%;">
+                                @foreach (string value in cases)
+                                {
+                                    <MudSelectItem Value="value">@value</MudSelectItem>
+                                }
 
-                                </MudSelect>
-                            </MudItem>*@
+                            </MudSelect>
+                        </MudItem>
+
+                        @if (_isMakingRequest)
+                        {
+                            <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                                <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Large" Indeterminate="true" />
+                            </MudItem>
+                        }
 
                         <MudDivider />
 
@@ -85,14 +92,14 @@ else
 
                             <MudButton Disabled="@_isMakingRequest" Variant="Variant.Outlined" Color="Color.Info"
                                        @onclick="GoBack">@Lang.Keys["UpdatePatient:Cancel"]</MudButton>
-                        </MudItem>
-                    </MudGrid>
-                </EditForm>
-            </MudItem>
-        </MudCard>
-    </MudContainer>
+                                </MudItem>
+                            </MudGrid>
+                        </EditForm>
+                    </MudItem>
+                </MudCard>
+            </MudContainer>
 
-}
+        }
 
 @code {
     protected override void OnInitialized()

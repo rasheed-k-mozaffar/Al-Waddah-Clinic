@@ -26,7 +26,6 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
 		private ApiResponse<PatientDto> result = new();
 		private PatientDto patient = new();
-		//private List<string>? suggestions = new();
 
 		private string _recordsTableHeader = string.Empty;
 		private string _errorMessage = string.Empty;
