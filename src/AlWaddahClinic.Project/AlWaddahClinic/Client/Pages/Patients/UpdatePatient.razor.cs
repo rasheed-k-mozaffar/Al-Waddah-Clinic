@@ -53,6 +53,10 @@ namespace AlWaddahClinic.Client.Pages.Patients
                 if(medicalHistory is not null && medicalHistory.Any()) {
                     model.MedicalHistory = medicalHistory.ToList();
                 }
+                else {
+                    model.MedicalHistory = null;
+                    model.Suggestions = null;
+                }
                 await PatientsService.UpdatePatient(PatientId, model);
                 NavigationManager.NavigateTo($"/patients/{PatientId}");
             }

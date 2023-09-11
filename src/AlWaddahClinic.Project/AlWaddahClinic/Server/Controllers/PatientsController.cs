@@ -7,6 +7,7 @@ using AlWaddahClinic.Server.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AlWaddahClinic.Server.Data;
+using AlWaddahClinic.Shared.Dtos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -130,9 +131,12 @@ namespace AlWaddahClinic.Server.Controllers
 
                     if(model.MedicalHistory != null && model.MedicalHistory.Any()) {
                         patientToUpdate.MedicalHistory = string.Join(',', model.MedicalHistory);
-                        patientToUpdate.Suggestions = string.Join(',', model.Suggestions ?? new List<string>(0));
+                        patientToUpdate.Suggestions = model.Suggestions == null ? null : string.Join(',', model.Suggestions);
                     }
-
+                    else {
+                        patientToUpdate.MedicalHistory = null;
+                        patientToUpdate.Suggestions = null;
+                    }
                     await _context.SaveChangesAsync();
 
                     return NoContent(); //Return 204 STATUS CODE
