@@ -12,11 +12,12 @@ h1:focus {
 }
 
 .custom-info-alert {
-    border-radius: 2.5px;
+    border-radius: 5px;
+    border: 1px solid #70A1E7;
     padding: 1rem;
     background-color: #F8FAFD;
     color: #70A1E7;
-    box-shadow: 2px 2px 4px lightgray;
+    box-shadow: 1px 1px 3px lightgray;
 }
 
 #blazor-error-ui {
