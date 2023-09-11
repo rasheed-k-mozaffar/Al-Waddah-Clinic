@@ -135,6 +135,13 @@ else
                             </MudExpansionPanels>
                         </MudItem>
 
+                        <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                            @if (_isPreparingInsights || _isMakingRequest)
+                            {
+                                <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Large" Indeterminate="true" />
+                            }
+                        </MudItem>
+
                         <MudItem xs="12">
                             <MudButton Disabled="@_isMakingRequest" ButtonType="ButtonType.Submit" Style="width: 100%;" Variant="Variant.Filled" Color="Color.Primary" Class="mb-3">@Lang.Keys["HealthRecord:Update"]</MudButton>
                             <MudDivider />
