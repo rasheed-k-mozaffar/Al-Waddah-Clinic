@@ -1,8 +1,21 @@
 ﻿@inherits LayoutComponentBase
 @inject ILanguageContainerService LangService
+
+<style>
+    :root {
+        --navbar-color: @settings.NavbarColor;
+        --main-color: @settings.BackgroundColor
+    }
+    .page-style {
+        min-height: 100vh;
+        max-height: max-content;
+        background-color: var(--main-color);
+    }
+</style>
+
 <MudRTLProvider RightToLeft="@_isRightToLeft">
     <MudLayout>
-        <MudAppBar Elevation="1" Color="Color.Primary">
+        <MudAppBar Elevation="1" Style="background-color: var(--navbar-color); transition: 0.25s">
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
                            OnClick="@((e) => DrawerToggle())" />
             <MudSpacer />
@@ -18,34 +31,39 @@
             <MudNavMenu>
                 <MudNavLink Href="/" Match="NavLinkMatch.All"
                             Icon="@Icons.Material.Filled.Home"
-                            IconColor="Color.Primary">@LangService.Keys["Menu:Dash"]
+                            IconColor="Color.Primary">
+                    @LangService.Keys["Menu:Dash"]
                 </MudNavLink>
 
                 <MudNavGroup Title="@LangService.Keys["Menu:Records"]" Icon="@Icons.Material.Filled.FileCopy"
                              IconColor="Color.Dark" Expanded="true">
                     <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix"
                                 Icon="@Icons.Material.Filled.People"
-                                IconColor="Color.Primary">@LangService.Keys["Menu:Patients"]
+                                IconColor="Color.Primary">
+                        @LangService.Keys["Menu:Patients"]
                     </MudNavLink>
                     <MudNavLink Href="/appointments" Match="NavLinkMatch.Prefix"
                                 Icon="@Icons.Material.Filled.CalendarMonth"
-                                IconColor="Color.Secondary">@LangService.Keys["Menu:Appointments"]
+                                IconColor="Color.Secondary">
+                        @LangService.Keys["Menu:Appointments"]
                     </MudNavLink>
                 </MudNavGroup>
 
                 <MudNavLink Href="/release-notes" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Folder" IconColor="Color.Warning">
-                        @LangService.Keys["Menu:ReleaseNotes"]
+                    @LangService.Keys["Menu:ReleaseNotes"]
                 </MudNavLink>
 
                 <MudNavLink Href="/user/settings" Match="NavLinkMatch.All"
                             Icon="@Icons.Material.Filled.Settings"
-                            IconColor="Color.Dark">@LangService.Keys["Menu:Settings"]
+                            IconColor="Color.Dark">
+                    @LangService.Keys["Menu:Settings"]
                 </MudNavLink>
                 <AuthorizeView>
                     <NotAuthorized>
                         <MudNavLink Href="/user/login" Match="NavLinkMatch.Prefix"
                                     Icon="@Icons.Material.Filled.Login"
-                                    IconColor="Color.Success">@LangService.Keys["Menu:Login"]
+                                    IconColor="Color.Success">
+                            @LangService.Keys["Menu:Login"]
                         </MudNavLink>
                     </NotAuthorized>
 
@@ -57,7 +75,7 @@
                 </AuthorizeView>
             </MudNavMenu>
         </MudDrawer>
-        <MudMainContent>
+        <MudMainContent Class="page-style">
             @Body
         </MudMainContent>
     </MudLayout>
@@ -67,11 +85,11 @@
     bool _drawerOpen = true;
     bool _isRightToLeft = false;
 
+    private UserSettings? settings = new();
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
-
 
     //Handle the log out
     [Inject] public IDialogService DialogService { get; set; } = default!;
@@ -114,6 +132,14 @@
             {
                 _isRightToLeft = true;
             }
+        }
+        if (await LocalStorage.ContainKeyAsync("user-settings"))
+        {
+            settings = await LocalStorage.GetItemAsync<UserSettings>("user-settings");
+        }
+        else
+        {
+            await LocalStorage.SetItemAsync<UserSettings>("user-settings", settings!);
         }
 
         LangService.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(languageCode));
