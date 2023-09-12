@@ -1,7 +1,7 @@
 ﻿@inject IAnalysisService Analysis
 @inject ILanguageContainerService Lang
 @inject NavigationManager Navigation
-<MudPaper Class="pa-4" Style="min-height: 425px; max-height: fit-content" Elevation="2">
+<MudPaper Class="pa-4" Style="min-height: fit-content; max-height: max-content" Elevation="2">
     <TextWithIcon IsBold="true" Icon="@Icons.Material.Filled.PersonAdd"
                   IconColor="Color.Primary" TextSize="Typo.h5" Class="mb-3"
                   Text="@Lang.Keys["RecentlyAddedPatients:Title"]" />
@@ -21,8 +21,8 @@
             <MudSimpleTable Bordered="true" Hover="true" Dense="true">
                 <thead>
                     <tr>
-                        <th width="75%">@Lang.Keys["AddPatient:FullName"]</th>
-                        <th width="25%">@Lang.Keys["Patient:Options"]</th>
+                        <th width="90%">@Lang.Keys["AddPatient:Name"]</th>
+                        <th width="10%">@Lang.Keys["Patient:Options"]</th>
                     </tr>
                 </thead>
 
