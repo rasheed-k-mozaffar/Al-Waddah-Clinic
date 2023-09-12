@@ -1,0 +1,78 @@
+﻿@inject IAnalysisService Analysis
+@inject ILanguageContainerService Lang
+@inject NavigationManager Navigation
+<MudPaper Class="pa-4" Style="min-height: fit-content; max-height: max-content" Elevation="2">
+    <TextWithIcon IsBold="true" Icon="@Icons.Material.Filled.PersonAdd"
+                  IconColor="Color.Primary" TextSize="Typo.h5" Class="mb-3"
+                  Text="@Lang.Keys["UpcomingAppointments:Title"]" />
+
+    @if (_isBusy)
+    {
+        <MudGrid Class="d-flex justify-center" Style="height: 425px; align-items: center;">
+            <MudItem>
+                <Loader />
+            </MudItem>
+        </MudGrid>
+    }
+    else
+    {
+        if (appointments is not null && appointments.Any())
+        {
+            <MudSimpleTable Bordered="true" Hover="true" Dense="true">
+                <thead>
+                    <tr>
+                        <th width="45%">@Lang.Keys["Appointments:PatientName"]</th>
+                        <th width="45%">@Lang.Keys["Appointments:Time"]</th>
+                        <th width="10%">@Lang.Keys["Patient:Options"]</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var a in appointments)
+                    {
+                        <tr>
+                            <td width="45%">@a.PatientName</td>
+                            <td width="45%">@a.StartAt</td>
+                            <td width="10%">
+                                <MudTooltip Text="@Lang.Keys["Appointments:Reschedule"]" Placement="Placement.Top">
+                                    <MudIconButton Icon="@Icons.Material.Filled.CalendarMonth" Color="Color.Secondary"
+                                                   @onclick="@(() => GoToEditAppointment(a.PatientName ,a.Id))" />
+                                </MudTooltip>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+        }
+        else
+        {
+            <MudItem xs="12" md="12" lg="12" Class="d-flex justify-center align-center flex-column" Style="height: 300px;">
+                <MudItem>
+                    <img width="300" src="images/no-upcoming-appointments.png" alt="There're no upcoming appointments" />
+                </MudItem>
+            </MudItem>
+            <TextWithIcon IsBold="false" TextSize="Typo.body1"
+                          Icon="@Icons.Material.Filled.Info" IconColor="Color.Warning"
+                          Text="@Lang.Keys["UpcomingAppointments:Nothing"]" />
+        }
+    }
+</MudPaper>
+
+
+@code{
+    private bool _isBusy = true;
+    private ApiResponse<List<AppointmentSummaryDto>> result = new();
+    private List<AppointmentSummaryDto>? appointments;
+    protected override async Task OnInitializedAsync()
+    {
+        Lang.InitLocalizedComponent(this);
+        result = await Analysis.GetUpcomingAppointmentsAsync(limit: 24);
+        appointments = result.Value;
+        _isBusy = false;
+    }
+
+    private void GoToEditAppointment(string patientName, Guid appointmentId)
+    {
+        Navigation.NavigateTo($"/appointments/reschedule/{patientName}/{appointmentId}");
+    }
+}
