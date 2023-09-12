@@ -8,21 +8,21 @@ namespace AlWaddahClinic.Client.Pages.Patients
 	public partial class Patient : ComponentBase
 	{
 		[Inject]
-		public NavigationManager NavigationManager { get; set; } = null!;
+		public NavigationManager NavigationManager { get; set; } = default!;
 
 		[Inject]
-		public IPatientsService PatientsService { get; set; } = null!;
+		public IPatientsService PatientsService { get; set; } = default!;
 
 		[Inject]
-		public IDialogService DialogService { get; set; } = null!;
+		public IDialogService DialogService { get; set; } = default!;
 
 		//Route parameter
 		[Parameter]
 		public Guid Id { get; set; }
 
 
-		ApiResponse<PatientDto> result = new();
-		PatientDto patient = new();
+		private ApiResponse<PatientDto> result = new();
+		private PatientDto patient = new();
 
 		private string _recordsTableHeader = string.Empty;
 		private string _errorMessage = string.Empty;
@@ -61,10 +61,11 @@ namespace AlWaddahClinic.Client.Pages.Patients
 		private async void OpenRemoveDialog()
 		{
 			var parameters = new DialogParameters();
-			parameters.Add("Header", "Confirm Removal");
-			parameters.Add("Content", "Do you really want to remove this patient? Please note that once the process has completed, you cannot invert it");
-			parameters.Add("ButtonText", "Remove");
-			parameters.Add("Color", Color.Error);
+            parameters.Add("Header", Lang.Keys["Dialogs:ConfirmRemoval"]);
+            parameters.Add("Content", Lang.Keys["Dialogs:RemovalMessage"]);
+            parameters.Add("ButtonText", Lang.Keys["Dialogs:Confirm"]);
+            parameters.Add("CancelButton", Lang.Keys["Dialogs:Cancel"]);
+            parameters.Add("Color", Color.Error);
 
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 

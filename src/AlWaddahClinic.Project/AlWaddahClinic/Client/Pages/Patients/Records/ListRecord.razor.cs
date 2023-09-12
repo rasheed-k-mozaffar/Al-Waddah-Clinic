@@ -1,4 +1,5 @@
 ﻿using System;
+using AKSoftware.Localization.MultiLanguages;
 using AlWaddahClinic.Client.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -18,6 +19,9 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 
 		[Inject]
 		public IDialogService DialogService { get; set; } = default!;
+
+		[Inject]
+		public ILanguageContainerService Lang { get; set; } = default!;
 
 		//Matching the route params
 		[Parameter] public Guid Id { get; set; }
@@ -65,12 +69,13 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 		private async Task OpenRemoveDialog()
 		{
 			var parameters = new DialogParameters();
-			parameters.Add("Header" ,"Confirm Removal");
-			parameters.Add("Content", "Do you really want to remove this health record? By confirming the process, all related notes will be removed as well");
-			parameters.Add("ButtonText", "Remove");
-			parameters.Add("Color", Color.Error);
+            parameters.Add("Header", Lang.Keys["Dialogs:ConfirmRemoval"]);
+            parameters.Add("Content", Lang.Keys["Dialogs:RemovalMessage"]);
+            parameters.Add("ButtonText", Lang.Keys["Dialogs:Confirm"]);
+            parameters.Add("CancelButton", Lang.Keys["Dialogs:Cancel"]);
+            parameters.Add("Color", Color.Error);
 
-			var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
 			var dialog = DialogService.Show<Dialog>("Delete", parameters, options);
 			var result = await dialog.Result;
@@ -142,12 +147,13 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 		private async Task OpenPaymentRemoveDialog(Guid paymentId)
 		{
 			var parameters = new DialogParameters();
-			parameters.Add("Header", "Confirm Removal");
-			parameters.Add("Content", "Do you really want to remove this payment? Once the process is cofirmed, it cannot be inverted!");
-			parameters.Add("ButtonText", "Remove");
-			parameters.Add("Color", Color.Error);
+            parameters.Add("Header", Lang.Keys["Dialogs:ConfirmRemoval"]);
+            parameters.Add("Content", Lang.Keys["Dialogs:RemovalMessage"]);
+            parameters.Add("ButtonText", Lang.Keys["Dialogs:Confirm"]);
+            parameters.Add("CancelButton", Lang.Keys["Dialogs:Cancel"]);
+            parameters.Add("Color", Color.Error);
 
-			var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
 			var dialog = DialogService.Show<Dialog>("Delete", parameters, options);
 			var result = await dialog.Result;
@@ -196,7 +202,7 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 		{
 			var parameters = new DialogParameters();
 
-			parameters.Add("Header", "Payment Details");
+			parameters.Add("Header", Lang.Keys["Dialog:PayDetails"]);
 			parameters.Add("PaymentId", id);
 
 			var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium, ClassBackground = "dialog-overlay"};

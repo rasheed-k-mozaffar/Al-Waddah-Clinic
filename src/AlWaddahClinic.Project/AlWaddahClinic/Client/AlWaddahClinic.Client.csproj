@@ -21,6 +21,8 @@
     <PackageReference Include="MudBlazor" Version="6.6.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.31.0" />
+    <PackageReference Include="AKSoftware.Localization.MultiLanguages.Blazor" Version="1.5.0" />
+    <PackageReference Include="AKSoftware.Localization.MultiLanguages" Version="5.9.11" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +40,9 @@
     <None Remove="Pages\Appointments\" />
     <None Remove="UiServices\" />
     <None Remove="Models\" />
+    <None Remove="Resources\" />
+    <None Remove="Resources\en-US.yml" />
+    <None Remove="Resources\ar-SY.yml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shared\" />
@@ -50,9 +55,16 @@
     <Folder Include="wwwroot\images\" />
     <Folder Include="Models\" />
     <Folder Include="wwwroot\release-notes\" />
+    <Folder Include="Resources\" />
+    <Folder Include="wwwroot\Js\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\" />
     <Content Remove="wwwroot\release-notes\" />
+    <Content Remove="wwwroot\Js\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\en-US.yml" />
+    <EmbeddedResource Include="Resources\ar-SY.yml" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,183 @@
+﻿@page "/user/settings"
+@inject ILocalStorageService LocalStorage
+@inject ILanguageContainerService Lang
+@inject NavigationManager NavigationManager
+@inject IJSRuntime Js
+<AuthorizeView>
+    <Authorized>
+        <div class="page-style" style="background-color: @previewBg; transition: .25s ease;padding: 2rem;">
+            <MudContainer>
+                <MudCard>
+                    <MudCardHeader>
+                        <MudText Typo="Typo.h4">
+                            ⚙️ <b>@Lang.Keys["Settings:Title"]</b>
+                        </MudText>
+                    </MudCardHeader>
+
+                    <MudCardContent>
+                        <MudTabs Outlined="true">
+                            <MudTabPanel Text="@Lang.Keys["Settings:Account"]" Icon="@Icons.Material.Filled.Person">
+                                <MudContainer Class="mt-3 mb-3">
+                                    <ul>
+                                        <li><MudText Typo="Typo.body1"><b>@Lang.Keys["Settings:FirstName"]:</b> @context.User.FindFirst(ClaimTypes.GivenName).Value</MudText></li>
+                                        <li><MudText Typo="Typo.body1"><b>@Lang.Keys["Settings:LastName"]:</b> @context.User.FindFirst(ClaimTypes.Surname).Value</MudText></li>
+                                        <li><MudText Typo="Typo.body1"><b>@Lang.Keys["Settings:Email"]:</b> @context.User.FindFirst(ClaimTypes.Email).Value</MudText></li>
+                                        <li><MudText Typo="Typo.body1"><b>@Lang.Keys["Settings:DocType"]:</b> @context.User.FindFirst("DoctorType").Value</MudText></li>
+                                    </ul>
+                                </MudContainer>
+                            </MudTabPanel>
+
+                            <MudTabPanel Text="@Lang.Keys["Settings:Lang"]" Icon="@Icons.Material.Filled.Translate">
+                                <MudContainer Class="mt-3 mb-3">
+                                    <MudText Typo="Typo.h5"><b>@Lang.Keys["Settings:ChangeLang"]</b></MudText>
+                                    <MudGrid Justify="Justify.FlexStart">
+                                        @foreach (var pair in languageCodes)
+                                        {
+                                            <MudItem xs="12" sm="12" md="6" lg="6">
+                                                <MudButton Variant="Variant.Outlined" Color="Color.Dark" Class="@(selectedLang == pair.Key ? "selected mx-2": "mx-2")"
+                                                           @onclick="(async () => await SetLanguage(pair.Key))" Style="width: 100%;">
+                                                    @pair.Value
+                                                </MudButton>
+                                            </MudItem>
+                                        }
+                                    </MudGrid>
+                                </MudContainer>
+                            </MudTabPanel>
+
+                            <MudTabPanel Text="@Lang.Keys["Settings:Personalize"]" Icon="@Icons.Material.Filled.Colorize">
+                                <MudContainer Class="mt-3 mb-3">
+                                    <TextWithIcon IsBold="true" TextSize="Typo.h6"
+                                                  Icon="@Icons.Material.Filled.ColorLens"
+                                                  IconColor="Color.Primary" Text="Change Background Color"
+                                                  Class="mb-3" />
+                                    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                        @foreach (var color in backgroundColors)
+                                        {
+                                            <div style="background-color:@color; border: 1px solid black; width: 75px; height: 75px; border-radius: 10px; cursor: pointer"
+                                                 @onclick="(() => ChangeBackground(color: color))" @onmouseover="(() => PreviewBackground(color))" @onmouseleave="RevertBackground">
+
+                                            </div>
+                                        }
+                                    </div>
+                                </MudContainer>
+
+                                <MudContainer Class="mt-3 mb-3">
+                                    <TextWithIcon IsBold="true" TextSize="Typo.h6"
+                                                  Icon="@Icons.Material.Filled.Menu"
+                                                  IconColor="Color.Secondary" Text="Change Navigation Bar Color"
+                                                  Class="mb-3" />
+                                    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                        @foreach (var color in navbarColors)
+                                        {
+                                            <div style="background-color:@color; border: 1px solid black; width: 75px; height: 75px; border-radius: 10px; cursor: pointer"
+                                                 @onclick="(() => ChangeNavbarColor(color: color))" @onmouseover="(() => PreviewNavbar(color))" @onmouseleave="RevertNavbar">
+
+                                            </div>
+                                        }
+                                    </div>
+                                </MudContainer>
+                            </MudTabPanel>
+                        </MudTabs>
+                    </MudCardContent>
+                </MudCard>
+            </MudContainer>
+        </div>
+    </Authorized>
+
+    <NotAuthorized>
+        <MudText Typo="Typo.h1">Nothing to see here!</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+<style>
+    .selected {
+        background-color: var(--selected-green);
+    }
+</style>
+
+@code {
+    private string? selectedLang;
+    private string? currentLanguageCode = null;
+
+    private UserSettings? settings;
+    private string? previewBg;
+    private string[]? backgroundColors =
+    {
+        "#FFFFFF", "#FFDADA", "#EE9E9E", "#FF7B7B", "#F8A6EF" , "#C88EFF" , "#ECD7FF", "#FFDDBA",
+        "#FFB76F", "#F88585", "#ADFFA9", "#E4FFA9", "#73CBA5" , "#AEC778", "#B8EEE5", "#A9C7D9" , "#9DA9F3" , "#8A6AFF",
+        "#FFE07A", "#87CEFA", "#CECECE"
+    };
+
+    private string[]? navbarColors =
+    {
+        "#C165FF", "#FF65B7", "#313131", "#E5EA40", "#4084EA", "#FF7B5A", "#FF5E5E",
+        "#9BE55A", "#E55A5A", "#FF9A5C", "#393E89"
+    };
+
+    private Dictionary<string, string> languageCodes = new Dictionary<string, string>() {
+        { "en-US", "English 🇺🇸" },
+        { "ar-SY", "Arabic 🇸🇾" },
+    };
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            settings = await LocalStorage.GetItemAsync<UserSettings>("user-settings");
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        currentLanguageCode = await LocalStorage.GetItemAsStringAsync("language-code");
+        selectedLang = await LocalStorage.GetItemAsync<string>("language-code");
+        Lang.InitLocalizedComponent(this);
+
+        settings = await LocalStorage.GetItemAsync<UserSettings>("user-settings");
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task SetLanguage(string langCode)
+    {
+        Lang.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(langCode));
+        // save the language to the browser's storage
+        await LocalStorage.SetItemAsync<string>("language-code", langCode);
+        selectedLang = langCode;
+        StateHasChanged();
+        NavigationManager.NavigateTo("/user/settings", forceLoad: true);
+    }
+
+    private async Task ChangeBackground(string color)
+    {
+        await Js.InvokeVoidAsync("setBackgroundColor", color);
+        settings.BackgroundColor = color;
+        await LocalStorage.SetItemAsync<UserSettings>("user-settings", settings);
+    }
+
+    private void PreviewBackground(string color)
+    {
+        previewBg = color;
+    }
+
+    private async Task PreviewNavbar(string color)
+    {
+        await Js.InvokeVoidAsync("setNavbarColor", color);
+    }
+
+    private async Task RevertNavbar()
+    {
+        await Js.InvokeVoidAsync("setNavbarColor", settings.NavbarColor);
+    }
+
+    private async Task ChangeNavbarColor(string color)
+    {
+        await Js.InvokeVoidAsync("setNavbarColor", color);
+        settings.NavbarColor = color;
+        await LocalStorage.SetItemAsync<UserSettings>("user-settings", settings);
+    }
+
+    private void RevertBackground()
+    {
+        previewBg = settings.BackgroundColor;
+    }
+}

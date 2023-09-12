@@ -12,6 +12,7 @@ namespace AlWaddahClinic.Server.Models
 		public string? Address { get; set; }
 		public GenderEnum Gender { get; set; }
 		public string? MedicalHistory { get; set; }
+		public string? Suggestions { get; set; }
 		public virtual List<HealthRecord>? HealthRecords { get; set; }
 		public virtual List<Appointment>? Appointments { get; set; }
 	}

@@ -1,0 +1,272 @@
+﻿NotFound:
+    Title: Whoops! Wrong Address
+    Message: Looks like the page you're searching for doesn't exist or maybe the author has changed the page link
+    Dash: Go To Dashboard
+Unauthorized:
+    Title: Cannot Go There
+    Message: Looks like the author of this page has restricited the access to it. Please login if you've not done so already as that may fix the problem.
+    Login: Go To Login
+Login:
+    ChooseLang: Change The Application Language
+    LangInfo: You can change the language later on in the app
+    Title: Login to your account
+    Email: Email Address
+    Password: Password
+    NoEmail: Not registered yet? Create an account for your clinic
+    Here: here
+    BtnText: Login
+Register:
+    ChooseLang: Choose Your Preferred Language
+    LangInfo: You can change the language later on in the app
+    Title: Register Your Clinic
+    Alert: This information will be used for registeration purposes only
+    DocType: What type of doctor are you?
+    DocTypeError: Please specify the type of doctor you are!
+    GeneralDoc: General Practitioner
+    Dentist: Dentist
+    FirstName: First Name
+    FirstNameError: Your first name is required
+    LastName: Last Name
+    LastNameError: Your last name is required
+    Email: Email Address
+    EmailError: Your email address is required
+    Password: Password
+    PasswordError: The password is required
+    PasswordConfirm: Password Confirmation
+    PasswordConfirmError: The password cofirmation is required
+    ClinicName: Clinic Name
+    ClinicNameError: Clinic name is required
+    StreetAddress: Street Address
+    StreetAddressError: Street address is required
+    Area: Area
+    AreaError: The area is required
+    City: City
+    CityError: The city is required
+    Country: Country
+    CountryError: The country is required
+    MedicalSpec: Medical Specialization
+    MedicalSpecError: Your medical specialization is required
+    PhoneNum: Phone Number
+    PhoneNumError: Your phone number is required
+    StudiedAt: Studied At
+    StudiedAtHelper: Where did you go for your studies
+    StudiedAtError: The place of your studies is required=
+    DateOfGrad: Date Of Graduation
+    DateOfGradError: The date of your graduation is required
+    PersonalSite: Personal Website Link (Optional)
+    PersonalSiteHelper: Add a link to your personal website if you have one
+    AlreadySignedUp: Already registered? You can login
+    Here: here
+    Confirm: Confirm Registration
+Settings:
+    Title: Application Settings
+    ChangeLang: Change System Language
+    Account: Account
+    Lang: Language
+    FirstName: First Name
+    LastName: Last Name
+    Email: Email Address
+    DocType: Doctor Type
+    Personalize: Personalization
+Patients:
+    Title: All Patients
+    AddBtn: Add Patient
+    SearchText: Search through your patients by name
+    NoResults: Nothing was found
+    NoPatients: You currently have no patients!
+AddPatient:
+    Title: Add a new patient
+    Name: Full Name
+    PhoneNum: Phone Number (Optional)
+    DOB: Date Of Birth (Optional)
+    Email: Email Address (Optional)
+    Address: Home Address
+    Add: Add Patient
+    Male: Male
+    Female: Female
+    Cancel: Cancel
+Patient:
+    Title: Details About
+    DOB: Date Of Birth
+    Email: Email Address
+    PhoneNum: Phone Number
+    Address: Address
+    NA: Not Available
+    CreatedOn: Created On
+    HRs: Health Records
+    Options: Options
+    Details: Details
+    Update: Edit
+    AddHR: Add Health Record
+    MakeAppointment: Make Appointment
+    RmPatient: Remove Patient
+    HRNum: Record Number
+    Suggestions: Suggestions For The Patient
+    NoSuggestions: There are no current suggestions for this patient! Please update their medical health history if you want helping suggestions.
+Menu:
+    Dash: Dashboard
+    Patients: Patients
+    Appointments: Appointments
+    Settings: App Settings
+    Login: Login
+    LogOut: Log Out
+    Records: Medical Records
+    ReleaseNotes: New App Features
+UpdatePatient:
+    Title: Edit Patient Details
+    Name: Full Name
+    FullNameValidation: The full name field is required
+    PhoneNum: Phone Number (Optional)
+    Email: Email Address (Optional)
+    DOB: Date Of Birth (Optional)
+    Address: Home Address
+    Male: Male
+    Female: Female
+    Update: Update Details
+    Cancel: Cancel
+HealthRecord:
+    Title: Health Record Details
+    CreatedOn: Created On
+    Insights: Smart Insights
+    SmartInsights: Smart Insights Suggestions
+    Description: Medical Case Description
+    Suggestions: Suggestions For Patient
+    RelatedCases: Related Medical Cases
+    SuggestedTests: Suggested Medical Tests
+    CaseInfo: Medical Case Information
+    AdditionalInfo: Additional Information
+    NoNotes: This health record doesn't include any notes
+    Payments: Payments
+    AmountIn: Amount In
+    PaidOn: Paid On
+    Options: Options
+    Details: Details
+    RemovePay: Remove
+    Completed: The total amount has been fully paid
+    AmountLeft: Amount Left
+    NoPayments: Looks like there isn't any payments made! Click below to add one
+    PayDescription: Payment Description (Optional)
+    AmountPaid: Amount Paid
+    AddNewPay: Add New Payment
+    CancelPay: Cancel
+    Back: Back To Patient
+    RmRecord: Remove Health Record
+    Update: Edit Record Details
+AddHR:
+    Title: New Health Record For
+    DescriptionLabel: Case Description
+    DescriptionValidation: Case Description is required
+    DescriptionHelper: Describe the patient's medical case and list relevant information about it
+    TotalPay: Total Payment
+    TotalPayValidation: The total payment is required
+    SelectCurr: Select Currency
+    SYP: Syrian Pounds
+    USD: American Dollars
+    AiResultsMsg: Not convincing results? Try regenerating the insights again
+    AddNote: Medical Note (Optional)
+    CaseNotes: Case Notes
+    AddNewNote: Add New Note
+    AddHrBtn: Complete Health Record
+    GoBack: Back To Patient
+    InsightsPanelText: Get Ai generated insights and suggestions. Click the Generate Suggestions button!
+    Generate: Generate Suggestions
+    NoteField: Medical Note (Optional)
+EditHR:
+    Title: Update health record for
+    CreatedOn: Created On
+    Description: Case Description
+    DescriptionError: Case description is required
+    DescriptionHelperText: Describe the patient's case and list some relevant information
+    TotalPay: Total Payment
+    TotalPayError: The total payment is required
+    SelectCurrency: Select Currency
+    OldNotes: Old Case Notes
+    CaseNotes: Case Notes
+    NoteField: Medical Note (Optional)
+    GoBack: Back To Patient
+Appointments:
+    Title: Appointments
+    Upcoming: Upcoming
+    Unchecked: Unchecked
+    Missed: Missed
+    Completed: Completed
+    Remove: Remove
+    Reschedule: Reschedule
+    PatientName: Patient Name
+    Time: Appointment's Time
+    Options: Options
+    Action: Action Required
+NewAppointment:
+    Title: Make an appointment for
+    Day: Appointment Day
+    DayError: The appointment day is required for making the appointment
+    Time: Time
+    TimeError: Please pick a time for the appointment
+    Confirm: Confirm Appointment Date
+    Cancel: Cancel Appointment
+EditAppointment:
+    Title: Reschedule appointment for
+    OldDate: Old Date
+    Day: Appointment Day
+    DayError: The appointment day is required for making the appointment
+    Time: Time
+    TimeError: Please pick a time for the appointment
+    Confirm: Confirm New Date
+    Cancel: Cancel Rescheduling
+PatientsChart:
+    Title: Your Patients' Stats
+    Males: Males
+    Females: Females
+    Total: Total Number of Patients
+    MalesCount: Number of Male Patients
+    FemalesCount: Number of Female Patients
+    NoPatients: There's are no patients currently to analyze
+RecentlyAddedPatients:
+    Title: Recently Added Patients
+    Appoint: Make New Appointment
+    View: View Patient Details
+    NoPatients: You haven't added any patients so far
+QuickLinks:
+    Title: Quick Links
+    ViewPatients: View Patients
+    Appointments: Appointments
+    AddPatient: Add Patient
+    Settings: App Settings
+AppointmentCheck:
+    Title: Appointment Check
+    Status: Appointment Status
+    Missed: Missed the appointment
+    Reschedule: Reshceduled the appointment
+    Complete: Completed the appointment
+    AddHR: Add Health Record (Optional)
+UpcomingAppointments:
+    Title: Upcoming Appointments
+    Nothing: You have no upcoming appointments
+MedicalCases:
+    Title: Additional Information
+    Label: Medical Health History (Optional)
+    Info: Fill in the previous filed if you want to get suggestions based on the patient's health history
+    Smoker: Smoker
+    Diabetes: Diabetes
+    BloodPressure: High Blood Pressure
+    Cystisis: Cystisis
+    Asthma: Asthma
+    Cholesterol: High Cholesterol
+    Cancer: Cancer
+    Stroke: Stroke
+    Allergies: Allergies
+    Alcohol: Alcoholic
+    Drugs: Drugs
+    Anxiety: Anxiety
+    Depression: Depression
+    PrevSurgeries: Previous Surgeries
+    MentalIssues: Mental Health Issues
+Dialogs:
+    ConfirmLogout: Confirm Logout
+    LogoutMessage: "If you want to log out of your account, please click Ok to cofirm it"
+    ConfirmRemoval: Confirm Removal
+    RemovalMessage: "Do you really want to remove this record's details from the system? Please note that once the process has completed, you cannot invert it"
+    Confirm: Confirm
+    Cancel: Cancel
+    Ok: Ok
+    PayDetails: Payment Details

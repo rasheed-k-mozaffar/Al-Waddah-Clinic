@@ -7,10 +7,8 @@ namespace AlWaddahClinic.Server.Extensions
 
     public static class DtoMappers
     {
-        public static PatientSummaryDto ToPatientSummaryDto(this Patient patient)
-        {
-            return new PatientSummaryDto
-            {
+        public static PatientSummaryDto ToPatientSummaryDto(this Patient patient) {
+            return new PatientSummaryDto {
                 PatientId = patient.Id,
                 FullName = patient.FullName,
                 EmailAddress = patient.EmailAddress,
@@ -19,10 +17,8 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static PatientDto ToPatientDto(this Patient patient)
-        {
-            return new PatientDto
-            {
+        public static PatientDto ToPatientDto(this Patient patient) {
+            return new PatientDto {
                 Id = patient.Id,
                 FullName = patient.FullName,
                 EmailAddress = patient.EmailAddress,
@@ -30,55 +26,49 @@ namespace AlWaddahClinic.Server.Extensions
                 Address = patient.Address,
                 PhoneNumber = patient.PhoneNumber,
                 Gender = patient.Gender,
-                HealthRecords = patient.HealthRecords.Select(hr => hr.ToHealthRecordSummaryDto()).ToList()
+                HealthRecords = patient.HealthRecords?.Select(hr => hr.ToHealthRecordSummaryDto()).ToList(),
+                MedicalHistory = patient.MedicalHistory?.Split(',').ToList(),
+                Suggestions = patient.Suggestions?.Split(',').ToList()
             };
         }
 
-        public static HealthRecordSummaryDto ToHealthRecordSummaryDto(this HealthRecord healthRecord)
-        {
-            return new HealthRecordSummaryDto
-            {
+        public static HealthRecordSummaryDto ToHealthRecordSummaryDto(this HealthRecord healthRecord) {
+            return new HealthRecordSummaryDto {
                 Id = healthRecord.Id,
-                CreatedOn = (DateTime)healthRecord.CreatedOn
+                CreatedOn = (DateTime)healthRecord.CreatedOn!
             };
         }
 
-        public static HealthRecordDto ToHealthRecordDto(this HealthRecord healthRecord)
-        {
-            return new HealthRecordDto
-            {
+        public static HealthRecordDto ToHealthRecordDto(this HealthRecord healthRecord) {
+            return new HealthRecordDto {
                 Id = healthRecord.Id,
                 Description = healthRecord.Description,
-                CreatedOn = (DateTime)healthRecord.CreatedOn,
-                Notes = healthRecord.Notes.Select(n => n.ToNoteDto()).ToList(),
+                CreatedOn = (DateTime)healthRecord.CreatedOn!,
+                Notes = healthRecord.Notes?.Select(n => n.ToNoteDto()).ToList(),
                 Patient = healthRecord.Patient.ToPatientDto(),
-                PatientSuggestion = healthRecord.PatientSuggestion.Split(',').ToList(),
-                SuggestedMedicalTests = healthRecord.SuggestedMedicalTests.Split(',').ToList(),
-                RelatedMedicalCases = healthRecord.RelatedMedicalCases.Split(',').ToList(),
-                MedicalCaseInsight = healthRecord.MedicalCaseInsight.Split(',').ToList(),
-                Payments = healthRecord.Payments.Select(p => p.ToPaymentDto()).ToList(),
+                PatientSuggestion = healthRecord.PatientSuggestion?.Split(',').ToList(),
+                SuggestedMedicalTests = healthRecord.SuggestedMedicalTests?.Split(',').ToList(),
+                RelatedMedicalCases = healthRecord.RelatedMedicalCases?.Split(',').ToList(),
+                MedicalCaseInsight = healthRecord.MedicalCaseInsight?.Split(',').ToList(),
+                Payments = healthRecord.Payments?.Select(p => p.ToPaymentDto()).ToList(),
                 TotalAmount = healthRecord.TotalPayment,
                 Currency = healthRecord.Currency,
                 IsPaymentCompleted = healthRecord.IsPaymentCompleted
             };
         }
 
-        public static MedicationDto ToMedicationDto(this Medication medication)
-        {
-            return new MedicationDto
-            {
+        public static MedicationDto ToMedicationDto(this Medication medication) {
+            return new MedicationDto {
                 Id = medication.Id,
                 CommercialName = medication.CommercialName,
                 DailyDose = medication.DailyDose,
                 FinishAt = medication.FinishAt,
-                Prescription = medication.Prescription.ToPrescriptionDto()
+                Prescription = medication.Prescription?.ToPrescriptionDto()
             };
         }
 
-        public static PrescriptionDto ToPrescriptionDto(this Prescription prescription)
-        {
-            return new PrescriptionDto
-            {
+        public static PrescriptionDto ToPrescriptionDto(this Prescription prescription) {
+            return new PrescriptionDto {
                 Id = prescription.Id,
                 Description = prescription.Description,
                 Medications = prescription.Medications.Select(m => m.ToMedicationDto()).ToList(),
@@ -86,10 +76,8 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static AppointmentDto ToAppointmentDto(this Appointment appointment)
-        {
-            return new AppointmentDto
-            {
+        public static AppointmentDto ToAppointmentDto(this Appointment appointment) {
+            return new AppointmentDto {
                 Id = appointment.Id,
                 Patient = appointment.Patient.ToPatientDto(),
                 StartAt = appointment.StartAt,
@@ -98,10 +86,8 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static AppointmentSummaryDto ToAppointmentSummaryDto(this Appointment appointment)
-        {
-            return new AppointmentSummaryDto
-            {
+        public static AppointmentSummaryDto ToAppointmentSummaryDto(this Appointment appointment) {
+            return new AppointmentSummaryDto {
                 Id = appointment.Id,
                 PatientId = appointment.PatientId,
                 PatientName = appointment.Patient.FullName,
@@ -110,19 +96,15 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static NoteDto ToNoteDto(this Note note)
-        {
-            return new NoteDto
-            {
+        public static NoteDto ToNoteDto(this Note note) {
+            return new NoteDto {
                 Id = note.Id,
                 Title = note.Title
             };
         }
 
-        public static PaymentDto ToPaymentDto(this Payment payment)
-        {
-            return new PaymentDto
-            {
+        public static PaymentDto ToPaymentDto(this Payment payment) {
+            return new PaymentDto {
                 Id = payment.Id,
                 HealthRecordId = payment.HealthRecordId,
                 Description = payment.Description,
@@ -132,10 +114,8 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static Payment ToPaymentCreate(this PaymentCreateDto paymentCreateDto)
-        {
-            return new Payment
-            {
+        public static Payment ToPaymentCreate(this PaymentCreateDto paymentCreateDto) {
+            return new Payment {
                 Description = paymentCreateDto.Description,
                 Amount = paymentCreateDto.Amount,
                 Currency = paymentCreateDto.Currency
@@ -145,11 +125,9 @@ namespace AlWaddahClinic.Server.Extensions
 
     public static class ModelMappers
     {
-        public static Clinic ToClinicRegister(this RegisterClinicDto registerClinicDto)
-        {
+        public static Clinic ToClinicRegister(this RegisterClinicDto registerClinicDto) {
             string password = registerClinicDto.Password;
-            return new Clinic
-            {
+            return new Clinic {
                 Id = Guid.NewGuid(),
                 Name = registerClinicDto.Name,
                 DoctorName = registerClinicDto.DoctorName,
@@ -170,10 +148,8 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static Patient ToPatientCreate(this PatientCreateDto patientDto)
-        {
-            return new Patient
-            {
+        public static Patient ToPatientCreate(this PatientCreateDto patientDto) {
+            return new Patient {
                 FullName = patientDto.FullName,
                 EmailAddress = patientDto.EmailAddress,
                 PhoneNumber = patientDto.PhoneNumber,
@@ -181,27 +157,27 @@ namespace AlWaddahClinic.Server.Extensions
                 DateOfBirth = patientDto.DateOfBirth,
                 Gender = patientDto.Gender,
                 Appointments = new List<Appointment>(),
-                HealthRecords = new List<HealthRecord>()
+                HealthRecords = new List<HealthRecord>(),
+                MedicalHistory = patientDto.MedicalHistory == null ? null : string.Join(',', patientDto.MedicalHistory),
+                Suggestions =  patientDto.Suggestions == null ? null : string.Join(',', patientDto.Suggestions)
             };
         }
 
-        public static Patient ToPatientUpdate(this PatientUpdateDto patientUpdateDto)
-        {
-            return new Patient
-            {
+        public static Patient ToPatientUpdate(this PatientUpdateDto patientUpdateDto) {
+            return new Patient {
                 FullName = patientUpdateDto.FullName,
                 EmailAddress = patientUpdateDto.EmailAddress,
                 PhoneNumber = patientUpdateDto.PhoneNumber,
                 Address = patientUpdateDto.Address,
                 DateOfBirth = patientUpdateDto.DateOfBirth,
-                Gender = patientUpdateDto.Gender
+                Gender = patientUpdateDto.Gender,
+                MedicalHistory = patientUpdateDto.MedicalHistory == null ? null : string.Join(',', patientUpdateDto.MedicalHistory),
+                Suggestions = patientUpdateDto.Suggestions == null ? null : string.Join(',', patientUpdateDto.Suggestions)
             };
         }
 
-        public static Patient ToPatient(this PatientDto patientDto)
-        {
-            return new Patient
-            {
+        public static Patient ToPatient(this PatientDto patientDto) {
+            return new Patient {
                 Id = patientDto.Id,
                 FullName = patientDto.FullName,
                 EmailAddress = patientDto.EmailAddress,
@@ -210,14 +186,14 @@ namespace AlWaddahClinic.Server.Extensions
                 DateOfBirth = patientDto.DateOfBirth,
                 Gender = patientDto.Gender,
                 Appointments = new List<Appointment>(),
-                HealthRecords = new List<HealthRecord>()
+                HealthRecords = new List<HealthRecord>(),
+                MedicalHistory = patientDto.MedicalHistory == null ? null : string.Join(',', patientDto.MedicalHistory),
+                Suggestions = patientDto.Suggestions == null ? null : string.Join(',', patientDto.Suggestions)
             };
         }
 
-        public static HealthRecord ToHealthRecordCreate(this HealthRecordCreateDto healthRecordDto)
-        {
-            return new HealthRecord
-            {
+        public static HealthRecord ToHealthRecordCreate(this HealthRecordCreateDto healthRecordDto) {
+            return new HealthRecord {
                 Description = healthRecordDto.Description,
                 Notes = healthRecordDto.Notes?.Select(n => n.ToNoteCreate()).ToList(),
                 PatientSuggestion = string.Join(',', healthRecordDto.PatientSuggestion),
@@ -233,11 +209,9 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static HealthRecord ToHealthRecordCreate(this OptionHealthRecordCreateDto healthRecordCreateDto)
-        {
-            return new HealthRecord
-            {
-                Description = healthRecordCreateDto.Description,
+        public static HealthRecord ToHealthRecordCreate(this OptionHealthRecordCreateDto healthRecordCreateDto) {
+            return new HealthRecord {
+                Description = healthRecordCreateDto.Description!,
                 Notes = healthRecordCreateDto.Notes?.Select(n => n.ToNoteCreate()).ToList(),
                 PatientSuggestion = string.Join(',', healthRecordCreateDto.PatientSuggestion),
                 SuggestedMedicalTests = string.Join(',', healthRecordCreateDto.SuggestedMedicalTests),
@@ -252,10 +226,8 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static HealthRecord ToHealthRecord(this HealthRecordDto healthRecordDto)
-        {
-            return new HealthRecord
-            {
+        public static HealthRecord ToHealthRecord(this HealthRecordDto healthRecordDto) {
+            return new HealthRecord {
                 Id = healthRecordDto.Id,
                 PatientId = healthRecordDto.Patient.Id,
                 Description = healthRecordDto.Description,
@@ -272,22 +244,18 @@ namespace AlWaddahClinic.Server.Extensions
 
         }
 
-        public static Medication ToMedication(this MedicationDto medicationDto)
-        {
-            return new Medication
-            {
+        public static Medication ToMedication(this MedicationDto medicationDto) {
+            return new Medication {
                 Id = medicationDto.Id,
                 CommercialName = medicationDto.CommercialName,
                 DailyDose = medicationDto.DailyDose,
                 FinishAt = medicationDto.FinishAt,
-                Prescription = medicationDto.Prescription.ToPrescription(),
+                Prescription = medicationDto.Prescription?.ToPrescription(),
             };
         }
 
-        public static Prescription ToPrescription(this PrescriptionDto prescriptionDto)
-        {
-            return new Prescription
-            {
+        public static Prescription ToPrescription(this PrescriptionDto prescriptionDto) {
+            return new Prescription {
                 Id = prescriptionDto.Id,
                 Description = prescriptionDto.Description,
                 Appointment = prescriptionDto.Appointment.ToAppointment(),
@@ -295,10 +263,8 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static Appointment ToAppointment(this AppointmentDto appointmentDto)
-        {
-            return new Appointment
-            {
+        public static Appointment ToAppointment(this AppointmentDto appointmentDto) {
+            return new Appointment {
                 Id = appointmentDto.Id,
                 PatientId = appointmentDto.Patient.Id,
                 Patient = appointmentDto.Patient.ToPatient(),
@@ -307,35 +273,27 @@ namespace AlWaddahClinic.Server.Extensions
             };
         }
 
-        public static Appointment ToAppointmentUpdate(this AppointmentCreateDto appointmentUpdateDto)
-        {
-            return new Appointment
-            {
+        public static Appointment ToAppointmentUpdate(this AppointmentCreateDto appointmentUpdateDto) {
+            return new Appointment {
                 StartAt = appointmentUpdateDto.StartAt,
                 FinishAt = appointmentUpdateDto.FinishAt
             };
         }
 
-        public static Note ToNoteCreate(this NoteCreateDto noteCreateDto)
-        {
-            return new Note
-            {
+        public static Note ToNoteCreate(this NoteCreateDto noteCreateDto) {
+            return new Note {
                 Title = noteCreateDto.Title
             };
         }
 
-        public static Note ToNoteUpdate(this NoteUpdateDto noteUpdateDto)
-        {
-            return new Note
-            {
+        public static Note ToNoteUpdate(this NoteUpdateDto noteUpdateDto) {
+            return new Note {
                 Title = noteUpdateDto.Title
             };
         }
 
-        public static Note ToNote(this NoteDto noteDto)
-        {
-            return new Note
-            {
+        public static Note ToNote(this NoteDto noteDto) {
+            return new Note {
                 Id = noteDto.Id,
                 Title = noteDto.Title,
                 HealthRecord = noteDto.HealthRecord.ToHealthRecord()
@@ -346,12 +304,10 @@ namespace AlWaddahClinic.Server.Extensions
 
     public static class MapperHelpers
     {
-        public static string HashPassword(string password)
-        {
+        public static string HashPassword(string password) {
             byte[] salt = new byte[16];
 
-            using (var rng = RandomNumberGenerator.Create())
-            {
+            using (var rng = RandomNumberGenerator.Create()) {
                 rng.GetBytes(salt);
             }
 

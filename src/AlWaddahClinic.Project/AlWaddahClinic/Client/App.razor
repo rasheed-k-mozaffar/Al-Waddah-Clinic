@@ -1,11 +1,19 @@
 ﻿@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
                     @{
-                        NavigationManager.NavigateTo("/unauthorized");
+                        if (isLoggedIn)
+                        {
+                            NavigationManager.NavigateTo("/unauthorized");
+                        }
+                        else
+                        {
+                            NavigationManager.NavigateTo("/user/login");
+                        }
                     }
                 </NotAuthorized>
             </AuthorizeRouteView>
@@ -23,3 +31,18 @@
     </Router>
 </CascadingAuthenticationState>
 
+
+@code {
+    private bool isLoggedIn;
+
+    private async Task<bool> CheckIfLoggedIn()
+    {
+        return await LocalStorage.ContainKeyAsync("access_token");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoggedIn = await CheckIfLoggedIn();
+        base.OnInitialized();
+    }
+}

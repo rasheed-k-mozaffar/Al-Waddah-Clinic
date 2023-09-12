@@ -12,27 +12,28 @@
 else
 {
     <MudContainer Class="mt-5">
-        <MudText Typo="Typo.h4" Class="mb-3"><b>Appointments</b></MudText>
-        <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-            <MudTabPanel Text="Upcoming">
+        <MudText Typo="Typo.h4" Class="mb-3"><b>@Lang.Keys["Appointments:Title"]</b></MudText>
+        <MudTabs Elevation="2"  ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
+            <MudTabPanel Text="@(Lang.Keys["Appointments:Upcoming"] + $" ({upcoming.Count})")" Icon="@Icons.Material.Filled.Upcoming"
+                         BadgeColor="Color.Primary" BadgeDot="true">
                 <MudContainer Class="mt-5">
-                    <MudSimpleTable Style="overflow-x: auto;">
+                    <MudSimpleTable Style="overflow-x: auto;" Dense="true">
                         <thead>
                             <tr>
-                                <th>Patient's Name</th>
-                                <th>Appointment Day</th>
-                                <th style="text-align: end;">Actions</th>
+                                <th>@Lang.Keys["Appointments:PatientName"]</th>
+                                <th>@Lang.Keys["Appointments:Time"]</th>
+                                <th style="text-align: end;">@Lang.Keys["Appointments:Options"]</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var appointment in appointments.Where(a => a.StartAt.Value > DateTime.Now.AddMinutes(-1)).OrderBy(a => a.StartAt.Value - DateTime.Now))
+                            @foreach (var appointment in upcoming)
                             {
                                 <tr>
                                     <td>@appointment.PatientName</td>
                                     <td>@appointment.StartAt</td>
                                     <td style="text-align: end;">
-                                        <MudButton Variant="Variant.Text" Color="Color.Error" @onclick='(async () => await OpenRemoveDialog(appointment.Id))'><i class="bi bi-trash-fill"></i> &nbsp;Remove </MudButton>
-                                        <MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick='(() => GoToUpdateAppointment(appointment.PatientName , appointment.Id))'><i class="bi bi-calendar-week-fill"></i> &nbsp;Reschedule </MudButton>
+                                        <MudButton Variant="Variant.Text" Color="Color.Error" @onclick='(async () => await OpenRemoveDialog(appointment.Id))' StartIcon="@Icons.Material.Filled.Delete">@Lang.Keys["Appointments:Remove"]</MudButton>
+                                        <MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick='(() => GoToUpdateAppointment(appointment.PatientName , appointment.Id))' StartIcon="@Icons.Material.Filled.CalendarToday">@Lang.Keys["Appointments:Reschedule"]</MudButton>
                                     </td>
                                 </tr>
                             }
@@ -41,32 +42,83 @@ else
                 </MudContainer>
             </MudTabPanel>
 
-            <MudTabPanel Text="Overdue" BadgeData="@_actionsRequired" BadgeColor="Color.Warning">
+            <MudTabPanel Text="@(Lang.Keys["Appointments:Unchecked"] + $" ({unnoted.Count})")" Icon="@Icons.Material.Filled.Info"
+                         BadgeColor="Color.Info" BadgeDot="true">
                 <MudContainer Class="mt-5">
-                    <MudSimpleTable Style="overflow-x: auto;">
+                    <MudSimpleTable Style="overflow-x: auto;" Dense="true">
                         <thead>
                             <tr>
-                                <th>Patient's Name</th>
-                                <th>Appointment Day</th>
-                                <th style="text-align: end;">Status</th>
+                                <th>@Lang.Keys["Appointments:PatientName"]</th>
+                                <th>@Lang.Keys["Appointments:Time"]</th>
+                                <th style="text-align: end;">@Lang.Keys["Appointments:Options"]</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var appointment in appointments.Where(a => a.StartAt.Value < DateTime.Now.AddMinutes(-1)).OrderBy(a => a.StartAt.Value - DateTime.Now))
+                            @foreach (var appointment in unnoted)
                             {
-                                <tr style="border: @(!appointment.Status.HasValue ? "3px solid gold" : "none") ">
+                                <tr>
                                     <td>@appointment.PatientName</td>
                                     <td>@appointment.StartAt</td>
-                                    @if (appointment.Status == null)
-                                    {
-                                        <td style="text-align: end;">
-                                            <MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick='(() => OpenActionDialog(appointment.PatientId, appointment.Id))'>Action Required</MudButton>
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td style="text-align: end;">@appointment.Status.ToString()</td>
-                                    }
+                                    <td style="text-align: end;">
+                                                   <MudButton Variant="Variant.Text" Color="Color.Error" @onclick='(async () => await OpenRemoveDialog(appointment.Id))' StartIcon="@Icons.Material.Filled.Delete">@Lang.Keys["Appointments:Remove"]</MudButton>
+
+                                                   <MudButton Variant="Variant.Filled" Color="Color.Info"
+                                                              @onclick='(() => OpenActionDialog(appointment.PatientId, appointment.Id))' StartIcon="@Icons.Material.Filled.PendingActions">@Lang.Keys["Appointments:Action"]</MudButton>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
+                </MudContainer>
+            </MudTabPanel>
+
+            <MudTabPanel Text="@(Lang.Keys["Appointments:Completed"] + $" ({completed.Count})")" Icon="@Icons.Material.Filled.Done"
+                         BadgeColor="Color.Success" BadgeDot="true">
+                <MudContainer Class="mt-5">
+                    <MudSimpleTable Style="overflow-x: auto;" Dense="true">
+                        <thead>
+                            <tr>
+                                <th>@Lang.Keys["Appointments:PatientName"]</th>
+                                <th>@Lang.Keys["Appointments:Time"]</th>
+                                <th style="text-align: end;">@Lang.Keys["Appointments:Options"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in completed)
+                            {
+                                <tr>
+                                    <td>@appointment.PatientName</td>
+                                    <td>@appointment.StartAt</td>
+                                    <td style="text-align: end;">
+                                        <MudButton Variant="Variant.Text" Color="Color.Error" @onclick='(async () => await OpenRemoveDialog(appointment.Id))' StartIcon="@Icons.Material.Filled.Delete">@Lang.Keys["Appointments:Remove"]</MudButton>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
+                </MudContainer>
+            </MudTabPanel>
+
+            <MudTabPanel Text="@(Lang.Keys["Appointments:Missed"] + $" ({missed.Count})")" Icon="@Icons.Material.Filled.Cancel"
+                         BadgeColor="Color.Error" BadgeDot="true">
+                <MudContainer Class="mt-5">
+                    <MudSimpleTable Style="overflow-x: auto;" Dense="true">
+                        <thead>
+                            <tr>
+                                <th>@Lang.Keys["Appointments:PatientName"]</th>
+                                <th>@Lang.Keys["Appointments:Time"]</th>
+                                <th style="text-align: end;">@Lang.Keys["Appointments:Options"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in missed)
+                            {
+                                <tr>
+                                    <td>@appointment.PatientName</td>
+                                    <td>@appointment.StartAt</td>
+                                    <td style="text-align: end;">
+                                        <MudButton Variant="Variant.Text" Color="Color.Error" @onclick='(async () => await OpenRemoveDialog(appointment.Id))' StartIcon="@Icons.Material.Filled.Delete">@Lang.Keys["Appointments:Remove"]</MudButton>
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -76,4 +128,11 @@ else
         </MudTabs>
     </MudContainer>
 
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+    }
 }

@@ -1,0 +1,67 @@
+﻿@inject IAnalysisService Analysis
+@inject ILanguageContainerService Lang
+
+<MudPaper Class="pa-4" Style="min-height: 425px; max-height: fit-content" Elevation="2">
+    <TextWithIcon IsBold="true" Icon="@Icons.Material.Filled.People"
+                  IconColor="Color.Info" TextSize="Typo.h5" Class="mb-3"
+                  Text="@Lang.Keys["PatientsChart:Title"]" />
+    @if (_isBusy)
+    {
+        <MudGrid Class="d-flex justify-center" Style="height: 400px; align-items: center;">
+            <MudItem>
+                <Loader />
+            </MudItem>
+        </MudGrid>
+    }
+    else
+    {
+        if (data is not null && data.Sum() > 0)
+        {
+            <MudChart ChartType="ChartType.Donut"
+                      InputData="data" InputLabels="labels"
+                      Width="200px" Height="200px" />
+            <MudPaper Class="pa-2">
+                <TextWithIcon IsBold="true" TextSize="Typo.body1"
+                              Icon="@Icons.Material.Filled.Male" IconColor="Color.Info"
+                              Text="@(Lang.Keys["PatientsChart:MalesCount"] + $": {data[0]}")" />
+
+                <TextWithIcon IsBold="true" TextSize="Typo.body1"
+                              Icon="@Icons.Material.Filled.Female" IconColor="Color.Secondary"
+                              Text="@(Lang.Keys["PatientsChart:FemalesCount"] + $": {data[1]}")" />
+
+                <TextWithIcon IsBold="true" TextSize="Typo.body1"
+                              Icon="@Icons.Material.Filled.QueryStats" IconColor="Color.Success"
+                              Text="@(Lang.Keys["PatientsChart:Total"] + $": {data.Sum()}")" />
+            </MudPaper>
+        }
+        else
+        {
+            <MudItem xs="12" md="12" lg="12" Class="d-flex justify-center align-center flex-column" Style="height: 300px;">
+                <MudItem>
+                    <img width="300" src="images/no-patients.png" alt="You have currently have no patients" />
+                </MudItem>
+            </MudItem>
+            <TextWithIcon IsBold="false" TextSize="Typo.body1"
+                          Icon="@Icons.Material.Filled.Info" IconColor="Color.Error"
+                          Text="@Lang.Keys["PatientsChart:NoPatients"]" />
+        }
+    }
+</MudPaper>
+
+
+@code {
+    private bool _isBusy = true;
+    private ApiResponse<List<double>>? result;
+    private double[]? data;
+    private string[]? labels;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Lang.InitLocalizedComponent(this);
+        labels = new string[] { Lang.Keys["PatientsChart:Males"], Lang.Keys["PatientsChart:Females"] };
+        result = await Analysis.GetPatientCountByGenderAsync();
+        data = result.Value.ToArray();
+        _isBusy = false;
+    }
+}
+

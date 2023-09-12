@@ -1,5 +1,6 @@
 ﻿@page "/patients/{id:guid}"
 @attribute [Authorize(Roles = "Admin")]
+@inject ILanguageContainerService Lang
 
 @{
     if (_isBusy == true)
@@ -12,75 +13,98 @@
     }
     else
     {
-        <MudContainer Class="mt-2">
+        <MudContainer Class="pa-5">
             <MudCard Style="padding: 2rem;">
                 <MudCardContent>
                     <MudItem Class="d-flex justify-space-between mb-3">
                         <MudItem>
-                            <MudText Typo="Typo.h5"><b>@patient.FullName's Details</b></MudText>
+                            <MudText Typo="Typo.h5"><b>@Lang.Keys["Patient:Title"] @patient.FullName</b></MudText>
                         </MudItem>
 
                         <MudItem>
                             <MudIconButton Color="Color.Dark" Icon="@Icons.Material.Filled.ArrowBack" Title="Go To All Patients Page" OnClick='(() => NavigationManager.NavigateTo("/patients/all"))' />
                         </MudItem>
                     </MudItem>
-                    <MudText Typo="Typo.h6"><b>Gender:</b> @patient.Gender.ToString()</MudText>
                     @if (patient.DateOfBirth.HasValue)
                     {
-                        <MudText Typo="Typo.h6"><b>Date Of Birth:</b> @(patient.DateOfBirth.Value.ToString("dd/MM/yyyy"))</MudText>
+                        <MudText Typo="Typo.h6"><b>@Lang.Keys["Patient:DOB"]:</b> @(patient.DateOfBirth.Value.ToString("dd/MM/yyyy"))</MudText>
                     }
                     else
                     {
-                        <MudText Typo="Typo.h6"><b>Date Of Birth:</b> Not Available</MudText>
+                        <MudText Typo="Typo.h6"><b>@Lang.Keys["Patient:DOB"]:</b> @Lang.Keys["Patient:NA"]</MudText>
                     }
                 </MudCardContent>
 
                 <MudCardContent>
-                    <MudText Typo="Typo.body1"><i class="bi bi-envelope-at"></i> <b>Email:</b> @(patient.EmailAddress ?? "Not Available")</MudText>
-                    <MudText Typo="Typo.body1"><i class="bi bi-telephone-fill"></i> <b>Phone:</b> @(patient.PhoneNumber ?? "Not Available")</MudText>
-                    <MudText Typo="Typo.body1"><i class="bi bi-house-door"></i> <b>Address:</b> @(patient.Address ?? "Not Available")</MudText>
+                    <MudText Typo="Typo.body1"><i class="bi bi-envelope-at"></i> <b>@Lang.Keys["Patient:Email"]:</b> @(patient.EmailAddress ?? @Lang.Keys["Patient:NA"])</MudText>
+                    <MudText Typo="Typo.body1"><i class="bi bi-telephone-fill"></i> <b>@Lang.Keys["Patient:PhoneNum"]:</b> @(patient.PhoneNumber ?? @Lang.Keys["Patient:NA"])</MudText>
+                    <MudText Typo="Typo.body1"><i class="bi bi-house-door"></i> <b>@Lang.Keys["Patient:Address"]:</b> @(patient.Address ?? @Lang.Keys["Patient:NA"])</MudText>
                 </MudCardContent>
 
                 @if (patient.HealthRecords != null)
-                    {
-                        <MudCardContent>
-                            <MudExpansionPanels MultiExpansion="true">
-                                <MudExpansionPanel Text="@_recordsTableHeader">
-                                    <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Dense="true">
-                                        <HeaderContent>
-                                            <MudTh>Created on</MudTh>
-                                            <MudTh Style="text-align: end;">Actions</MudTh>
-                                        </HeaderContent>
+                {
+                    <MudCardContent>
+                        <MudExpansionPanels MultiExpansion="true">
+                            <MudExpansionPanel Text="@(Lang.Keys["Patient:HRs"] + $" ({patient.HealthRecords.Count})")">
+                                <MudTable Items="patient.HealthRecords.Take(patient.HealthRecords.Count)" Hover="true" Dense="true">
+                                    <HeaderContent>
+                                        <MudTh>@Lang.Keys["Patient:CreatedOn"]</MudTh>
+                                        <MudTh Style="text-align: end;">@Lang.Keys["Patient:Options"]</MudTh>
+                                    </HeaderContent>
 
-                                        <RowTemplate>
-                                            <MudTd DataLabel="Created On">@context.CreatedOn.ToShortDateString()</MudTd>
-                                            <MudTd Style="text-align: end;" DataLabel="Record Number">
-                                                <MudButton Color="Color.Info" Variant="Variant.Text" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder-fill"></i> &nbsp; View</MudButton>
-                                                <MudButton Color="Color.Secondary" Variant="Variant.Text" @onclick=' (() => GoToUpdateRecord(context.Id)) '><i class="bi bi-pen-fill"></i> &nbsp; Update</MudButton>
-                                            </MudTd>
-                                        </RowTemplate>
-                                    </MudTable>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Created On">@context.CreatedOn.ToShortDateString()</MudTd>
+                                        <MudTd Style="text-align: end;" DataLabel="@Lang.Keys["Patient:HRNum"]">
+                                            <MudButton Color="Color.Info" Variant="Variant.Text" @onclick=' (() => GoToRecord(context.Id)) '><i class="bi bi-folder-fill"></i> &nbsp; @Lang.Keys["Patient:Details"]</MudButton>
+                                            <MudButton Color="Color.Secondary" Variant="Variant.Text" @onclick=' (() => GoToUpdateRecord(context.Id)) '><i class="bi bi-pen-fill"></i> &nbsp; @Lang.Keys["Patient:Update"]</MudButton>
+                                        </MudTd>
+                                    </RowTemplate>
+                                </MudTable>
+                            </MudExpansionPanel>
+
+                            @if ((patient?.MedicalHistory == null) || (!patient.MedicalHistory.Any()))
+                            {
+                                <div class="custom-info-alert mt-3">
+                                    <p>@Lang.Keys["Patient:NoSuggestions"]</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <MudExpansionPanel Text="@Lang.Keys["Patient:Suggestions"]">
+                                    @foreach (string suggestion in patient.Suggestions)
+                                    {
+                                        <MudText Typo="Typo.body1">@suggestion</MudText>
+                                    }
                                 </MudExpansionPanel>
-                            </MudExpansionPanels>
-                        </MudCardContent>
-                    }
+                            }
+                        </MudExpansionPanels>
+                    </MudCardContent>
+                }
 
                 <MudDivider />
 
                 <MudCardContent>
                     <MudGrid Justify="Justify.FlexStart">
                         <MudItem xs="12" sm="12" md="12" lg="4">
-                            <MudButton Style="width: 100%;" Class="mr-2" Color="Color.Info" Variant="Variant.Filled" OnClick="GoToAddHealthRecord" StartIcon="@Icons.Material.Filled.PostAdd" IconColor="Color.Surface">Add Health Record</MudButton>
+                            <MudButton Style="width: 100%;" Class="mx-2" Color="Color.Info" Variant="Variant.Filled" OnClick="GoToAddHealthRecord" StartIcon="@Icons.Material.Filled.PostAdd" IconColor="Color.Surface">@Lang.Keys["Patient:AddHR"]</MudButton>
                         </MudItem>
                         <MudItem xs="12" sm="12" md="12" lg="4">
-                            <MudButton Style="width: 100%;" Class="mr-2" Color="Color.Warning" Variant="Variant.Filled" OnClick="GoToMakeAppointment" StartIcon="@Icons.Material.Filled.CalendarMonth" IconColor="Color.Surface">Make Appointment</MudButton>
+                            <MudButton Style="width: 100%;" Class="mx-2" Color="Color.Warning" Variant="Variant.Filled" OnClick="GoToMakeAppointment" StartIcon="@Icons.Material.Filled.CalendarMonth" IconColor="Color.Surface">@Lang.Keys["Patient:MakeAppointment"]</MudButton>
                         </MudItem>
                         <MudItem xs="12" sm="12" md="12" lg="4">
-                            <MudButton Style="width: 100%;" Color="Color.Error" Variant="Variant.Filled" OnClick="OpenRemoveDialog" StartIcon="@Icons.Material.Filled.PersonRemoveAlt1" IconColor="Color.Surface">Remove Patient</MudButton>
+                            <MudButton Style="width: 100%;" Class="mx-2" Color="Color.Error" Variant="Variant.Filled" OnClick="OpenRemoveDialog" StartIcon="@Icons.Material.Filled.PersonRemoveAlt1" IconColor="Color.Surface">@Lang.Keys["Patient:RmPatient"]</MudButton>
                         </MudItem>
                     </MudGrid>
                 </MudCardContent>
             </MudCard>
         </MudContainer>
+    }
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+        base.OnInitialized();
     }
 }
