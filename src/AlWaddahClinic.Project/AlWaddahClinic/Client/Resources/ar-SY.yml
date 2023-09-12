@@ -1,9 +1,3 @@
-Index:
-  WelcomeMessage: مرحبا دكتور
-  Links: روابط سريعة
-  ViewPatients: عرض المرضى
-  Appointments: المواعيد
-  AddPatient: إضافة مريض
 NotFound:
   Title: يصيح! عنوان خاطئ
   Message: يبدو أن الصفحة التي تبحث عنها غير موجودة أو ربما قام المؤلف بتغيير رابط الصفحة
@@ -73,6 +67,7 @@ Settings:
   LastName: اسم العائلة
   Email: عنوان البريد الإلكتروني
   DocType: نوع الطبيب
+  Personalize: التخصيص
 Patients:
   Title: جميع المرضى
   AddBtn: إضافة مريض
@@ -106,6 +101,8 @@ Patient:
   MakeAppointment: إحجز موعد
   RmPatient: إزالة المريض
   HRNum: رقم قياسي
+  Suggestions: اقتراحات للمريض
+  NoSuggestions: لا توجد اقتراحات حالية لهذا المريض! يرجى تحديث تاريخهم الصحي الطبي إذا كنت تريد اقتراحات مساعدة.
 Menu:
   Dash: لوحه القياده
   Patients: المرضي
@@ -157,6 +154,7 @@ HealthRecord:
   Update: تحرير تفاصيل السجل
 AddHR:
   Title: سجل صحي جديد ل
+  DescriptionLabel: وصف الحالة
   DescriptionValidation: وصف الحالة مطلوب
   DescriptionHelper: وصف الحالة الطبية للمريض وسرد المعلومات ذات الصلة بها
   TotalPay: إجمالي الدفعة
@@ -215,3 +213,60 @@ EditAppointment:
   TimeError: يرجى اختيار موعد للموعد
   Confirm: تأكيد تاريخ جديد
   Cancel: إلغاء إعادة الجدولة
+PatientsChart:
+  Title: إحصائيات مرضاك
+  Males: ذكور
+  Females: إناث
+  Total: إجمالي عدد المرضى
+  MalesCount: عدد المرضى الذكور
+  FemalesCount: عدد المريضات
+  NoPatients: لا يوجد مرضى حاليا لتحليلهم
+RecentlyAddedPatients:
+  Title: المرضى المضافين حديثا
+  Appoint: تحديد موعد جديد
+  View: عرض تفاصيل المريض
+  NoPatients: لم تقم بإضافة أي مرضى حتى الآن
+QuickLinks:
+  Title: روابط سريعة
+  ViewPatients: عرض المرضى
+  Appointments: المواعيد
+  AddPatient: إضافة مريض
+  Settings: إعدادات التطبيق
+AppointmentCheck:
+  Title: التحقق من الموعد
+  Status: حالة الموعد
+  Missed: غاب عن الموعد
+  Reschedule: إعادة تحديد الموعد
+  Complete: أكمل الموعد
+  AddHR: إضافة سجل صحي (اختياري)
+UpcomingAppointments:
+  Title: المواعيد القادمة
+  Nothing: ليس لديك مواعيد قادمة
+MedicalCases:
+  Title: معلومات إضافية
+  Label: التاريخ الصحي الطبي (اختياري)
+  Info: املأ الحقل السابق إذا كنت ترغب في الحصول على اقتراحات بناء على التاريخ الصحي للمريض
+  Smoker: مدخن
+  Diabetes: داء السكري
+  BloodPressure: ارتفاع ضغط الدم
+  Cystisis: داء المثانة
+  Asthma: ربو
+  Cholesterol: ارتفاع الكوليسترول
+  Cancer: سرطان
+  Stroke: ضربة
+  Allergies: حساسية
+  Alcohol: كحولي
+  Drugs: عقاقير
+  Anxiety: قلق
+  Depression: اكتئاب
+  PrevSurgeries: العمليات الجراحية السابقة
+  MentalIssues: قضايا الصحة العقلية
+Dialogs:
+  ConfirmLogout: تأكيد تسجيل الخروج
+  LogoutMessage: إذا كنت ترغب في تسجيل الخروج من حسابك ، فالرجاء النقر فوق "موافق" لتأكيد ذلك
+  ConfirmRemoval: تأكيد الإزالة
+  RemovalMessage: هل تريد حقا إزالة تفاصيل هذا السجل من النظام؟ يرجى ملاحظة أنه بمجرد اكتمال العملية ، لا يمكنك عكسها
+  Confirm: أكد
+  Cancel: إلغاء الأمر
+  Ok: موافق
+  PayDetails: تفاصيل الدفع

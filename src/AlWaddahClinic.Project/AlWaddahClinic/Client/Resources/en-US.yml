@@ -1,10 +1,4 @@
-﻿Index:
-    WelcomeMessage: Hello Doctor
-    Links: Quick Links
-    ViewPatients: View Patients
-    Appointments: Appointments
-    AddPatient: Add Patient
-NotFound:
+﻿NotFound:
     Title: Whoops! Wrong Address
     Message: Looks like the page you're searching for doesn't exist or maybe the author has changed the page link
     Dash: Go To Dashboard
@@ -73,6 +67,7 @@ Settings:
     LastName: Last Name
     Email: Email Address
     DocType: Doctor Type
+    Personalize: Personalization
 Patients:
     Title: All Patients
     AddBtn: Add Patient
@@ -106,6 +101,8 @@ Patient:
     MakeAppointment: Make Appointment
     RmPatient: Remove Patient
     HRNum: Record Number
+    Suggestions: Suggestions For The Patient
+    NoSuggestions: There are no current suggestions for this patient! Please update their medical health history if you want helping suggestions.
 Menu:
     Dash: Dashboard
     Patients: Patients
@@ -157,6 +154,7 @@ HealthRecord:
     Update: Edit Record Details
 AddHR:
     Title: New Health Record For
+    DescriptionLabel: Case Description
     DescriptionValidation: Case Description is required
     DescriptionHelper: Describe the patient's medical case and list relevant information about it
     TotalPay: Total Payment
@@ -215,8 +213,60 @@ EditAppointment:
     TimeError: Please pick a time for the appointment
     Confirm: Confirm New Date
     Cancel: Cancel Rescheduling
-
-
-
-
-
+PatientsChart:
+    Title: Your Patients' Stats
+    Males: Males
+    Females: Females
+    Total: Total Number of Patients
+    MalesCount: Number of Male Patients
+    FemalesCount: Number of Female Patients
+    NoPatients: There's are no patients currently to analyze
+RecentlyAddedPatients:
+    Title: Recently Added Patients
+    Appoint: Make New Appointment
+    View: View Patient Details
+    NoPatients: You haven't added any patients so far
+QuickLinks:
+    Title: Quick Links
+    ViewPatients: View Patients
+    Appointments: Appointments
+    AddPatient: Add Patient
+    Settings: App Settings
+AppointmentCheck:
+    Title: Appointment Check
+    Status: Appointment Status
+    Missed: Missed the appointment
+    Reschedule: Reshceduled the appointment
+    Complete: Completed the appointment
+    AddHR: Add Health Record (Optional)
+UpcomingAppointments:
+    Title: Upcoming Appointments
+    Nothing: You have no upcoming appointments
+MedicalCases:
+    Title: Additional Information
+    Label: Medical Health History (Optional)
+    Info: Fill in the previous filed if you want to get suggestions based on the patient's health history
+    Smoker: Smoker
+    Diabetes: Diabetes
+    BloodPressure: High Blood Pressure
+    Cystisis: Cystisis
+    Asthma: Asthma
+    Cholesterol: High Cholesterol
+    Cancer: Cancer
+    Stroke: Stroke
+    Allergies: Allergies
+    Alcohol: Alcoholic
+    Drugs: Drugs
+    Anxiety: Anxiety
+    Depression: Depression
+    PrevSurgeries: Previous Surgeries
+    MentalIssues: Mental Health Issues
+Dialogs:
+    ConfirmLogout: Confirm Logout
+    LogoutMessage: "If you want to log out of your account, please click Ok to cofirm it"
+    ConfirmRemoval: Confirm Removal
+    RemovalMessage: "Do you really want to remove this record's details from the system? Please note that once the process has completed, you cannot invert it"
+    Confirm: Confirm
+    Cancel: Cancel
+    Ok: Ok
+    PayDetails: Payment Details

@@ -3,6 +3,7 @@ using AlWaddahClinic.Client.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using AlWaddahClinic.Shared.Enums;
+using AKSoftware.Localization.MultiLanguages;
 
 namespace AlWaddahClinic.Client.Pages.Appointments
 {
@@ -16,6 +17,9 @@ namespace AlWaddahClinic.Client.Pages.Appointments
 
         [Inject]
         public IDialogService DialogService { get; set; } = default!;
+
+        [Inject]
+        public ILanguageContainerService Lang { get; set; } = default!; 
 
         private List<AppointmentSummaryDto>? result;
         private List<AppointmentSummaryDto>? appointments;
@@ -50,9 +54,10 @@ namespace AlWaddahClinic.Client.Pages.Appointments
         private async Task OpenRemoveDialog(Guid id)
         { 
             var parameters = new DialogParameters();
-            parameters.Add("Header", "Confirm Removal");
-            parameters.Add("Content", "Do you really want to remove this appointment? Please note that once the process has completed it cannot be inverted");
-            parameters.Add("ButtonText", "Remove");
+            parameters.Add("Header", Lang.Keys["Dialogs:ConfirmRemoval"]);
+            parameters.Add("Content", Lang.Keys["Dialogs:RemovalMessage"]);
+            parameters.Add("ButtonText", Lang.Keys["Dialogs:Confirm"]);
+            parameters.Add("CancelButton", Lang.Keys["Dialogs:Cancel"]);
             parameters.Add("Color", Color.Error);
 
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };

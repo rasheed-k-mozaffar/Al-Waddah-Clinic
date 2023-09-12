@@ -1,4 +1,5 @@
 ﻿using System;
+using AKSoftware.Localization.MultiLanguages;
 using AlWaddahClinic.Client.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -13,8 +14,9 @@ namespace AlWaddahClinic.Client.UiServices
         private readonly IPatientsService _patientsService;
         private readonly IHealthRecordsService _healthRecordsService;
         private readonly IAppointmentsService _appointmentsService;
+        private readonly ILanguageContainerService _lang;
 
-        public DialogsHandler(NavigationManager navigationManager, IDialogService dialogService, IPatientsService patientsService, IHealthRecordsService healthRecordsService, IAppointmentsService appointmentsService)
+        public DialogsHandler(NavigationManager navigationManager, IDialogService dialogService, IPatientsService patientsService, IHealthRecordsService healthRecordsService, IAppointmentsService appointmentsService, ILanguageContainerService lang)
         {
             //Assigning the received objects from DIC to the private fields
             _navigationManager = navigationManager;
@@ -22,6 +24,7 @@ namespace AlWaddahClinic.Client.UiServices
             _patientsService = patientsService;
             _healthRecordsService = healthRecordsService;
             _appointmentsService = appointmentsService;
+            _lang = lang;
         }
         #endregion
 
@@ -48,9 +51,10 @@ namespace AlWaddahClinic.Client.UiServices
             }
 
             var parameters = new DialogParameters();
-            parameters.Add("Header", "Confirm Removal");
-            parameters.Add("Content", "Do you really want to remove this patient's details from the system? Please note that once the process has completed, you cannot invert it");
-            parameters.Add("ButtonText", "Remove");
+            parameters.Add("Header", _lang.Keys["Dialogs:ConfirmRemoval"]);
+            parameters.Add("Content", _lang.Keys["Dialogs:RemovalMessage"]);
+            parameters.Add("ButtonText", _lang.Keys["Dialogs:Confirm"]);
+            parameters.Add("CancelButton", _lang.Keys["Dialogs:Cancel"]);
             parameters.Add("Color", Color.Error);
 
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };

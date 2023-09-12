@@ -1,6 +1,5 @@
 @page "/patients/records/{id:guid}"
 @attribute [Authorize(Roles = "Admin")]
-@inject ILanguageContainerService Lang
 
 @{
     if (!string.IsNullOrEmpty(_errorMessage))

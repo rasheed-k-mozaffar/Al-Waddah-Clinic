@@ -1,6 +1,5 @@
 ﻿@page "/appointments"
 @attribute [Authorize(Roles = "Admin")]
-@inject ILanguageContainerService Lang
 
 @if (_isBusy == true)
 {
