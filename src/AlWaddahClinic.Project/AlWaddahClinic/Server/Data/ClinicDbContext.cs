@@ -1,6 +1,8 @@
 ﻿using System;
+using AlWaddahClinic.Server.WebhookForEComm;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Payment = AlWaddahClinic.Server.Models.Payment;
 
 namespace AlWaddahClinic.Server.Data
 {
@@ -17,13 +19,15 @@ namespace AlWaddahClinic.Server.Data
 		public DbSet<Note> Notes { get; set; }
 		public DbSet<Payment> Payments { get; set; }
 
+		public DbSet<Dummy> Dummies { get; set; }
+
 		public ClinicDbContext(DbContextOptions<ClinicDbContext> options, IConfiguration configuration) : base(options)
 		{
 			_configuration = configuration;
 		}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {	
+        {
             base.OnConfiguring(optionsBuilder);
 			optionsBuilder.UseLazyLoadingProxies();
         }
