@@ -62,7 +62,7 @@ namespace AlWaddahClinic.Server.Repositories
             var healthRecord = await _context.HealthRecords.FindAsync(recordId);
 
             var relatedNotes = await _context.Notes.Where(n => n.HealthRecordId == recordId).ToListAsync();
-
+            var relatedPayments = await _context.Payments.Where(p => p.HealthRecordId == recordId).ToListAsync();
             if (healthRecord == null)
             {
                 throw new NotFoundException("Health record was not found");
@@ -72,6 +72,10 @@ namespace AlWaddahClinic.Server.Repositories
             if (relatedNotes != null)
             {
                 _context.Notes.RemoveRange(relatedNotes);
+            }
+            if (relatedPayments != null)
+            {
+                _context.Payments.RemoveRange(relatedPayments);
             }
 
             _context.HealthRecords.Remove(healthRecord);

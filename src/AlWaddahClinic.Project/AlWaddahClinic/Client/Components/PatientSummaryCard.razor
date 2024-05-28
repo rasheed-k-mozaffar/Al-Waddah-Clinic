@@ -1,12 +1,13 @@
-﻿<MudCard Class="card-style" @onclick='( () => NavigationManager.NavigateTo($"/patients/{Patient.PatientId}"))'>
+﻿@inject ILanguageContainerService Lang
+<MudCard Class="card-style" @onclick='( () => NavigationManager.NavigateTo($"/patients/{Patient.PatientId}"))'>
     <MudCardContent>
         <MudText Typo="Typo.h5" Class="mb-3"><b>@Patient.FullName</b> <MudChip Color="@(Patient.Gender == 0 ? Color.Info : Color.Secondary)" Size="Size.Medium" Variant="Variant.Outlined"><MudIcon Icon="@(Patient.Gender == 0 ? @Icons.Material.Filled.Male : @Icons.Material.Filled.Female)" /></MudChip></MudText>
-        <MudText Typo="Typo.body1"><i class="bi bi-envelope-at"></i> <b>Email:</b> @(Patient.EmailAddress ?? "N/A")</MudText>
-        <MudText Typo="Typo.body1"><i class="bi bi-telephone-fill"></i> <b>Phone:</b> @(Patient.PhoneNumber ?? "N/A")</MudText>
+        <MudText Typo="Typo.body1"><i class="bi bi-envelope-at"></i> @(Patient.EmailAddress ?? Lang.Keys["Patient:NA"])</MudText>
+        <MudText Typo="Typo.body1"><i class="bi bi-telephone-fill"></i> @(Patient.PhoneNumber ?? Lang.Keys["Patient:NA"])</MudText>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Filled" Class="mr-2" Color="Color.Info" @onclick=' ( () => NavigationManager.NavigateTo($"/patients/update/{Patient.PatientId}") )' StartIcon="@Icons.Material.Filled.Edit" IconColor="Color.Surface">Update</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick='(async () => await OpenRemoveDialog(Patient.PatientId))' StartIcon="@Icons.Material.Filled.PersonRemove" IconColor="Color.Surface">Remove</MudButton>
+        <MudButton Variant="Variant.Filled" Class="mr-2 ml-2" Color="Color.Info" @onclick=' ( () => NavigationManager.NavigateTo($"/patients/update/{Patient.PatientId}") )' StartIcon="@Icons.Material.Filled.Edit" IconColor="Color.Surface">@Lang.Keys["Patient:Update"]</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick='(async () => await OpenRemoveDialog(Patient.PatientId))' StartIcon="@Icons.Material.Filled.PersonRemove" IconColor="Color.Surface">@Lang.Keys["Patient:RmPatient"]</MudButton>
     </MudCardActions>
 </MudCard>
 
@@ -17,9 +18,18 @@
         transition: .25s;
         border-radius: 5px;
         cursor: pointer;
+        background-color: var(--transparent-shade);
     }
 
         .card-style:hover {
             box-shadow: 5px 5px 10px gray;
         }
 </style>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+        base.OnInitialized();
+    }
+}

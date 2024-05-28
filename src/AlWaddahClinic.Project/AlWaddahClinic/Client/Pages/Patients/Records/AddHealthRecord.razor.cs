@@ -35,7 +35,8 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 
 		private string _errorMessage = string.Empty;
 		private string _noteTitle = string.Empty;
-		private string InsightsPannelText => _isPreparingInsights ? "Loading..." : "Get Ai Generated Insights Regarding Your Patient's Case! Just Click The Lightbulb";
+		private string _insightsButtonTitle => _isPreparingInsights ? "Lodaing..." : "Generate Insights";
+		private string InsightsPannelText => _isPreparingInsights ? "The insights should be generated in a few seconds, please wait..." : "Get Ai Generated Insights Regarding Your Patient's Case! Just Click The Lightbulb";
 
 		private bool _isInsightReady = false;
 		private bool _isPreparingInsights = false;
@@ -48,6 +49,13 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
 
 		private async Task AddRecord()
 		{
+			_errorMessage = string.Empty;
+
+			if (string.IsNullOrWhiteSpace(model.Description))
+			{
+				_errorMessage = "Please fill in the required details for the health record";
+				return;
+			}
 			_errorMessage = string.Empty;
 			try
 			{

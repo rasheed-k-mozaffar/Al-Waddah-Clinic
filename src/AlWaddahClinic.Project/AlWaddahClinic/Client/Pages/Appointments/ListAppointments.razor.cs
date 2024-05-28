@@ -2,6 +2,8 @@
 using AlWaddahClinic.Client.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using AlWaddahClinic.Shared.Enums;
+using AKSoftware.Localization.MultiLanguages;
 
 namespace AlWaddahClinic.Client.Pages.Appointments
 {
@@ -16,8 +18,15 @@ namespace AlWaddahClinic.Client.Pages.Appointments
         [Inject]
         public IDialogService DialogService { get; set; } = default!;
 
-        private List<AppointmentSummaryDto> result;
-        private List<AppointmentSummaryDto> appointments;
+        [Inject]
+        public ILanguageContainerService Lang { get; set; } = default!; 
+
+        private List<AppointmentSummaryDto>? result;
+        private List<AppointmentSummaryDto>? appointments;
+        private List<AppointmentSummaryDto>? upcoming;
+        private List<AppointmentSummaryDto>? completed;
+        private List<AppointmentSummaryDto>? missed;
+        private List<AppointmentSummaryDto>? unnoted;
 
         private bool _isBusy = true;
         private string _errorMessage = string.Empty;
@@ -29,7 +38,11 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             {
                 result = (await AppointmentsService.GetAllAppointmentsAsync()).Value.ToList();
                 appointments = result;
-                _actionsRequired = appointments.Where(a => a.StartAt > DateTime.Now.AddMinutes(-15) && a.Status == null).Count();
+
+                upcoming = result.Where(a => a.StartAt > DateTime.Now.AddMinutes(-1)).ToList();
+                completed = result.Where(a => a.Status == AppointmentStatusEnum.Completed).ToList();
+                missed = result.Where(a => a.Status == AppointmentStatusEnum.Missed).ToList();
+                unnoted = result.Where(a => a.StartAt < DateTime.Now.AddMinutes(-1) && a.Status == null).ToList();
                 _isBusy = false;
             }
             catch (DomainException ex)
@@ -41,9 +54,10 @@ namespace AlWaddahClinic.Client.Pages.Appointments
         private async Task OpenRemoveDialog(Guid id)
         { 
             var parameters = new DialogParameters();
-            parameters.Add("Header", "Confirm Removal");
-            parameters.Add("Content", "Do you really want to remove this appointment? Please note that once the process has completed it cannot be inverted");
-            parameters.Add("ButtonText", "Remove");
+            parameters.Add("Header", Lang.Keys["Dialogs:ConfirmRemoval"]);
+            parameters.Add("Content", Lang.Keys["Dialogs:RemovalMessage"]);
+            parameters.Add("ButtonText", Lang.Keys["Dialogs:Confirm"]);
+            parameters.Add("CancelButton", Lang.Keys["Dialogs:Cancel"]);
             parameters.Add("Color", Color.Error);
 
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
@@ -79,10 +93,6 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             NavigationManager.NavigateTo($"/appointments/reschedule/{patientName}/{appointmentId}");
         }
 
-        private void GoToPastAppointments()
-        {
-            NavigationManager.NavigateTo("/appointments/past");
-        }
 
         private async Task RemoveAsync(Guid id)
         {
@@ -90,7 +100,19 @@ namespace AlWaddahClinic.Client.Pages.Appointments
             {
                 await AppointmentsService.RemoveAppointmentAsync(id);
                 var itemToRemove = result.SingleOrDefault(a => a.Id == id);
-                appointments.Remove(itemToRemove);
+
+                if(itemToRemove.Status == null) {
+                    upcoming.Remove(itemToRemove);
+                }
+                else if(itemToRemove.Status == AppointmentStatusEnum.Missed) {
+                    missed.Remove(itemToRemove);
+                }
+                else if(itemToRemove.Status == AppointmentStatusEnum.Completed) {
+                    completed.Remove(itemToRemove);
+                }
+                else {
+                    unnoted.Remove(itemToRemove);
+                }
             }
             catch (DomainException ex)
             {

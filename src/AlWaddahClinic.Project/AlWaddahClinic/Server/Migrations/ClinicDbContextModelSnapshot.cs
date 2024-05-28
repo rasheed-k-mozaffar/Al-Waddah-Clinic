@@ -17,7 +17,7 @@ namespace AlWaddahClinic.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -156,9 +156,15 @@ namespace AlWaddahClinic.Server.Migrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPaymentCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MedicalCaseInsight")
                         .HasColumnType("nvarchar(max)");
@@ -180,6 +186,12 @@ namespace AlWaddahClinic.Server.Migrations
 
                     b.Property<string>("SuggestedMedicalTests")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TeethIds")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("TotalPayment")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -288,6 +300,9 @@ namespace AlWaddahClinic.Server.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<string>("MedicalHistory")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ModifiedByUserId")
                         .HasColumnType("nvarchar(max)");
 
@@ -297,9 +312,55 @@ namespace AlWaddahClinic.Server.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Suggestions")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Patients", (string)null);
+                });
+
+            modelBuilder.Entity("AlWaddahClinic.Server.Models.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("HealthRecordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ModifiedByUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("PaidOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HealthRecordId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Prescription", b =>
@@ -564,6 +625,9 @@ namespace AlWaddahClinic.Server.Migrations
                     b.Property<Guid>("ClinicId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("DoctorType")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -625,6 +689,17 @@ namespace AlWaddahClinic.Server.Migrations
                 {
                     b.HasOne("AlWaddahClinic.Server.Models.HealthRecord", "HealthRecord")
                         .WithMany("Notes")
+                        .HasForeignKey("HealthRecordId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("HealthRecord");
+                });
+
+            modelBuilder.Entity("AlWaddahClinic.Server.Models.Payment", b =>
+                {
+                    b.HasOne("AlWaddahClinic.Server.Models.HealthRecord", "HealthRecord")
+                        .WithMany("Payments")
                         .HasForeignKey("HealthRecordId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -721,6 +796,8 @@ namespace AlWaddahClinic.Server.Migrations
             modelBuilder.Entity("AlWaddahClinic.Server.Models.HealthRecord", b =>
                 {
                     b.Navigation("Notes");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Patient", b =>

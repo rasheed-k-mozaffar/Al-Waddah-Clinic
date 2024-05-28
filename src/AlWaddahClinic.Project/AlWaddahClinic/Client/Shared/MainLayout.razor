@@ -1,55 +1,95 @@
 ﻿@inherits LayoutComponentBase
+@inject ILanguageContainerService LangService
 
-<main>
+<style>
+    :root {
+        --navbar-color: @settings.NavbarColor;
+        --main-color: @settings.BackgroundColor
+    }
+    .page-style {
+        min-height: 100vh;
+        max-height: max-content;
+        background-color: var(--main-color);
+    }
+</style>
+
+<MudRTLProvider RightToLeft="@_isRightToLeft">
     <MudLayout>
-        <MudAppBar Elevation="1" Color="Color.Primary">
+        <MudAppBar Elevation="1" Style="background-color: var(--navbar-color); transition: 0.25s">
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
                            OnClick="@((e) => DrawerToggle())" />
             <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
         </MudAppBar>
         <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
             <MudDrawerHeader>
                 <typography>
                     <MudText Typo="Typo.h5" Class="mt-1"><b>Clinic Pro</b></MudText>
-                    
-                    <MudText Typo="Typo.body2" Inline="false"><b>Version 0.3</b> <MudChip Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined">BETA</MudChip></MudText>
+
+                    <MudText Typo="Typo.body2" Inline="false"><b>Version 1.0</b></MudText>
                 </typography>
             </MudDrawerHeader>
             <MudNavMenu>
-                <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard 🏡</MudNavLink>
-                <MudNavGroup Title="Records" Expanded="true">
-                    <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix">Patients 🩺</MudNavLink>
-                    <MudNavLink Href="/patients/healthrecords" Match="NavLinkMatch.Prefix">Health Records 📑</MudNavLink>
-                    <MudNavLink Href="/appointments" Match="NavLinkMatch.Prefix">Appointments 🗓️</MudNavLink>
+                <MudNavLink Href="/" Match="NavLinkMatch.All"
+                            Icon="@Icons.Material.Filled.Home"
+                            IconColor="Color.Primary">
+                    @LangService.Keys["Menu:Dash"]
+                </MudNavLink>
+
+                <MudNavGroup Title="@LangService.Keys["Menu:Records"]" Icon="@Icons.Material.Filled.FileCopy"
+                             IconColor="Color.Dark" Expanded="true">
+                    <MudNavLink Href="/patients/all" Match="NavLinkMatch.Prefix"
+                                Icon="@Icons.Material.Filled.People"
+                                IconColor="Color.Primary">
+                        @LangService.Keys["Menu:Patients"]
+                    </MudNavLink>
+                    <MudNavLink Href="/appointments" Match="NavLinkMatch.Prefix"
+                                Icon="@Icons.Material.Filled.CalendarMonth"
+                                IconColor="Color.Secondary">
+                        @LangService.Keys["Menu:Appointments"]
+                    </MudNavLink>
                 </MudNavGroup>
+
+                <MudNavLink Href="/release-notes" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Folder" IconColor="Color.Warning">
+                    @LangService.Keys["Menu:ReleaseNotes"]
+                </MudNavLink>
+
+                <MudNavLink Href="/user/settings" Match="NavLinkMatch.All"
+                            Icon="@Icons.Material.Filled.Settings"
+                            IconColor="Color.Dark">
+                    @LangService.Keys["Menu:Settings"]
+                </MudNavLink>
                 <AuthorizeView>
                     <NotAuthorized>
-                        <MudNavLink Href="/user/login" Match="NavLinkMatch.Prefix">Login</MudNavLink>
+                        <MudNavLink Href="/user/login" Match="NavLinkMatch.Prefix"
+                                    Icon="@Icons.Material.Filled.Login"
+                                    IconColor="Color.Success">
+                            @LangService.Keys["Menu:Login"]
+                        </MudNavLink>
                     </NotAuthorized>
 
                     <Authorized>
                         <MudContainer>
-                            <MudButton Variant="Variant.Outlined" Color="Color.Error" @onclick="OpenLogoutDialog">Log Out</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" @onclick="OpenLogoutDialog" Icon="@Icons.Material.Filled.Logout" IconColor="Color.Error">@LangService.Keys["Menu:LogOut"]</MudButton>
                         </MudContainer>
                     </Authorized>
                 </AuthorizeView>
             </MudNavMenu>
         </MudDrawer>
-        <MudMainContent>
+        <MudMainContent Class="page-style">
             @Body
         </MudMainContent>
     </MudLayout>
-</main>
+</MudRTLProvider>
 
 @code {
     bool _drawerOpen = true;
+    bool _isRightToLeft = false;
 
+    private UserSettings? settings = new();
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
-
 
     //Handle the log out
     [Inject] public IDialogService DialogService { get; set; } = default!;
@@ -59,9 +99,10 @@
     private async Task OpenLogoutDialog()
     {
         var parameters = new DialogParameters();
-        parameters.Add("Header", "Confirm Logout");
-        parameters.Add("Content", "Do you really want to log out of your account? If so, please click ok to confirm");
-        parameters.Add("ButtonText", "Ok");
+        parameters.Add("Header", LangService.Keys["Dialogs:ConfirmLogout"]);
+        parameters.Add("Content", LangService.Keys["Dialogs:LogoutMessage"]);
+        parameters.Add("ButtonText", LangService.Keys["Dialogs:Ok"]);
+        parameters.Add("CancelButton", LangService.Keys["Dialogs:Cancel"]);
         parameters.Add("Color", Color.Error);
 
         var options = new DialogOptions() { CloseButton = true, CloseOnEscapeKey = true, MaxWidth = MaxWidth.ExtraSmall };
@@ -73,6 +114,36 @@
         {
             await LogoutAsync();
         }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        LangService.InitLocalizedComponent(this);
+        string languageCode = "en-US";
+
+        if (await LocalStorage.ContainKeyAsync("language-code"))
+        {
+            languageCode = await LocalStorage.GetItemAsync<string>("language-code");
+
+            if (languageCode == "en-US")
+            {
+                _isRightToLeft = false;
+            }
+            else
+            {
+                _isRightToLeft = true;
+            }
+        }
+        if (await LocalStorage.ContainKeyAsync("user-settings"))
+        {
+            settings = await LocalStorage.GetItemAsync<UserSettings>("user-settings");
+        }
+        else
+        {
+            await LocalStorage.SetItemAsync<UserSettings>("user-settings", settings!);
+        }
+
+        LangService.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(languageCode));
     }
 
     private async Task LogoutAsync()

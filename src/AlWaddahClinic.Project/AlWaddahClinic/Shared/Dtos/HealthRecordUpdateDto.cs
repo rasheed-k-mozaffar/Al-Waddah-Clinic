@@ -5,6 +5,8 @@ namespace AlWaddahClinic.Shared.Dtos
 	{
         public string Description { get; set; }
         public List<NoteUpdateDto>? Notes { get; set; }
+        public decimal? TotalPayment { get; set; }
+        public string? Currency { get; set; }
         public List<string>? PatientSuggestion { get; set; }
         public List<string>? SuggestedMedicalTests { get; set; }
         public List<string>? MedicalCaseInsight { get; set; }
@@ -12,3 +14,4 @@ namespace AlWaddahClinic.Shared.Dtos
     }
 }
 
+    

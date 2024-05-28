@@ -1,0 +1,14 @@
+﻿[
+  {
+    "Title": "Perform search by patient name operations on the same page 🔎",
+    "Content": "You can now search for specfic patients on the (All patients) page and get the results while you're entering the search text, so that you could find a patient you're looking for more easily, additionally, you will be able to find patients who share certain parts of their names like the family name."
+  },
+  {
+    "Title": "More Intuitive and Descriptive User Interface 💻",
+    "Content": "The system's user interface has gotten a simple update that makes the elements on the screen more descriptive and intuitive so that you wouldn't face any sort of confusion whilst navigating and using the system, with simpler buttons, more expressing user interface elements, you'll surely never get anything mixed up."
+  },
+  {
+    "Title": "Ai Assisted Analysis (Smart Insights)💡",
+    "Content": "Get encompassing insights on a patient's specific health issue, from recommendations, suggested medical tests, and case insights, a load of feasible information that you could access in a single button click! To use this feature, you can select a patient, add a health record for them, while adding the record details, after typing out the case description, you can click the 'Generate Insights' button to get a handful of insights that could help you out and increase your productivity."
+  }
+]

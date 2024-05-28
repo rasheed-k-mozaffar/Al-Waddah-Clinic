@@ -23,7 +23,8 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
         private List<NoteUpdateDto>? notes = new();
 
         private string _noteTitle = string.Empty;
-        private string InsightsPannelText => _isPreparingInsights ? "Loading..." : "Get Ai Generated Insights Regarding Your Patient's Case! Just Click The Lightbulb";
+        private string _insightsButtonTitle => _isPreparingInsights ? "Lodaing..." : "Generate Insights";
+        private string InsightsPannelText => _isPreparingInsights ? "The insights should be generated in a few seconds, please wait..." : "Get Ai Generated Insights Regarding Your Patient's Case! Just Click The Lightbulb";
 
         private bool _isInsightReady = false;
         private bool _isPreparingInsights = false;
@@ -54,7 +55,9 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
                 PatientSuggestion = recordDto.PatientSuggestion,
                 SuggestedMedicalTests = recordDto.SuggestedMedicalTests,
                 MedicalCaseInsight = recordDto.MedicalCaseInsight,
-                RelatedMedicalCases = recordDto.RelatedMedicalCases
+                RelatedMedicalCases = recordDto.RelatedMedicalCases,
+                TotalPayment = recordDto.TotalAmount,
+                Currency = recordDto.Currency
             };
         }
 
@@ -87,7 +90,7 @@ namespace AlWaddahClinic.Client.Pages.Patients.Records
             try
             {
                 await HealthRecordsService.UpdateRecordAsync(Id ,model);
-                NavigationManager.NavigateTo($"/patients/{result.Value.Patient.Id}");
+                NavigationManager.NavigateTo($"/patients/records/{Id}");
             }
             catch(DomainException ex)
             {

@@ -1,5 +1,6 @@
 ﻿@page "/patients/records/add/{patientId:guid}"
 @attribute [Authorize(Roles = "Admin")]
+@inject ILanguageContainerService Lang
 
 @{
     if (!string.IsNullOrEmpty(_errorMessage))
@@ -11,8 +12,11 @@
 <MudContainer Class="mt-2 mb-2">
     <MudCard Style="padding: 2rem; box-shadow: 5px 5px 25px lightgray;">
         <MudItem>
-            <MudText Typo="Typo.h6"><b><i class="bi bi-envelope-paper-fill"></i> Add a new health record for
-                    @patient.FullName </b></MudText>
+            <MudText Typo="Typo.h6">
+                <b>
+                    <i class="bi bi-envelope-paper-fill"></i> @Lang.Keys["AddHR:Title"] @patient.FullName
+                </b>
+            </MudText>
         </MudItem>
 
         <MudDivider />
@@ -24,41 +28,66 @@
 
                 <MudGrid>
 
-                    <MudItem Class="mb-3 mt-5" xs="12" md="12" lg="12">
+                    <MudItem Class="mt-5" xs="12" md="12" lg="12">
                         <MudTextField T="string" Variant="Variant.Outlined" Counter="0" Immediate="true"
-                            Label="Case Description" Multiline="true" Required="true"
-                            RequiredError="Case Description is required" @bind-Value="model.Description" Lines="10"
-                            HelperText="Describe the patient and list some relevant information"
-                            HelperTextOnFocus="true" />
+                                      Label="@Lang.Keys["HealthRecord:Description"]" Multiline="true" Required="true"
+                                      RequiredError="@Lang.Keys["AddHR:DescriptionValidation"]" @bind-Value="model.Description" Lines="10"
+                                      HelperText="@Lang.Keys["AddHR:DescriptionHelper"]"
+                                      HelperTextOnFocus="true" />
                     </MudItem>
+
+                    <AuthorizeView Context="authContext">
+                        <Authorized>
+                            @if (authContext.User.FindFirst("DoctorType").Value == "Dentist")
+                            {
+                                <MudItem Class="mb-3" xs="12" sm="12" md="8" lg="8">
+                                    <MudTextField T="decimal?" Variant="Variant.Outlined"
+                                                  Label="@Lang.Keys["AddHR:TotalPay"]" Adornment="Adornment.End"
+                                                  AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                                  AdornmentColor="Color.Success" Margin="Margin.Dense"
+                                                  @bind-Value="model.TotalPayment"
+                                                  Required="true" RequiredError="@Lang.Keys["AddHR:TotalPayValidation"]" />
+                                </MudItem>
+
+                                <MudItem xs="12" sm="12" md="4" lg="4">
+                                    <MudSelect T="string" Label="@Lang.Keys["AddHR:SelectCurr"]" Margin="Margin.Dense" @bind-Value="model.Currency" Variant="Variant.Outlined">
+                                        <MudSelectItem Value="@("SYP")">@Lang.Keys["AddHR:SYP"] 💷</MudSelectItem>
+                                        <MudSelectItem Value="@("USD")">@Lang.Keys["AddHR:USD"] 💵</MudSelectItem>
+                                    </MudSelect>
+                                </MudItem>
+                            }
+                        </Authorized>
+                    </AuthorizeView>
+
 
                     <MudItem xs="12" md="12" lg="12">
                         <MudExpansionPanels MultiExpansion="true">
                             <div class="vertical-align">
-                                <MudIconButton Icon="@Icons.Outlined.Lightbulb" Color="Color.Tertiary"
-                                    OnClick="GetInsights" Disabled="_isPreparingInsights" /> &nbsp;
+                                <MudFab StartIcon="@Icons.Outlined.Lightbulb" Size="Size.Small" Label="@Lang.Keys["AddHR:Generate"]" Color="Color.Tertiary"
+                                        OnClick="GetInsights" Disabled="_isPreparingInsights || string.IsNullOrEmpty(model.Description)" /> &nbsp;
                                 <span>
-                                    <MudText Typo="Typo.h5"><b>Smart Insights</b></MudText>
+                                    <MudText Typo="Typo.h5"><b>@Lang.Keys["HealthRecord:Insights"]</b></MudText>
                                 </span>
-                                <MudChip Color="Color.Tertiary" Size="Size.Small" Variant="Variant.Filled"
-                                    Text="BETA" />
                             </div>
-                            <MudExpansionPanel Class="mb-5 mt-3" Text="@InsightsPannelText" Disabled="!_isInsightReady">
-                                <InsightsContainer Text="Suggestions For Patient" insights="patientSuggestions" />
-                                <InsightsContainer Text="Related Medical Cases" insights="relatedCases" />
-                                <InsightsContainer Text="Suggested Medical Tests" insights="suggestedTests" />
-                                <InsightsContainer Text="Case Information" insights="caseInsight" />
 
-                                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-5 mb-5">Not
-                                    convincing results? Try regenerating the insights again</MudAlert>
+
+                            <MudExpansionPanel Class="mb-5 mt-3" Text="@Lang.Keys["AddHR:InsightsPanelText"]" Disabled="!_isInsightReady">
+                                <InsightsContainer Text="@Lang.Keys["HealthRecord:Suggestions"]" insights="patientSuggestions" />
+                                <InsightsContainer Text="@Lang.Keys["HealthRecord:RelatedCases"]" insights="relatedCases" />
+                                <InsightsContainer Text="@Lang.Keys["HealthRecord:SuggestedTests"]" insights="suggestedTests" />
+                                <InsightsContainer Text="@Lang.Keys["HealthRecord:CaseInfo"]" insights="caseInsight" />
+
+                                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mt-5 mb-5">
+                                    @Lang.Keys["AddHR:AiResultsMsg"]
+                                </MudAlert>
                             </MudExpansionPanel>
 
 
-                            <MudExpansionPanel Text="Case Notes">
+                            <MudExpansionPanel Text="@Lang.Keys["AddHR:CaseNotes"]">
                                 <MudGrid>
                                     <MudItem xs="12" md="12" lg="12">
                                         <MudTextField T="string" @bind-Value="@_noteTitle"
-                                            Label="Note field (optional)" />
+                                                      Label="@Lang.Keys["AddHR:NoteField"]" />
                                     </MudItem>
 
                                     @if (notes != null)
@@ -66,7 +95,8 @@
                                         @foreach (var note in notes)
                                         {
                                             <MudItem xs="12">
-                                                <MudText Typo="Typo.body2"><i class="bi bi-pin-angle-fill"></i>@note.Title
+                                                <MudText Typo="Typo.body2">
+                                                    <i class="bi bi-pin-angle-fill"></i>@note.Title
                                                 </MudText>
                                             </MudItem>
                                         }
@@ -79,20 +109,30 @@
                                     }
                                     <MudItem xs="12" md="12" lg="12">
                                         <MudButton Style="width: 100%;" Variant="Variant.Filled" Color="Color.Warning"
-                                        @onclick="AddNote"><i class="bi bi-file-earmark-plus-fill"></i><b> Add
-                                                Note</b></MudButton>
+                                                   @onclick="AddNote">
+                                            <i class="bi bi-file-earmark-plus-fill"></i><b>
+                                                @Lang.Keys["AddHR:AddNewNote"]
+                                            </b>
+                                        </MudButton>
                                     </MudItem>
                                 </MudGrid>
                             </MudExpansionPanel>
                         </MudExpansionPanels>
                     </MudItem>
 
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        @if (_isPreparingInsights)
+                        {
+                            <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Large" Indeterminate="true" />
+                        }
+                    </MudItem>
+
                     <MudItem xs="12">
-                        <MudButton ButtonType="ButtonType.Submit" Style="width: 100%;" Variant="Variant.Filled"
-                            Color="Color.Primary" Class="mb-2">Add Health Record</MudButton>
+                        <MudButton ButtonType="ButtonType.Submit" Disabled="_isPreparingInsights" Style="width: 100%;" Variant="Variant.Filled"
+                                   Color="Color.Primary" Class="mb-2">@Lang.Keys["AddHR:AddHrBtn"]</MudButton>
                         <MudDivider />
-                        <MudButton Style="width: 100%;" Variant="Variant.Outlined" Color="Color.Info" Class="mb-3"
-                        @onclick="GoBack">Go Back</MudButton>
+                        <MudButton Style="width: 100%;" Disabled="_isPreparingInsights" Variant="Variant.Outlined" Color="Color.Info" Class="mb-3"
+                                   @onclick="GoBack">@Lang.Keys["AddHR:GoBack"]</MudButton>
                     </MudItem>
                 </MudGrid>
             </EditForm>
@@ -100,10 +140,10 @@
     </MudCard>
 </MudContainer>
 
-
-<style>
-    .vertical-align {
-        display: flex;
-        align-items: center;
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+        base.OnInitialized();
     }
-</style>
+}

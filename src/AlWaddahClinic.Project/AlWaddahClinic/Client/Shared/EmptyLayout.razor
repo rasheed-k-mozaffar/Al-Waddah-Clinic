@@ -1,9 +1,45 @@
 @inherits LayoutComponentBase
-
-<main>
-    @Body
-</main>
+@inject ILanguageContainerService Lang
+@inject ILocalStorageService LocalStorage
+<MudRTLProvider RightToLeft="isRightToLeft">
+    <main>
+        @Body
+    </main>
+</MudRTLProvider>
 
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
+
+@code {
+    private bool isRightToLeft = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Lang.InitLocalizedComponent(this);
+        string languageCode = "en-US";
+
+        if (await LocalStorage.ContainKeyAsync("language-code"))
+        {
+            languageCode = await LocalStorage.GetItemAsync<string>("language-code");
+
+            if (languageCode.Contains("ar-SY"))
+            {
+                isRightToLeft = true;
+            }
+            else
+            {
+                isRightToLeft = false;
+            }
+
+            StateHasChanged();
+        }
+        else
+        {
+            await LocalStorage.SetItemAsStringAsync("language-code", languageCode);
+        }
+
+        Lang.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(languageCode));
+        await base.OnInitializedAsync();
+    }
+}

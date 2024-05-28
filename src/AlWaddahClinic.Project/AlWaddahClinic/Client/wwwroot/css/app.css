@@ -1,5 +1,23 @@
-﻿h1:focus {
+﻿:root {
+    --selected-green: #48E74D;
+    --transparent-shade: rgba(255, 255, 255, 0.8);
+}
+h1:focus {
     outline: none;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.custom-info-alert {
+    border-radius: 5px;
+    border: 1px solid #70A1E7;
+    padding: 1rem;
+    background-color: #F8FAFD;
+    color: #70A1E7;
+    box-shadow: 1px 1px 3px lightgray;
 }
 
 #blazor-error-ui {

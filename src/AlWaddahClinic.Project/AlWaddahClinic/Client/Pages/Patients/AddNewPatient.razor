@@ -8,10 +8,10 @@
     }
 }
 
-<MudContainer style="margin-top: 5rem;">
-    <MudCard Style="padding: 2rem; border: 1px solid black">
+<MudContainer Class="mt-5 mb-5">
+    <MudCard Style="padding: 2rem;">
         <MudItem>
-            <MudText Typo="Typo.h4"><b><i class="bi bi-person-fill-add"></i> Add a new patient</b></MudText>
+            <MudText Typo="Typo.h4"><b><i class="bi bi-person-fill-add"></i> @Lang.Keys["AddPatient:Title"]</b></MudText>
         </MudItem>
 
         <MudDivider />
@@ -24,43 +24,86 @@
                 <MudGrid>
 
                     <MudItem Class="mb-3" xs="12" md="12" lg="12">
-                        <MudTextField T="string" Label="Full Name" Required="true" RequiredError="Full name is required"
+                        <MudTextField T="string" Label="@Lang.Keys["AddPatient:Name"]" Required="true" RequiredError="@Lang.Keys["AddPatient:NameError"]"
                                       @bind-Value="model.FullName" />
                     </MudItem>
 
                     <MudItem Class="mb-3" xs="12" md="6" lg="6">
-                        <MudTextField T="string" Label="Phone Number (optional)" @bind-Value="model.PhoneNumber" />
+                        <MudTextField T="string" Label="@Lang.Keys["AddPatient:PhoneNum"]" @bind-Value="model.PhoneNumber" />
                     </MudItem>
 
                     <MudItem Class="mb-3" xs="12" md="6" lg="6">
-                        <MudDatePicker Label="Date Of Birth (optional)" Editable="true"
+                        <MudDatePicker Label="@Lang.Keys["AddPatient:DOB"]" Editable="true"
                                        Mask='@( new DateMask("dd/MM/yyyy"))' @bind-Date="@model.DateOfBirth"
                                        DateFormat="dd/MM/yyyy" />
                     </MudItem>
 
                     <MudItem Class="mb-3" xs="12" md="12" lg="12">
-                        <MudTextField T="string" Label="Email Address (optional)" @bind-value="model.EmailAddress" />
+                        <MudTextField T="string" Label="@Lang.Keys["AddPatient:Email"]" @bind-value="model.EmailAddress" />
                     </MudItem>
 
                     <MudItem Class="mb-3" xs="12" md="12" lg="12">
-                        <MudTextField T="string" Label="Address (optional)" @bind-value="model.Address" />
+                        <MudTextField T="string" Label="@Lang.Keys["AddPatient:Address"]" @bind-value="model.Address" />
                     </MudItem>
 
-                    <MudItem Class="mb-3">
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
                         <MudRadioGroup @bind-SelectedOption="model.Gender">
-                            <MudRadio Option="GenderEnum.Male" Color="Color.Info">Male</MudRadio>
-                            <MudRadio Option="GenderEnum.Female" Color="Color.Secondary"> Female</MudRadio>
+                            <MudRadio Option="GenderEnum.Male" Color="Color.Info"> @Lang.Keys["AddPatient:Male"]</MudRadio>
+                            <MudRadio Option="GenderEnum.Female" Color="Color.Secondary"> @Lang.Keys["AddPatient:Female"]</MudRadio>
                         </MudRadioGroup>
                     </MudItem>
 
+                    <MudItem xs="12" md="12" lg="12">
+                        <div class="vertical-align">
+                            <MudIcon Icon="@Icons.Material.Filled.MedicalInformation" Color="Color.Info" /> &nbsp;
+                            <span>
+                                <MudText Typo="Typo.h6"><b>@Lang.Keys["MedicalCases:Title"]</b></MudText>
+                            </span>
+                        </div>
+                    </MudItem>
+
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        <MudSelect Label="@Lang.Keys["MedicalCases:Label"]" MultiSelection="true"
+                                   Style="width: 100%;" @bind-SelectedValues="medicalHistory">
+                            @foreach (string value in cases)
+                            {
+                                <MudSelectItem Value="value">@value</MudSelectItem>
+                            }
+
+                        </MudSelect>
+                    </MudItem>
+
+                    <MudItem xs="12" md="12" lg="12">
+                        <div class="custom-info-alert">
+                            <p>@Lang.Keys["MedicalCases:Info"]</p>
+                        </div>
+                    </MudItem>
+
+                    @if (_isBusy)
+                    {
+                        <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                            <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Large" Indeterminate="true" />
+                        </MudItem>
+                    }
+
                     <MudDivider />
 
-                    <MudItem Class="mb-3">
-                        <MudButton Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
-                                   ButtonType="ButtonType.Submit">
-                            Add
-                            Patient
-                        </MudButton>
+                    <MudItem Class="mb-3" xs="12" md="12" lg="12">
+                        <MudGrid Justify="Justify.FlexStart">
+                            <MudItem xs="12" sm="12" md="6" lg="6">
+                                <MudButton Style="width: 100%;" Disabled="@_isBusy" Variant="Variant.Filled" Color="Color.Primary"
+                                           ButtonType="ButtonType.Submit" StartIcon="@Icons.Material.Filled.Add">
+                                    @Lang.Keys["AddPatient:Add"]
+                                </MudButton>
+                            </MudItem>
+                            <MudItem xs="12" sm="12" md="6" lg="6">
+                                <MudButton Style="width: 100%;" Disabled="@_isBusy" Variant="Variant.Filled"
+                                           Color="Color.Dark" StartIcon="@Icons.Material.Filled.Cancel"
+                                           @onclick='() => NavigationManager.NavigateTo("/patients/all")'>
+                                    @Lang.Keys["AddPatient:Cancel"]
+                                </MudButton>
+                            </MudItem>
+                        </MudGrid>
                     </MudItem>
                 </MudGrid>
             </EditForm>

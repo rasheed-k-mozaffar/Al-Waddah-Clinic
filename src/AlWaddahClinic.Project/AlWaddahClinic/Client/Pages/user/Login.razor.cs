@@ -25,6 +25,11 @@ namespace AlWaddahClinic.Client.Pages.User
         {
             _isMakingRequest = true;
 
+            if(string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password)) {
+                _errorMessage = "Please fill in the required details";
+                return;
+            }
+
             try
             {
                 var result = await AuthService.LoginUserAsync(model);

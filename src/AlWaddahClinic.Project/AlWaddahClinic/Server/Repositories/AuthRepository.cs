@@ -63,6 +63,7 @@ namespace AlWaddahClinic.Server.Repositories
         public async Task<UserManagerResponse> RegisterUserAsync(RegisterUserDto model, Guid clinicId)
         {
             var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            
 
             if (existingUser != null)
             {
@@ -76,6 +77,7 @@ namespace AlWaddahClinic.Server.Repositories
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
+                DoctorType = model.DoctorType,
                 NormalizedEmail = model.Email.ToUpper(),
             };
 
@@ -127,6 +129,8 @@ namespace AlWaddahClinic.Server.Repositories
 
         private async Task<string> GenerateJwtTokenForUserAsync(AppUser user)
         {
+            const string typeClaimName = "DoctorType"; // represents the claim name for the doctor type.
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]!));
             var sigingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -139,20 +143,18 @@ namespace AlWaddahClinic.Server.Repositories
                 new Claim("ClinicId", user.ClinicId.ToString())
             };
 
-            //// Email Confirmation Check.
-            //if(user.EmailConfirmed)
-            // {
-            //     claims.Add(new Claim("email_verified", "true"));
-            //     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-            // }
-            // else
-            // {
-            //     claims.Add(new Claim(ClaimTypes.Role, "User"));
-            // }
-
             if(await _userManager.IsInRoleAsync(user, "Admin"))
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            }
+
+            if(user.DoctorType == DoctorTypeEnum.GeneralPractitioner)
+            {
+                claims.Add(new Claim(typeClaimName, "General"));
+            }
+            else if(user.DoctorType == DoctorTypeEnum.Dentist)
+            {
+                claims.Add(new Claim(typeClaimName, "Dentist"));
             }
 
             //Creating the token with the claims

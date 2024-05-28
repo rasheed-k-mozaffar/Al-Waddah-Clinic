@@ -19,8 +19,12 @@ namespace AlWaddahClinic.Client.Pages.Patients
         [Inject]
         public IDialogsHandler DialogsHandler { get; set; } = default!;
 
-        ApiResponse<IEnumerable<PatientSummaryDto>> patients = new();
+        ApiResponse<IEnumerable<PatientSummaryDto>> result = new();
+        List<PatientSummaryDto>? patients;
+        List<PatientSummaryDto> filteredPatients = new();
 
+        private string _searchText = string.Empty;
+        private bool _isBusy = true;
         private void GoToAddPatient()
         {
             NavigationManager.NavigateTo("/patients/add");
@@ -28,18 +32,15 @@ namespace AlWaddahClinic.Client.Pages.Patients
 
         protected override async Task OnInitializedAsync()
         {
-            patients = await PatientsService.GetAllPatients();
+            result = await PatientsService.GetAllPatients();
+            patients = result.Value.ToList();
+            _isBusy = false;
         }
 
         public async Task HandlePatientRemoval()
         {
-            patients = await PatientsService.GetAllPatients();
-        }
-
-        private void OpenSearchDialog()
-        {
-            var options = new DialogOptions() { ClassBackground = "dialog-background-blur", MaxWidth = MaxWidth.Medium, Position = DialogPosition.TopCenter };
-            var dialog = DialogService.Show<PatientSearchDialog>("Search", options);
+            result = await PatientsService.GetAllPatients();
+            patients = result.Value.ToList();
         }
     }
 }

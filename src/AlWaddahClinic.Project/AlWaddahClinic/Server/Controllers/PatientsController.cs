@@ -7,6 +7,7 @@ using AlWaddahClinic.Server.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AlWaddahClinic.Server.Data;
+using AlWaddahClinic.Shared.Dtos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -113,7 +114,6 @@ namespace AlWaddahClinic.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] PatientUpdateDto model)
         {
-            //TODO: Implement this endpoitn.
             if(ModelState.IsValid)
             {
                 try
@@ -129,6 +129,14 @@ namespace AlWaddahClinic.Server.Controllers
                     patientToUpdate.ModifiedByUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
                     patientToUpdate.ModifiedOn = DateTime.Now;
 
+                    if(model.MedicalHistory != null && model.MedicalHistory.Any()) {
+                        patientToUpdate.MedicalHistory = string.Join(',', model.MedicalHistory);
+                        patientToUpdate.Suggestions = model.Suggestions == null ? null : string.Join(',', model.Suggestions);
+                    }
+                    else {
+                        patientToUpdate.MedicalHistory = null;
+                        patientToUpdate.Suggestions = null;
+                    }
                     await _context.SaveChangesAsync();
 
                     return NoContent(); //Return 204 STATUS CODE

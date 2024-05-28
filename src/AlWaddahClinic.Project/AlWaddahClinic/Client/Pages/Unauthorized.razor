@@ -1,12 +1,13 @@
 @page "/unauthorized"
 @inject NavigationManager NavigationManager
 @layout EmptyLayout
+@inject ILanguageContainerService Lang
 
 <AuthorizeView>
     <Authorized>
         @if (context.User.FindFirst("email_verified")?.Value == "true")
         {
-                NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/");
         }
         else
         {
@@ -36,17 +37,14 @@
             <MudItem xs="10" md="8" lg="6">
                 <MudCard style="width: 100%; padding: 2.5rem;">
                     <MudCardContent>
-                        <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Primary"><b>Oh No!</b></MudText>
+                        <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Primary"><b>@Lang.Keys["Unathorized:Title"]</b></MudText>
                         <MudText Align="Align.Center" Typo="Typo.body1">
-                            Looks like the author of this page has restricited the
-                            access to it, please
-                            login if you've not done already, that may fix the problem
+
                         </MudText>
                         <MudItem Class="d-flex justify-center mt-3">
                             <MudButton Class="justifiy-center" Variant="Variant.Filled" Color="Color.Primary"
                                        @onclick='( () => NavigationManager.NavigateTo("/user/login") )'>
-                                Go To
-                                Login
+                                @Lang.Keys["Unathorized:Login"]
                             </MudButton>
                         </MudItem>
                     </MudCardContent>
@@ -69,3 +67,11 @@
         background-image: linear-gradient(to right, @(Colors.Amber.Darken1), @(Colors.Amber.Darken4));
     }
 </style>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Lang.InitLocalizedComponent(this);
+        base.OnInitialized();
+    }
+}

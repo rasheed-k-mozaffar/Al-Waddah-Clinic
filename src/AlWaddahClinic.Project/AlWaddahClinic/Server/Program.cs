@@ -18,6 +18,8 @@ builder.Services.AddScoped<IPatientsRepository, PatientsRepository>();
 builder.Services.AddScoped<IHealthRecordsRepository, HealthRecordsRepository>();
 builder.Services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
 builder.Services.AddScoped<IClinicRepository, ClinicRepository>();
+builder.Services.AddScoped<IPaymentsRepository, PaymentsRepository>();
+builder.Services.AddScoped<IAnalysisRepository, AnalysisRepository>();
 
 builder.Services.AddScoped<IAiRepository, AiRepository>();
 

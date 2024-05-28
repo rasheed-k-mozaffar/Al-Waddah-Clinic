@@ -1,0 +1,23 @@
+﻿.page-style{
+    margin-top: 1rem;
+    padding: 0 4rem;
+    transition: .25s ease all;
+}
+
+@media (screen-width: 1200px) {
+    .page-style {
+        padding: 0 3rem;
+    }
+}
+
+@media (screen-width: 900px) {
+    .page-style {
+        padding: 0 2.25rem;
+    }
+}
+
+@media (screen-width: 768px) {
+    .page-style {
+        padding: 0 1.75rem;
+    }
+}
