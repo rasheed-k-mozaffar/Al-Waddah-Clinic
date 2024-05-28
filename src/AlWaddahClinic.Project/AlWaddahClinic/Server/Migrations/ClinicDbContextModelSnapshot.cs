@@ -65,7 +65,7 @@ namespace AlWaddahClinic.Server.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Clinic", b =>
@@ -135,7 +135,7 @@ namespace AlWaddahClinic.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clinics");
+                    b.ToTable("Clinics", (string)null);
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.HealthRecord", b =>
@@ -189,7 +189,7 @@ namespace AlWaddahClinic.Server.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("HealthRecords");
+                    b.ToTable("HealthRecords", (string)null);
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Medication", b =>
@@ -231,7 +231,7 @@ namespace AlWaddahClinic.Server.Migrations
 
                     b.HasIndex("PrescriptionId");
 
-                    b.ToTable("Medications");
+                    b.ToTable("Medications", (string)null);
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Note", b =>
@@ -254,7 +254,7 @@ namespace AlWaddahClinic.Server.Migrations
 
                     b.HasIndex("HealthRecordId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Patient", b =>
@@ -299,7 +299,7 @@ namespace AlWaddahClinic.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("AlWaddahClinic.Server.Models.Prescription", b =>
@@ -334,7 +334,7 @@ namespace AlWaddahClinic.Server.Migrations
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("Prescriptions");
+                    b.ToTable("Prescriptions", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
